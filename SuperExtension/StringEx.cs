@@ -486,7 +486,7 @@ namespace System
         /// <param name="Length">返回长度</param>
         /// <param name="encoding">编码格式</param>
         /// <returns></returns>
-        public static byte[] GetByteByString(this string s, int Length, Encoding encoding)
+        public static byte[] GetBytes(this string s, int Length, Encoding encoding)
         {
             byte[] temp = encoding.GetBytes(s);
             byte[] ret = new byte[Length];
