@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Text;
 
 namespace SuperFramework
@@ -24,7 +23,7 @@ namespace SuperFramework
 
                 //根据计算得到的Hash码翻译为MD5码
                 string sHash = "", sTemp = "";
-                for (int counter = 0; counter < bytHash.Count(); counter++)
+                for (int counter = 0; counter < bytHash.Length; counter++)
                 {
                     long i = bytHash[counter] / 16;
                     if (i > 9)
@@ -92,7 +91,7 @@ namespace SuperFramework
 
                 //根据计算得到的Hash码翻译为MD5码
                 string sHash = "", sTemp = "";
-                for (int counter = 0; counter < bytHash.Count(); counter++)
+                for (int counter = 0; counter < bytHash.Length; counter++)
                 {
                     long i = bytHash[counter] / 16;
                     if (i > 9)
@@ -121,7 +120,7 @@ namespace SuperFramework
                 sHash = "";
 
                 //根据计算得到的Hash码翻译为MD5码
-                for (int counter = 0; counter < bytHash.Count(); counter++)
+                for (int counter = 0; counter < bytHash.Length; counter++)
                 {
                     long i = bytHash[counter] / 16;
                     if (i > 9)
@@ -171,7 +170,7 @@ namespace SuperFramework
 
                 //根据计算得到的Hash码翻译为MD5码
                 string sHash = "", sTemp = "";
-                for (int counter = 0; counter < bytHash.Count(); counter++)
+                for (int counter = 0; counter < bytHash.Length; counter++)
                 {
                     long i = bytHash[counter] / 16;
                     if (i > 9)
@@ -202,7 +201,7 @@ namespace SuperFramework
                 sHash = "";
 
                 //根据计算得到的Hash码翻译为MD5码
-                for (int counter = 0; counter < bytHash.Count(); counter++)
+                for (int counter = 0; counter < bytHash.Length; counter++)
                 {
                     long i = bytHash[counter] / 16;
                     if (i > 9)
@@ -254,7 +253,7 @@ namespace SuperFramework
 
                 //根据计算得到的Hash码翻译为SHA-1码
                 string sHash = "", sTemp = "";
-                for (int counter = 0; counter < bytHash.Count(); counter++)
+                for (int counter = 0; counter < bytHash.Length; counter++)
                 {
                     long i = bytHash[counter] / 16;
                     if (i > 9)
@@ -304,7 +303,7 @@ namespace SuperFramework
 
                 //根据计算得到的Hash码翻译为SHA-1码
                 string sHash = "", sTemp = "";
-                for (int counter = 0; counter < bytHash.Count(); counter++)
+                for (int counter = 0; counter < bytHash.Length; counter++)
                 {
                     long i = bytHash[counter] / 16;
                     if (i > 9)
@@ -354,7 +353,7 @@ namespace SuperFramework
 
                 //根据计算得到的Hash码翻译为SHA-1码
                 string sHash = "", sTemp = "";
-                for (int counter = 0; counter < bytHash.Count(); counter++)
+                for (int counter = 0; counter < bytHash.Length; counter++)
                 {
                     long i = bytHash[counter] / 16;
                     if (i > 9)
@@ -403,7 +402,7 @@ namespace SuperFramework
 
                 //根据计算得到的Hash码翻译为SHA-1码
                 string sHash = "", sTemp = "";
-                for (int counter = 0; counter < bytHash.Count(); counter++)
+                for (int counter = 0; counter < bytHash.Length; counter++)
                 {
                     long i = bytHash[counter] / 16;
                     if (i > 9)
@@ -499,7 +498,7 @@ namespace SuperFramework
 
 
 
-            System.IO.FileStream fs = new System.IO.FileStream(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+            System.IO.FileStream fs = new(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read);
 
             byte[] hashBytes = HashData(fs, algName);
 
@@ -564,7 +563,7 @@ namespace SuperFramework
 
         private static string PrintByteArray(byte[] array)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             int i;
             for (i = 0; i < array.Length; i++)
             {
@@ -585,14 +584,14 @@ namespace SuperFramework
             //检查文件是否存在，如果文件存在则进行计算，否则返回空值
             if (System.IO.File.Exists(fileName))
             {
-                using (System.IO.FileStream fs = new System.IO.FileStream(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                using (System.IO.FileStream fs = new(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read))
                 {
                     //计算文件的CSC32值
-                    Crc32 calculator = new Crc32();
+                    Crc32 calculator = new();
                     byte[] buffer = calculator.ComputeHash(fs);
                     calculator.Clear();
                     //将字节数组转换成十六进制的字符串形式
-                    StringBuilder stringBuilder = new StringBuilder();
+                    StringBuilder stringBuilder = new();
                     for (int i = 0; i < buffer.Length; i++)
                     {
                         stringBuilder.Append(buffer[i].ToString("X2"));

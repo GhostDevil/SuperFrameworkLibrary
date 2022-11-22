@@ -20,10 +20,10 @@ namespace SuperFramework.SuperConfig.Xml
         /// <returns>标准格式XML字符串</returns>
         public static string FormatXml(string inputXml)
         {
-            XmlDocument document = new XmlDocument();
+            XmlDocument document = new();
             document.Load(new StringReader(inputXml));
-            StringBuilder builder = new StringBuilder();
-            using (XmlTextWriter writer = new XmlTextWriter(new StringWriter(builder)))
+            StringBuilder builder = new();
+            using (XmlTextWriter writer = new(new StringWriter(builder)))
             {
                 writer.Formatting = Formatting.Indented;
                 document.Save(writer);
@@ -57,9 +57,9 @@ namespace SuperFramework.SuperConfig.Xml
         /// <returns>返回xml字符串</returns>
         public static string LoadXmlStr(string path)
         {
-            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+            using (FileStream fs = new(path, FileMode.Open, FileAccess.Read))
             {
-                StreamReader sr = new StreamReader(fs);
+                StreamReader sr = new(fs);
                 return sr.ReadToEnd();
             }
         }
@@ -76,9 +76,9 @@ namespace SuperFramework.SuperConfig.Xml
         {
             try
             {
-                using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
+                using (FileStream fs = new(path, FileMode.Create, FileAccess.Write))
                 {
-                    StreamWriter sw = new StreamWriter(fs, Encoding.UTF8);
+                    StreamWriter sw = new(fs, Encoding.UTF8);
                     //开始写入
                     sw.Write(xmlString);
                     //清空缓冲区
@@ -107,7 +107,7 @@ namespace SuperFramework.SuperConfig.Xml
             bool isSuccess;
             try
             {
-                XmlDocument xmlDoc = new XmlDocument();
+                XmlDocument xmlDoc = new();
                 XmlDeclaration xmlDeclaration = xmlDoc.CreateXmlDeclaration(version, encoding.HeaderName, standalone);
                 XmlNode root = xmlDoc.CreateElement(rootNodeName);
                 xmlDoc.AppendChild(xmlDeclaration);
@@ -141,7 +141,7 @@ namespace SuperFramework.SuperConfig.Xml
         {
             try
             {
-                XmlDocument doc = new XmlDocument();
+                XmlDocument doc = new();
                 doc.Load(path);
                 XmlNode xn = doc.SelectSingleNode(node);
                 if (element.Equals(""))
@@ -181,7 +181,7 @@ namespace SuperFramework.SuperConfig.Xml
         {
             try
             {
-                XmlDocument doc = new XmlDocument();
+                XmlDocument doc = new();
                 doc.Load(path);
                 XmlNode xn = doc.SelectSingleNode(node);
                 XmlElement xe = (XmlElement)xn;
@@ -205,7 +205,7 @@ namespace SuperFramework.SuperConfig.Xml
         /// <returns>更新成功返回true，失败返回false</returns>
         public static bool UpdateNode(string filePath, string nodeName, string nodeValue)
         {
-            XmlDocument xd = new XmlDocument();
+            XmlDocument xd = new();
             xd.Load(filePath);
             XmlElement xe = xd.DocumentElement;
             XmlNode xn = xe.SelectSingleNode("//" + nodeName);
@@ -233,7 +233,7 @@ namespace SuperFramework.SuperConfig.Xml
         /// <returns>成功返回true,失败返回false</returns>
         public static bool CreateXmlNodeByXPath(string xmlFileName, string xpath, string xmlNodeName, string innerText, string xmlAttributeName, string value)
         {
-            XmlDocument xmlDoc = new XmlDocument();
+            XmlDocument xmlDoc = new();
             bool isSuccess;
             try
             {
@@ -276,7 +276,7 @@ namespace SuperFramework.SuperConfig.Xml
         public static bool CreateOrUpdateXmlNodeByXPath(string xmlFileName, string xpath, string xmlNodeName, string innerText)
         {
             bool isExistsNode = false;//标识节点是否存在
-            XmlDocument xmlDoc = new XmlDocument();
+            XmlDocument xmlDoc = new();
             bool isSuccess;
             try
             {
@@ -325,7 +325,7 @@ namespace SuperFramework.SuperConfig.Xml
         public static bool CreateOrUpdateXmlAttributeByXPath(string xmlFileName, string xpath, string xmlAttributeName, string value)
         {
             bool isExistsAttribute = false;//标识属性是否存在
-            XmlDocument xmlDoc = new XmlDocument();
+            XmlDocument xmlDoc = new();
             bool isSuccess;
             try
             {
@@ -380,7 +380,7 @@ namespace SuperFramework.SuperConfig.Xml
         {
             try
             {
-                XmlDocument doc = new XmlDocument();
+                XmlDocument doc = new();
                 doc.Load(path);
                 XmlNode xn = doc.SelectSingleNode(node);
                 XmlElement xe = (XmlElement)xn;
@@ -401,7 +401,7 @@ namespace SuperFramework.SuperConfig.Xml
         /// <returns>成功返回true,失败返回false</returns>
         public static bool DeleteXmlNodeByXPath(string xmlFileName, string xpath)
         {
-            XmlDocument xmlDoc = new XmlDocument();
+            XmlDocument xmlDoc = new();
             bool isSuccess;
             try
             {
@@ -432,7 +432,7 @@ namespace SuperFramework.SuperConfig.Xml
         public static bool DeleteXmlAttributeByXPath(string xmlFileName, string xpath, string xmlAttributeName)
         {
             bool isExistsAttribute = false;
-            XmlDocument xmlDoc = new XmlDocument();
+            XmlDocument xmlDoc = new();
             bool isSuccess;
             try
             {
@@ -476,7 +476,7 @@ namespace SuperFramework.SuperConfig.Xml
         /// <returns>成功返回true,失败返回false</returns>
         public static bool DeleteXmlAttributeAllByXPath(string xmlFileName, string xpath)
         {
-            XmlDocument xmlDoc = new XmlDocument();
+            XmlDocument xmlDoc = new();
             bool isSuccess;
             try
             {
@@ -515,7 +515,7 @@ namespace SuperFramework.SuperConfig.Xml
             string value = "";
             try
             {
-                XmlDocument doc = new XmlDocument();
+                XmlDocument doc = new();
                 doc.Load(path);
                 XmlNode xn = doc.SelectSingleNode(node);
                 value = (attribute.Equals("") ? xn.InnerText : xn.Attributes[attribute].Value);
@@ -561,7 +561,7 @@ namespace SuperFramework.SuperConfig.Xml
         public static string GetNodeInfoByNodeName(string path, string nodeName)
         {
             string XmlString = "";
-            XmlDocument xml = new XmlDocument();
+            XmlDocument xml = new();
             xml.Load(path);
             XmlElement root = xml.DocumentElement;
             XmlNode node = root.SelectSingleNode("//" + nodeName);
@@ -584,7 +584,7 @@ namespace SuperFramework.SuperConfig.Xml
         /// <returns>返回节点内容string</returns>
         public static string GetNodeValue(string source, XmlType xmlType, string nodeName)
         {
-            XmlDocument xd = new XmlDocument();
+            XmlDocument xd = new();
             if (xmlType == XmlType.File)
                 xd.Load(source);
             else
@@ -630,7 +630,7 @@ namespace SuperFramework.SuperConfig.Xml
         /// <returns>返回XmlNode</returns>
         public static XmlNode GetXmlNodeByXpath(string xmlFileName, string xpath)
         {
-            XmlDocument xmlDoc = new XmlDocument();
+            XmlDocument xmlDoc = new();
             try
             {
                 xmlDoc.Load(xmlFileName); //加载XML文档
@@ -652,7 +652,7 @@ namespace SuperFramework.SuperConfig.Xml
         /// <returns>返回XmlNodeList</returns>
         public static XmlNodeList GetXmlNodeListByXpath(string xmlFileName, string xpath)
         {
-            XmlDocument xmlDoc = new XmlDocument();
+            XmlDocument xmlDoc = new();
             try
             {
                 xmlDoc.Load(xmlFileName); //加载XML文档
@@ -675,7 +675,7 @@ namespace SuperFramework.SuperConfig.Xml
         /// <returns>返回xmlAttributeName</returns>
         public static XmlAttribute GetXmlAttribute(string xmlFileName, string xpath, string xmlAttributeName)
         {
-            XmlDocument xmlDoc = new XmlDocument();
+            XmlDocument xmlDoc = new();
             XmlAttribute xmlAttribute = null;
             try
             {
@@ -706,7 +706,7 @@ namespace SuperFramework.SuperConfig.Xml
         /// <param name="filePath">文件路径</param>
         public static void SaveTableToFile(DataTable dt, string rootName, string filePath)
         {
-            DataSet ds = new DataSet(rootName);
+            DataSet ds = new(rootName);
             ds.Tables.Add(dt.Copy());
             ds.WriteXml(filePath);
         }
@@ -718,7 +718,7 @@ namespace SuperFramework.SuperConfig.Xml
         /// <param name="filePath">文件路径</param>
         public static void SaveTableToFile(DataTable dt, string filePath)
         {
-            DataSet ds = new DataSet("Config");
+            DataSet ds = new("Config");
             ds.Tables.Add(dt.Copy());
             ds.WriteXml(filePath);
         }
@@ -735,16 +735,16 @@ namespace SuperFramework.SuperConfig.Xml
         /// <returns>返回值，不存在时返回Null</returns>
         public static object GetTableCell(string source, XmlType xmlType, string tableName, int rowIndex, int colIndex)
         {
-            DataSet ds = new DataSet();
+            DataSet ds = new();
             if (xmlType == XmlType.File)
             {
                 ds.ReadXml(source);
             }
             else
             {
-                XmlDocument xd = new XmlDocument();
+                XmlDocument xd = new();
                 xd.LoadXml(source);
-                XmlNodeReader xnr = new XmlNodeReader(xd);
+                XmlNodeReader xnr = new(xd);
                 ds.ReadXml(xnr);
             }
             return ds.Tables[tableName].Rows[rowIndex][colIndex];
@@ -761,16 +761,16 @@ namespace SuperFramework.SuperConfig.Xml
         /// <returns>返回值，不存在时返回Null</returns>
         public static object GetTableCell(string source, XmlType xmlType, string tableName, int rowIndex, string colName)
         {
-            DataSet ds = new DataSet();
+            DataSet ds = new();
             if (xmlType == XmlType.File)
             {
                 ds.ReadXml(source);
             }
             else
             {
-                XmlDocument xd = new XmlDocument();
+                XmlDocument xd = new();
                 xd.LoadXml(source);
-                XmlNodeReader xnr = new XmlNodeReader(xd);
+                XmlNodeReader xnr = new(xd);
                 ds.ReadXml(xnr);
             }
             return ds.Tables[tableName].Rows[rowIndex][colName];
@@ -785,16 +785,16 @@ namespace SuperFramework.SuperConfig.Xml
         /// <returns>返回DataTable</returns>
         public static DataTable GetTable(string source, XmlType xmlType, string tableName)
         {
-            DataSet ds = new DataSet();
+            DataSet ds = new();
             if (xmlType == XmlType.File)
             {
                 ds.ReadXml(source);
             }
             else
             {
-                XmlDocument xd = new XmlDocument();
+                XmlDocument xd = new();
                 xd.LoadXml(source);
-                XmlNodeReader xnr = new XmlNodeReader(xd);
+                XmlNodeReader xnr = new(xd);
                 ds.ReadXml(xnr);
             }
             return ds.Tables[tableName];
@@ -808,9 +808,9 @@ namespace SuperFramework.SuperConfig.Xml
         /// <returns>返回DataSet</returns>
         public static DataSet GetXmlValueDataSet(string xmlString, DataSet ds)
         {
-            XmlDocument xd = new XmlDocument();
+            XmlDocument xd = new();
             xd.LoadXml(xmlString);
-            XmlNodeReader xnr = new XmlNodeReader(xd);
+            XmlNodeReader xnr = new(xd);
             ds.ReadXml(xnr);
             xnr.Close();
             return ds;
@@ -824,16 +824,16 @@ namespace SuperFramework.SuperConfig.Xml
         /// <returns>返回DataSet</returns>
         public static DataSet GetDataSet(string source, XmlType xmlType)
         {
-            DataSet ds = new DataSet();
+            DataSet ds = new();
             if (xmlType == XmlType.File)
             {
                 ds.ReadXml(source);
             }
             else
             {
-                XmlDocument xd = new XmlDocument();
+                XmlDocument xd = new();
                 xd.LoadXml(source);
-                XmlNodeReader xnr = new XmlNodeReader(xd);
+                XmlNodeReader xnr = new(xd);
                 ds.ReadXml(xnr);
             }
             return ds;

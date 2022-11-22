@@ -298,7 +298,7 @@ namespace SuperFramework
         {
             try
             {
-                Process process = new Process();
+                Process process = new();
                 process.StartInfo.FileName = "cmd.exe";
                 process.StartInfo.Arguments = "/c " + cmd;
                 process.StartInfo.UseShellExecute = false;
@@ -461,7 +461,7 @@ namespace SuperFramework
             string result = string.Empty;
             try
             {
-                PerformanceCounter pfc = new PerformanceCounter() { CategoryName = "Process" /* 指定获取计算机进程信息*/, CounterName = "% Processor Time" /* 占有率*/, InstanceName = processName /* 指定进程   */, MachineName = "." };      // 性能计数器
+                PerformanceCounter pfc = new() { CategoryName = "Process" /* 指定获取计算机进程信息*/, CounterName = "% Processor Time" /* 占有率*/, InstanceName = processName /* 指定进程   */, MachineName = "." };      // 性能计数器
                 result = Math.Round(pfc.NextValue(), 2) + "%";
             }
             catch (Exception ex) { }
@@ -522,7 +522,7 @@ namespace SuperFramework
                 if (!string.IsNullOrEmpty(cmd) && !string.IsNullOrEmpty(resultPath))
                 {
                     //string pa = ">" + path;
-                    Process p = new Process();
+                    Process p = new();
                     p.StartInfo.FileName = "cmd.exe";
                     p.StartInfo.Arguments = arguments;
                     p.StartInfo.UseShellExecute = false;    //是否使用操作系统shell启动
@@ -570,10 +570,10 @@ namespace SuperFramework
             bool result = false;
             try
             {
-                using (Process myPro = new Process())
+                using (Process myPro = new())
                 {
                     //指定启动进程是调用的应用程序和命令行参数
-                    ProcessStartInfo psi = new ProcessStartInfo(cmdExe, cmdStr);
+                    ProcessStartInfo psi = new(cmdExe, cmdStr);
                     myPro.StartInfo = psi;
                     myPro.Start();
                     myPro.WaitForExit();
@@ -627,7 +627,7 @@ namespace SuperFramework
         /// <returns>返回父进程名称</returns>
         public static string GetPrentProcessName(Process p)
         {
-            PerformanceCounter performanceCounter = new PerformanceCounter("Process", "Creating Process ID", p.ProcessName);
+            PerformanceCounter performanceCounter = new("Process", "Creating Process ID", p.ProcessName);
 
             //得到父进程
             Process patent = Process.GetProcessById((int)performanceCounter.NextValue());
@@ -662,9 +662,11 @@ namespace SuperFramework
         /// </summary>
         public static void DeleteItselfByCMD()
         {
-            ProcessStartInfo psi = new ProcessStartInfo("cmd.exe", "/C ping 1.1.1.1 -n 1 -w 5000 > Nul & Del " + Process.GetCurrentProcess().MainModule.FileName);
-            psi.WindowStyle = ProcessWindowStyle.Hidden;
-            psi.CreateNoWindow = true;
+            ProcessStartInfo psi = new("cmd.exe", "/C ping 1.1.1.1 -n 1 -w 5000 > Nul & Del " + Process.GetCurrentProcess().MainModule.FileName)
+            {
+                WindowStyle = ProcessWindowStyle.Hidden,
+                CreateNoWindow = true
+            };
             Process.Start(psi);
             Process.GetCurrentProcess().Kill();
         }
@@ -1029,19 +1031,21 @@ namespace SuperFramework
         public static Process OpenExe(string path, string par,EventHandler closeEvent,bool createNoWindow=true)
         {
             //指定启动进程时使用的诸如应用程序或文档的文件名
-            ProcessStartInfo start = new ProcessStartInfo(path);
-            //获取或设置要启动的进程的初始目录
-            start.WorkingDirectory = Path.GetDirectoryName(path);
-            //获取或设置启动应用程序时要使用的一组命令行参数
-            start.Arguments = par;
-            //获取或设置指示是否在新窗口中启动该进程的值
-            start.CreateNoWindow = createNoWindow;
-            //获取或设置一个值，该值指示是否将应用程序的输出写入System.Diagnostics.Process.StandardOutput流中
-            start.RedirectStandardOutput = false;
-            //获取或设置一个值，该值指示应用程序的输入是否从 System.Diagnostics.Process.StandardInput流中读取
-            start.RedirectStandardInput = false;
-            //获取或设置一个值，该值指示是否使用操作系统 shell 启动进程
-            start.UseShellExecute = false;
+            ProcessStartInfo start = new(path)
+            {
+                //获取或设置要启动的进程的初始目录
+                WorkingDirectory = Path.GetDirectoryName(path),
+                //获取或设置启动应用程序时要使用的一组命令行参数
+                Arguments = par,
+                //获取或设置指示是否在新窗口中启动该进程的值
+                CreateNoWindow = createNoWindow,
+                //获取或设置一个值，该值指示是否将应用程序的输出写入System.Diagnostics.Process.StandardOutput流中
+                RedirectStandardOutput = false,
+                //获取或设置一个值，该值指示应用程序的输入是否从 System.Diagnostics.Process.StandardInput流中读取
+                RedirectStandardInput = false,
+                //获取或设置一个值，该值指示是否使用操作系统 shell 启动进程
+                UseShellExecute = false
+            };
             //启动由包含进程启动信息（例如，要启动的进程的文件名）的参数指定的进程资源，并将该资源与新的 System.Diagnostics.Process组件关联。
             Process p1 = Process.Start(start);
             p1.EnableRaisingEvents = true;
@@ -1058,7 +1062,7 @@ namespace SuperFramework
         /// <param name="pName">进程名（不含后缀）</param>
         /// <param name="kill">是否关闭</param>
         /// <returns></returns>
-        public static bool ProcessExitis(string pName, bool kill=false)
+        public static bool ProcessExist(string pName, bool kill=false)
         {
             bool bo = false;
             Process[] processList = Process.GetProcesses();
@@ -1080,47 +1084,5 @@ namespace SuperFramework
             }
             return bo;
         }
-
-        //// [StructLayout(LayoutKind.Sequential)]
-        //private struct ProcessBasicInformation
-        //{
-        //    public int ExitStatus;
-        //    public int PebBaseAddress;
-        //    public int AffinityMask;
-        //    public int BasePriority;
-        //    public uint UniqueProcessId;
-        //    public uint InheritedFromUniqueProcessId;
-        //}
-
-        //[DllImport("ntdll.dll")]
-        //static extern int NtQueryInformationProcess(
-        //   IntPtr hProcess,
-        //   int processInformationClass /* 0 */,
-        //   ref ProcessBasicInformation processBasicInformation,
-        //   uint processInformationLength,
-        //   out uint returnLength
-        //);
-        ///// <summary>
-        ///// 查杀进程以及子进程
-        ///// </summary>
-        ///// <param name="parent"></param>
-        //public static void KillProcessTree(this Process parent)
-        //{
-        //    var processes = Process.GetProcesses();
-        //    foreach (var p in processes)
-        //    {
-        //        var pbi = new ProcessBasicInformation();
-        //        try
-        //        {
-        //            uint bytesWritten;
-        //            if (NtQueryInformationProcess(p.Handle, 0, ref pbi, (uint)Marshal.SizeOf(pbi), out bytesWritten) == 0) // == 0 is OK
-        //                if (pbi.InheritedFromUniqueProcessId == parent.Id)
-        //                    using (var newParent = Process.GetProcessById((int)pbi.UniqueProcessId))
-        //                        newParent.KillProcessTree();
-        //        }
-        //        catch { }
-        //    }
-        //    parent.Kill();
-        //}
     }
 }

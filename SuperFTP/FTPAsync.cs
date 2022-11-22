@@ -361,7 +361,7 @@ namespace SuperFramework.SuperFTP
                 byte[] bt = DownloadFile(RemoteFileName);
                 if (bt != null)
                 {
-                    FileStream stream = new FileStream(LocalFullPath, FileMode.Create);
+                    FileStream stream = new(LocalFullPath, FileMode.Create);
                     stream.Write(bt, 0, bt.Length);
                     stream.Flush();
                     stream.Close();
@@ -394,7 +394,7 @@ namespace SuperFramework.SuperFTP
                 Response = Open(new Uri(Uri.ToString() + RemoteFileName), WebRequestMethods.Ftp.DownloadFile);
                 Stream Reader = Response.GetResponseStream();
 
-                MemoryStream mem = new MemoryStream(1024 * 500);
+                MemoryStream mem = new(1024 * 500);
                 byte[] buffer = new byte[1024];
                 int bytesRead = 0;
                 int TotalByteRead = 0;
@@ -475,7 +475,7 @@ namespace SuperFramework.SuperFTP
                 {
                     throw new Exception("当前路径下已经存在同名文件！");
                 }
-                MyWebClient client = new MyWebClient();
+                MyWebClient client = new();
 
                 client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
                 client.DownloadFileCompleted += new System.ComponentModel.AsyncCompletedEventHandler(client_DownloadFileCompleted);
@@ -563,7 +563,7 @@ namespace SuperFramework.SuperFTP
                 }
                 if (File.Exists(LocalFullPath))
                 {
-                    FileStream Stream = new FileStream(LocalFullPath, FileMode.Open, FileAccess.Read);
+                    FileStream Stream = new(LocalFullPath, FileMode.Open, FileAccess.Read);
                     byte[] bt = new byte[Stream.Length];
                     Stream.Read(bt, 0, (int)Stream.Length);   //注意，因为Int32的最大限制，最大上传文件只能是大约2G多一点
                     Stream.Close();
@@ -613,7 +613,7 @@ namespace SuperFramework.SuperFTP
                 }
                 Response = Open(new Uri(Uri.ToString() + RemoteFileName), WebRequestMethods.Ftp.UploadFile);
                 Stream requestStream = Request.GetRequestStream();
-                MemoryStream mem = new MemoryStream(FileBytes);
+                MemoryStream mem = new(FileBytes);
 
                 byte[] buffer = new byte[1024];
                 int bytesRead = 0;
@@ -688,7 +688,7 @@ namespace SuperFramework.SuperFTP
                 }
                 if (File.Exists(LocalFullPath))
                 {
-                    MyWebClient client = new MyWebClient();
+                    MyWebClient client = new();
 
                     client.UploadProgressChanged += new UploadProgressChangedEventHandler(client_UploadProgressChanged);
                     client.UploadFileCompleted += new UploadFileCompletedEventHandler(client_UploadFileCompleted);
@@ -750,7 +750,7 @@ namespace SuperFramework.SuperFTP
                 }
                 string TempFile = TempPath + Path.GetRandomFileName();
                 TempFile = Path.ChangeExtension(TempFile, Path.GetExtension(RemoteFileName));
-                FileStream Stream = new FileStream(TempFile, FileMode.CreateNew, FileAccess.Write);
+                FileStream Stream = new(TempFile, FileMode.CreateNew, FileAccess.Write);
                 Stream.Write(FileBytes, 0, FileBytes.Length);   //注意，因为Int32的最大限制，最大上传文件只能是大约2G多一点
                 Stream.Flush();
                 Stream.Close();
@@ -813,7 +813,7 @@ namespace SuperFramework.SuperFTP
         public FileStruct[] ListFilesAndDirectories()
         {
             Response = Open(Uri, WebRequestMethods.Ftp.ListDirectoryDetails);
-            StreamReader stream = new StreamReader(Response.GetResponseStream(), Encoding.Default);
+            StreamReader stream = new(Response.GetResponseStream(), Encoding.Default);
             string Datastring = stream.ReadToEnd();
             FileStruct[] list = GetList(Datastring);
             return list;
@@ -824,7 +824,7 @@ namespace SuperFramework.SuperFTP
         public FileStruct[] ListFiles()
         {
             FileStruct[] listAll = ListFilesAndDirectories();
-            List<FileStruct> listFile = new List<FileStruct>();
+            List<FileStruct> listFile = new();
             foreach (FileStruct file in listAll)
             {
                 if (!file.IsDirectory)
@@ -841,7 +841,7 @@ namespace SuperFramework.SuperFTP
         public FileStruct[] ListDirectories()
         {
             FileStruct[] listAll = ListFilesAndDirectories();
-            List<FileStruct> listDirectory = new List<FileStruct>();
+            List<FileStruct> listDirectory = new();
             foreach (FileStruct file in listAll)
             {
                 if (file.IsDirectory)
@@ -857,15 +857,17 @@ namespace SuperFramework.SuperFTP
         /// <param name="datastring">FTP返回的列表字符信息</param>
         private FileStruct[] GetList(string datastring)
         {
-            List<FileStruct> myListArray = new List<FileStruct>();
+            List<FileStruct> myListArray = new();
             string[] dataRecords = datastring.Split('\n');
             FTPEnum.FileListStyle _directoryListStyle = GuessFileListStyle(dataRecords);
             foreach (string s in dataRecords)
             {
                 if (_directoryListStyle != FTPEnum.FileListStyle.Unknown && s != "")
                 {
-                    FileStruct f = new FileStruct();
-                    f.Name = "..";
+                    FileStruct f = new()
+                    {
+                        Name = ".."
+                    };
                     switch (_directoryListStyle)
                     {
                         case FTPEnum.FileListStyle.UnixStyle:
@@ -890,7 +892,7 @@ namespace SuperFramework.SuperFTP
         /// <param name="Record">文件信息</param>
         private FileStruct ParseFileStructFromWindowsStyleRecord(string Record)
         {
-            FileStruct f = new FileStruct();
+            FileStruct f = new();
             string processstr = Record.Trim();
             string dateStr = processstr.Substring(0, 8);
             processstr = (processstr.Substring(8, processstr.Length - 8)).Trim();
@@ -945,7 +947,7 @@ namespace SuperFramework.SuperFTP
         /// <param name="Record">文件信息</param>
         private FileStruct ParseFileStructFromUnixStyleRecord(string Record)
         {
-            FileStruct f = new FileStruct();
+            FileStruct f = new();
             string processstr = Record.Trim();
             f.Flags = processstr.Substring(0, 10);
             f.IsDirectory = (f.Flags[0] == 'd');

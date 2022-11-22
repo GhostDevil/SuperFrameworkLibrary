@@ -98,7 +98,7 @@ namespace SuperFramework.SuperConfig.Config
         /// <returns>Dictionary（key val）</returns>
         public static Dictionary<string, string> GetAllSection()
         {
-            Dictionary<string, string> dict = new Dictionary<string, string>();
+            Dictionary<string, string> dict = new();
             foreach (string key in ConfigurationManager.AppSettings.AllKeys)
                 dict.Add(key, ConfigurationManager.AppSettings[key]);
             return dict;
@@ -174,7 +174,7 @@ namespace SuperFramework.SuperConfig.Config
                 if (ConfigurationManager.ConnectionStrings[newName] != null)
                     isModified = true;
                 //新建一个连接字符串实例      
-                ConnectionStringSettings mySettings = new ConnectionStringSettings(newName, newConString, newProviderName);
+                ConnectionStringSettings mySettings = new(newName, newConString, newProviderName);
                 // 打开可执行的配置文件*.exe.config      
                 Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 // 如果连接串已存在，首先删除它      
@@ -209,7 +209,7 @@ namespace SuperFramework.SuperConfig.Config
         /// <returns></returns>
         public static List<string> GetAppConfigList(string ch)
         {
-            List<string> listKeyStr = new List<string>();
+            List<string> listKeyStr = new();
             listKeyStr.Clear();
             foreach (string key in ConfigurationManager.AppSettings)
             {

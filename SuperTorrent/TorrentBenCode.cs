@@ -15,7 +15,7 @@ namespace SuperFramework.SuperTorrent
         abstract protected byte[] GetByteArray();
         public byte[] ToByteArray()
         {
-            List<byte> byteList = new List<byte>();
+            List<byte> byteList = new();
             byte[] byteContent = GetByteArray();
             string sizeHeader = string.Format("{0}:", byteContent.Length);
             byteList.AddRange(Encoding.UTF8.GetBytes(sizeHeader));
@@ -89,7 +89,7 @@ namespace SuperFramework.SuperTorrent
 
         public byte[] ToByteArray()
         {
-            List<byte> byteList = new List<byte>();
+            List<byte> byteList = new();
             byteList.AddRange(Encoding.UTF8.GetBytes("l"));
             foreach (IBenCode item in m_items)
             {
@@ -111,7 +111,7 @@ namespace SuperFramework.SuperTorrent
 
         public void Add(string key, IBenCode value)
         {
-            BenStringFormString benKey = new BenStringFormString(key);
+            BenStringFormString benKey = new(key);
             Add(benKey, value);
         }
 
@@ -122,7 +122,7 @@ namespace SuperFramework.SuperTorrent
 
         public byte[] ToByteArray()
         {
-            List<byte> byteList = new List<byte>();
+            List<byte> byteList = new();
             byteList.AddRange(Encoding.UTF8.GetBytes("d"));
             foreach (KeyValuePair<BenStringFormString, IBenCode> entry in m_directionary)
             {

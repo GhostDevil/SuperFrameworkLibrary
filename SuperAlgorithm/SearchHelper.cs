@@ -35,7 +35,7 @@ namespace SuperFramework.SuperAlgorithm
         /// <returns>返回查找对象所在数组的一组下标</returns>
         public static List<int> SequenceFind(int[] ary, int target)
         {
-            List<int> index = new List<int>();
+            List<int> index = new();
             for (int i = 0; i < ary.Length; i++)
             {
                 if (ary[i] == target)

@@ -124,13 +124,13 @@ namespace SuperFramework.IDCard
         #endregion
 
         #region 静态方法
-        private static readonly List<string[]> Areas = new List<string[]>();
+        private static readonly List<string[]> Areas = new();
         /// <summary>
         /// 获取区域信息
         /// </summary>
         private static void FillAreas()
         {
-            XmlDocument docXml = new XmlDocument();
+            XmlDocument docXml = new();
             //这里XML文件名字自己定义或者修改
             string file = Environment.CurrentDirectory + "\\SuperFramework\\ConfigInfo\\IdCardAreas.xml";
             docXml.Load(file);
@@ -153,7 +153,7 @@ namespace SuperFramework.IDCard
             if (!CheckIDCardNumber(idCardNumber))
                 throw new Exception("非法的身份证号码");
             //
-            IDCardNumber cardInfo = new IDCardNumber(idCardNumber);
+            IDCardNumber cardInfo = new(idCardNumber);
             return cardInfo;
         }
         /// <summary>
@@ -164,7 +164,7 @@ namespace SuperFramework.IDCard
         public static bool CheckIDCardNumber(string idCardNumber)
         {
             //正则验证
-            Regex rg = new Regex(@"^\d{17}(\d|X)$");
+            Regex rg = new(@"^\d{17}(\d|X)$");
             Match mc = rg.Match(idCardNumber);
             if (!mc.Success) return false;
             //加权码
@@ -196,7 +196,7 @@ namespace SuperFramework.IDCard
         /// <returns></returns>
         public static List<IDCardNumber> Radom(int count)
         {
-            List<IDCardNumber> list = new List<IDCardNumber>();
+            List<IDCardNumber> list = new();
             string cardNumber;
             bool isExits;
             for (int i = 0; i < count; i++)
@@ -229,7 +229,7 @@ namespace SuperFramework.IDCard
         {
             if (Areas.Count < 1)
                 FillAreas();
-            Random rd = new Random(seed);
+            Random rd = new(seed);
             //随机生成发证地
             string area;
             do

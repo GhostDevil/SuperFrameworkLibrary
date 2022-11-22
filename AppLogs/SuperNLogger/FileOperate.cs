@@ -58,16 +58,18 @@ namespace SuperFramework.SuperNLogger
 
             if (isAsyn)
             {
-                LogEntity entity = new LogEntity();
-                entity.LOG_CONTENTS = contents;
-                entity.FILE_DIR_NAME = file_dir_name;
-                entity.LOG_FILE_SUFFIX = logFileSuffix;
-                entity.LOG_EXTENSION = log_extension;
+                LogEntity entity = new()
+                {
+                    LOG_CONTENTS = contents,
+                    FILE_DIR_NAME = file_dir_name,
+                    LOG_FILE_SUFFIX = logFileSuffix,
+                    LOG_EXTENSION = log_extension
+                };
                 LogQueue.LOG_QUEUE.Enqueue(entity);
             }
             else
             {
-                FileInfo fi = new FileInfo(filename_full);
+                FileInfo fi = new(filename_full);
                 if (!fi.Directory.Exists)
                 {
                     fi.Directory.Create();//fi.DirectoryName :: fi.Name
@@ -107,7 +109,7 @@ namespace SuperFramework.SuperNLogger
         {
             //日志文件路径+文件名+扩展名
             string filename_full = file_dir_name + logFileSuffix + log_extension;
-            FileInfo fi = new FileInfo(filename_full);
+            FileInfo fi = new(filename_full);
             if (!fi.Directory.Exists)
             {
                 fi.Directory.Create();//fi.DirectoryName :: fi.Name

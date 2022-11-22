@@ -193,7 +193,7 @@ namespace SuperFramework
             bool state = false;
             if (ServiceExist(serviceName))
             {
-                ServiceController service = new ServiceController(serviceName);
+                ServiceController service = new(serviceName);
                 if (service.Status != ServiceControllerStatus.Running && service.Status != ServiceControllerStatus.StartPending)
                 {
                     service.Start();
@@ -222,7 +222,7 @@ namespace SuperFramework
         {
             try
             {
-                ServiceController service = new ServiceController(serviceName);
+                ServiceController service = new(serviceName);
                 if (service.Status == ServiceControllerStatus.Running)
                 {
                     return true;
@@ -254,7 +254,7 @@ namespace SuperFramework
             bool state = false;
             if (ServiceExist(serviceName))
             {
-                ServiceController service = new ServiceController(serviceName);
+                ServiceController service = new(serviceName);
                 if (service.Status == ServiceControllerStatus.Running)
                 {
                     service.Stop();
@@ -282,7 +282,7 @@ namespace SuperFramework
         {
             try
             {
-                ServiceController service = new ServiceController(serviseName);
+                ServiceController service = new(serviseName);
                 if (service.Status == ServiceControllerStatus.Stopped)
                 {
                     return true;
@@ -360,7 +360,7 @@ namespace SuperFramework
         /// <returns>启动返回true，未启动返回false</returns>
         public static bool ServiceIsRunning(string serviceName)
         {
-            ServiceController service = new ServiceController(serviceName);
+            ServiceController service = new(serviceName);
             if (service.Status == ServiceControllerStatus.Running)
                 return true;
             else
@@ -398,7 +398,7 @@ namespace SuperFramework
         /// <returns></returns>
         public ArrayList GetAllsystemServices()
         {
-            ArrayList arryServices = new ArrayList();
+            ArrayList arryServices = new();
             ServiceController[] services = ServiceController.GetServices();
             foreach (ServiceController a in services)
             {
@@ -413,7 +413,7 @@ namespace SuperFramework
         /// <returns>返回服务名集合</returns>
         public List<string> GetAllServiceNames()
         {
-            List<string> listNames = new List<string>();
+            List<string> listNames = new();
             ServiceController[] services = ServiceController.GetServices();
             foreach (ServiceController a in services)
             {

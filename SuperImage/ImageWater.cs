@@ -80,7 +80,7 @@ namespace SuperFramework.SuperImage
             //
             // 封装 GDI+ 位图，此位图由图形图像及其属性的像素数据组成。
             //
-            Bitmap bmPhoto = new Bitmap(phWidth, phHeight, PixelFormat.Format24bppRgb);
+            Bitmap bmPhoto = new(phWidth, phHeight, PixelFormat.Format24bppRgb);
 
             //
             // 设定分辨率
@@ -130,7 +130,7 @@ namespace SuperFramework.SuperImage
             //
             // 与底图一样，我们需要一个位图来装载水印图片。并设定其分辨率
             //
-            Bitmap bmWatermark = new Bitmap(bmPhoto);
+            Bitmap bmWatermark = new(bmPhoto);
             bmWatermark.SetResolution(imgPhoto.HorizontalResolution, imgPhoto.VerticalResolution);
 
             //
@@ -142,20 +142,21 @@ namespace SuperFramework.SuperImage
             //ImageAttributes 对象包含有关在呈现时如何操作位图和图元文件颜色的信息。
             //      
 
-            ImageAttributes imageAttributes = new ImageAttributes();
+            ImageAttributes imageAttributes = new();
 
 
 
             //
             //Colormap: 定义转换颜色的映射
             //
-            ColorMap colorMap = new ColorMap();
-
-            //
-            //我的水印图被定义成拥有绿色背景色的图片被替换成透明
-            //
-            colorMap.OldColor = Color.FromArgb(255, 0, 255, 0);
-            colorMap.NewColor = Color.FromArgb(0, 0, 0, 0);
+            ColorMap colorMap = new()
+            {
+                //
+                //我的水印图被定义成拥有绿色背景色的图片被替换成透明
+                //
+                OldColor = Color.FromArgb(255, 0, 255, 0),
+                NewColor = Color.FromArgb(0, 0, 0, 0)
+            };
 
             ColorMap[] remapTable = { colorMap };
 
@@ -170,7 +171,7 @@ namespace SuperFramework.SuperImage
 
             // ColorMatrix:定义包含 RGBA 空间坐标的 5 x 5 矩阵。
             // ImageAttributes 类的若干方法通过使用颜色矩阵调整图像颜色。
-            ColorMatrix wmColorMatrix = new ColorMatrix(colorMatrixElements);
+            ColorMatrix wmColorMatrix = new(colorMatrixElements);
 
 
             imageAttributes.SetColorMatrix(wmColorMatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
@@ -323,7 +324,7 @@ namespace SuperFramework.SuperImage
 
             //
             //建立一个bitmap，和我们需要加水印的图片一样大小
-            Bitmap bmPhoto = new Bitmap(phWidth, phHeight, PixelFormat.Format24bppRgb);
+            Bitmap bmPhoto = new(phWidth, phHeight, PixelFormat.Format24bppRgb);
 
             //SetResolution：设置此 Bitmap 的分辨率
             //这里直接将我们需要添加水印的图片的分辨率赋给了bitmap
@@ -355,7 +356,7 @@ namespace SuperFramework.SuperImage
             //字体
             Font crFont = null;
             //矩形的宽度和高度，SizeF有三个属性，分别为Height高，width宽，IsEmpty是否为空
-            SizeF crSize = new SizeF();
+            SizeF crSize = new();
 
             //利用一个循环语句来选择我们要添加文字的型号
             //直到它的长度比图片的宽度小
@@ -424,15 +425,16 @@ namespace SuperFramework.SuperImage
 
 
             //封装文本布局信息（如对齐、文字方向和 Tab 停靠位），显示操作（如省略号插入和国家标准 (National) 数字替换）和 OpenType 功能。
-            StringFormat StrFormat = new StringFormat();
-
-            //定义需要印的文字居中对齐
-            StrFormat.Alignment = StringAlignment.Center;
+            StringFormat StrFormat = new()
+            {
+                //定义需要印的文字居中对齐
+                Alignment = StringAlignment.Center
+            };
 
             //SolidBrush:定义单色画笔。画笔用于填充图形形状，如矩形、椭圆、扇形、多边形和封闭路径。
             //这个画笔为描绘阴影的画笔，呈灰色
             int m_alpha = Convert.ToInt32(256 * alpha);
-            SolidBrush semiTransBrush2 = new SolidBrush(Color.FromArgb(m_alpha, 0, 0, 0));
+            SolidBrush semiTransBrush2 = new(Color.FromArgb(m_alpha, 0, 0, 0));
 
             //描绘文字信息，这个图层向右和向下偏移一个像素，表示阴影效果
             //DrawString 在指定矩形并且用指定的 Brush 和 Font 对象绘制指定的文本字符串。
@@ -444,7 +446,7 @@ namespace SuperFramework.SuperImage
 
             //从四个 ARGB 分量（alpha、红色、绿色和蓝色）值创建 Color 结构，这里设置透明度为153
             //这个画笔为描绘正式文字的笔刷，呈白色
-            SolidBrush semiTransBrush = new SolidBrush(Color.FromArgb(153, 255, 255, 255));
+            SolidBrush semiTransBrush = new(Color.FromArgb(153, 255, 255, 255));
 
             //第二次绘制这个图形，建立在第一次描绘的基础上
             grPhoto.DrawString(waterWords,                 //string of text
@@ -535,7 +537,7 @@ namespace SuperFramework.SuperImage
         /// <param name="waterimg">水印图片</param>
         private static ArrayList GetLocation(string location, Image img, Image waterimg)
         {
-            ArrayList loca = new ArrayList();
+            ArrayList loca = new();
             int x;
             int y;
             if (location == "LT")
@@ -609,7 +611,7 @@ namespace SuperFramework.SuperImage
                 Image img = Bitmap.FromFile(path);
                 Graphics gs = Graphics.FromImage(img);
                 ArrayList loca = GetLocation(location, img, size, letter.Length);
-                Font font = new Font("宋体", size);
+                Font font = new("宋体", size);
                 Brush br = new SolidBrush(color);
                 gs.DrawString(letter, font, br, float.Parse(loca[0].ToString()), float.Parse(loca[1].ToString()));
                 gs.Dispose();
@@ -636,7 +638,7 @@ namespace SuperFramework.SuperImage
         {
             #region
 
-            ArrayList loca = new ArrayList();  //定义数组存储位置
+            ArrayList loca = new();  //定义数组存储位置
             float x = 10;
             float y = 10;
 

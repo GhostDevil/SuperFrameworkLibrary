@@ -78,9 +78,9 @@ namespace SuperFramework.SuperNLogger
         private static void CompressFile(string sourceFile, string targetFile)
         {
             byte[] buffer = new byte[8192];
-            using (FileStream targetStream = new FileStream(targetFile, FileMode.OpenOrCreate, FileAccess.Write))
+            using (FileStream targetStream = new(targetFile, FileMode.OpenOrCreate, FileAccess.Write))
             {
-                using (GZipStream compressedStream = new GZipStream(targetStream, CompressionMode.Compress, true))
+                using (GZipStream compressedStream = new(targetStream, CompressionMode.Compress, true))
                 {
                     using (FileStream sourceStream = File.OpenRead(sourceFile))
                     {

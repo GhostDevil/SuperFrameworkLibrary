@@ -30,13 +30,13 @@ namespace SuperFramework.SuperRegistry
         private const int KEY_NOTIFY = 0x0010;
         private const int STANDARD_RIGHTS_READ = 0x00020000;
 
-        private static readonly IntPtr HKEY_CLASSES_ROOT = new IntPtr(unchecked((int)0x80000000));
-        private static readonly IntPtr HKEY_CURRENT_USER = new IntPtr(unchecked((int)0x80000001));
-        private static readonly IntPtr HKEY_LOCAL_MACHINE = new IntPtr(unchecked((int)0x80000002));
-        private static readonly IntPtr HKEY_USERS = new IntPtr(unchecked((int)0x80000003));
-        private static readonly IntPtr HKEY_PERFORMANCE_DATA = new IntPtr(unchecked((int)0x80000004));
-        private static readonly IntPtr HKEY_CURRENT_CONFIG = new IntPtr(unchecked((int)0x80000005));
-        private static readonly IntPtr HKEY_DYN_DATA = new IntPtr(unchecked((int)0x80000006));
+        private static readonly IntPtr HKEY_CLASSES_ROOT = new(unchecked((int)0x80000000));
+        private static readonly IntPtr HKEY_CURRENT_USER = new(unchecked((int)0x80000001));
+        private static readonly IntPtr HKEY_LOCAL_MACHINE = new(unchecked((int)0x80000002));
+        private static readonly IntPtr HKEY_USERS = new(unchecked((int)0x80000003));
+        private static readonly IntPtr HKEY_PERFORMANCE_DATA = new(unchecked((int)0x80000004));
+        private static readonly IntPtr HKEY_CURRENT_CONFIG = new(unchecked((int)0x80000005));
+        private static readonly IntPtr HKEY_DYN_DATA = new(unchecked((int)0x80000006));
 
         #endregion
 
@@ -97,10 +97,10 @@ namespace SuperFramework.SuperRegistry
 
         private IntPtr _registryHive;
         private string _registrySubName;
-        private object _threadLock = new object();
+        private object _threadLock = new();
         private Thread _thread;
         private bool _disposed = false;
-        private ManualResetEvent _eventTerminate = new ManualResetEvent(false);
+        private ManualResetEvent _eventTerminate = new(false);
 
         private RegChangeNotifyFilter _regFilter = RegChangeNotifyFilter.Key | RegChangeNotifyFilter.Attribute |
                                                    RegChangeNotifyFilter.Value | RegChangeNotifyFilter.Security;
@@ -267,8 +267,10 @@ namespace SuperFramework.SuperRegistry
                 if (!IsMonitoring)
                 {
                     _eventTerminate.Reset();
-                    _thread = new Thread(new ThreadStart(MonitorThread));
-                    _thread.IsBackground = true;
+                    _thread = new Thread(new ThreadStart(MonitorThread))
+                    {
+                        IsBackground = true
+                    };
                     _thread.Start();
                 }
             }
@@ -316,7 +318,7 @@ namespace SuperFramework.SuperRegistry
 
             try
             {
-                AutoResetEvent _eventNotify = new AutoResetEvent(false);
+                AutoResetEvent _eventNotify = new(false);
                 WaitHandle[] waitHandles = new WaitHandle[] { _eventNotify, _eventTerminate };
                 while (!_eventTerminate.WaitOne(0, true))
                 {

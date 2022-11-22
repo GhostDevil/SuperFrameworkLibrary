@@ -33,7 +33,7 @@ namespace SuperFramework.SuperFile
         public void GetListViewItem(string path, ImageList imglist, ListView lv)
         {
             lv.Items.Clear();
-            SHFILEINFO shfi = new SHFILEINFO();
+            SHFILEINFO shfi = new();
             try
             {
                 string[] dirs = Directory.GetDirectories(path);
@@ -41,7 +41,7 @@ namespace SuperFramework.SuperFile
                 for (int i = 0; i < dirs.Length; i++)
                 {
                     string[] info = new string[4];
-                    DirectoryInfo dir = new DirectoryInfo(dirs[i]);
+                    DirectoryInfo dir = new(dirs[i]);
                     if (dir.Name == "RECYCLER" || dir.Name == "RECYCLED" || dir.Name == "Recycled" || dir.Name == "System Volume Information")
                     { }
                     else
@@ -58,7 +58,7 @@ namespace SuperFramework.SuperFile
                         info[1] = "";
                         info[2] = "文件夹";
                         info[3] = dir.LastWriteTime.ToString();
-                        ListViewItem item = new ListViewItem(info, dir.Name);
+                        ListViewItem item = new(info, dir.Name);
                         lv.Items.Add(item);
                         //销毁图标
                         DestroyIcon(shfi.hIcon);
@@ -67,7 +67,7 @@ namespace SuperFramework.SuperFile
                 for (int i = 0; i < files.Length; i++)
                 {
                     string[] info = new string[5];
-                    FileInfo fi = new FileInfo(files[i]);
+                    FileInfo fi = new(files[i]);
                     string Filetype = fi.Name.Substring(fi.Name.LastIndexOf(".") + 1, fi.Name.Length - fi.Name.LastIndexOf(".") - 1);
                     string newtype = Filetype.ToLower();
                     if (newtype == "sys" || newtype == "ini" || newtype == "bin" || newtype == "log" || newtype == "com" || newtype == "bat" || newtype == "db")
@@ -91,7 +91,7 @@ namespace SuperFramework.SuperFile
                         info[2] = fi.Extension.ToString();
                         info[3] = fi.LastWriteTime.ToString();
                         info[4] = fi.IsReadOnly.ToString();
-                        ListViewItem item = new ListViewItem(info, fi.Name);
+                        ListViewItem item = new(info, fi.Name);
                         lv.Items.Add(item);
                         //销毁图标
                         DestroyIcon(shfi.hIcon);
@@ -180,7 +180,7 @@ namespace SuperFramework.SuperFile
         /// <returns>ArrayList对象列表</returns>
         public ArrayList GetFiles(ListView lv)
         {
-            ArrayList list = new ArrayList();
+            ArrayList list = new();
             foreach (object objFile in lv.SelectedItems)
             {
                 string strFile = objFile.ToString();
@@ -267,7 +267,7 @@ namespace SuperFramework.SuperFile
         /// <param name="intflag">标识执行复制操作，还是执行剪切操作</param>
         public void CopyDir(string Ddir, string Sdir, int intflag)
         {
-            DirectoryInfo dir = new DirectoryInfo(Sdir);
+            DirectoryInfo dir = new(Sdir);
             try
             {
                 if (!dir.Exists)//判断所指的文件或文件夹是否存在
@@ -293,7 +293,7 @@ namespace SuperFramework.SuperFile
                     FileInfo file = FSys as FileInfo;
                     if (file != null)//如果是文件的话，进行文件的复制操作
                     {
-                        FileInfo SFInfo = new FileInfo(file.DirectoryName + "\\" + file.Name);//获取文件所在的原始路径
+                        FileInfo SFInfo = new(file.DirectoryName + "\\" + file.Name);//获取文件所在的原始路径
                         SFInfo.CopyTo(SbuDir + "\\" + file.Name, true);//将文件复制到指定的路径中
                     }
                     else
@@ -345,7 +345,7 @@ namespace SuperFramework.SuperFile
                 }
                 if (Directory.Exists(strPath))
                 {
-                    DirectoryInfo dir = new DirectoryInfo(strPath);
+                    DirectoryInfo dir = new(strPath);
                     dir.MoveTo(strNewPath);
                 }
                 lv.Items.Clear();
@@ -369,7 +369,7 @@ namespace SuperFramework.SuperFile
                 string strFile = lbox.Items[i].ToString();
                 if (File.Exists(strFile))
                 {
-                    FileInfo FInfo = new FileInfo(strFile);
+                    FileInfo FInfo = new(strFile);
                     string strPath = FInfo.DirectoryName;
                     string strFName = FInfo.Name;
                     string strFExtention = FInfo.Extension;
@@ -436,8 +436,10 @@ namespace SuperFramework.SuperFile
                     {
                         foreach (string DirName in Directory.GetLogicalDrives())
                         {
-                            TreeNode DirNode = new TreeNode(DirName);
-                            DirNode.Tag = DirName;
+                            TreeNode DirNode = new(DirName)
+                            {
+                                Tag = DirName
+                            };
                             TNode.Nodes.Add(DirNode);
                         }
                     }
@@ -445,8 +447,10 @@ namespace SuperFramework.SuperFile
                     {
                         foreach (string PathName in Directory.GetFileSystemEntries((string)TNode.Tag))
                         {
-                            TreeNode PathNode = new TreeNode(PathName);
-                            PathNode.Tag = PathName;
+                            TreeNode PathNode = new(PathName)
+                            {
+                                Tag = PathName
+                            };
                             TNode.Nodes.Add(PathNode);
                         }
                     }
@@ -489,7 +493,7 @@ namespace SuperFramework.SuperFile
         {
             try
             {
-                DirectoryInfo dir = new DirectoryInfo(AllPath);
+                DirectoryInfo dir = new(AllPath);
                 FileSystemInfo[] files = dir.GetFileSystemInfos();
                 //对单个FileSystemInfo进行判断,如果是文件夹则进行递归操作
                 foreach (FileSystemInfo FSInfo in files)
@@ -509,7 +513,7 @@ namespace SuperFramework.SuperFile
                             info[2] = file.Extension.ToString();
                             info[3] = file.LastWriteTime.ToString();
                             info[4] = file.IsReadOnly.ToString();
-                            ListViewItem item = new ListViewItem(info, Convert.ToString(AllPath + file.Name).Remove(0, 3));
+                            ListViewItem item = new(info, Convert.ToString(AllPath + file.Name).Remove(0, 3));
                             lv.Items.Add(item);
                         }
                     }
@@ -522,7 +526,7 @@ namespace SuperFramework.SuperFile
                             info[1] = "";
                             info[2] = "文件夹";
                             info[3] = FSInfo.LastWriteTime.ToString();
-                            ListViewItem item = new ListViewItem(info, AllPath + FSInfo.Name);
+                            ListViewItem item = new(info, AllPath + FSInfo.Name);
                             lv.Items.Add(item);
                         }
                         AllPath += FSInfo.Name + "\\";
@@ -573,9 +577,9 @@ namespace SuperFramework.SuperFile
                 Directory.CreateDirectory(strPath);
             }
             //以文件的全路对应的字符串和文件打开模式来初始化FileStream文件流实例
-            FileStream SplitFileStream = new FileStream(strFile, FileMode.Open);
+            FileStream SplitFileStream = new(strFile, FileMode.Open);
             //以FileStream文件流来初始化BinaryReader文件阅读器
-            BinaryReader SplitFileReader = new BinaryReader(SplitFileStream);
+            BinaryReader SplitFileReader = new(SplitFileStream);
             //每次分割读取的最大数据
             byte[] TempBytes;
             //小文件总数
@@ -589,9 +593,9 @@ namespace SuperFramework.SuperFile
                 //确定小文件的文件名称
                 string sTempFileName = strPath + @"\" + i.ToString().PadLeft(4, '0') + "." + TempExtra[TempExtra.Length - 1]; //小文件名
                                                                                                                               //根据文件名称和文件打开模式来初始化FileStream文件流实例
-                FileStream TempStream = new FileStream(sTempFileName, FileMode.OpenOrCreate);
+                FileStream TempStream = new(sTempFileName, FileMode.OpenOrCreate);
                 //以FileStream实例来创建、初始化BinaryWriter书写器实例
-                BinaryWriter TempWriter = new BinaryWriter(TempStream);
+                BinaryWriter TempWriter = new(TempStream);
                 //从大文件中读取指定大小数据
                 TempBytes = SplitFileReader.ReadBytes(iFileSize);
                 //把此数据写入小文件
@@ -620,15 +624,15 @@ namespace SuperFramework.SuperFile
         {
             PBar.Maximum = strFile.Length;
             //以合并后的文件名称和打开方式来创建、初始化FileStream文件流
-            FileStream AddStream = new FileStream(strPath, FileMode.Append);
+            FileStream AddStream = new(strPath, FileMode.Append);
             //以FileStream文件流来初始化BinaryWriter书写器，此用以合并分割的文件
-            BinaryWriter AddWriter = new BinaryWriter(AddStream);
+            BinaryWriter AddWriter = new(AddStream);
             BinaryReader TempReader;
             //循环合并小文件，并生成合并文件
             for (int i = 0; i < strFile.Length; i++)
             {
                 //以小文件所对应的文件名称和打开模式来初始化FileStream文件流，起读取分割作用
-                FileStream TempStream = new FileStream(strFile[i].ToString(), FileMode.Open);
+                FileStream TempStream = new(strFile[i].ToString(), FileMode.Open);
                 TempReader = new BinaryReader(TempStream);
                 //读取分割文件中的数据，并生成合并后文件
                 AddWriter.Write(TempReader.ReadBytes((int)TempStream.Length));

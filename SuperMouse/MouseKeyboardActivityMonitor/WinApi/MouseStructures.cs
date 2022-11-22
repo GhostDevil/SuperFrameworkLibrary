@@ -107,10 +107,12 @@ namespace SuperFramework.SuperMouseHelper.MouseKeyboardActivityMonitor.WinApi
         /// </remarks>
         public MouseStruct ToMouseStruct()
         {
-            MouseStruct tmp = new MouseStruct();
-            tmp.Point = Point;
-            tmp.MouseData = MouseData;
-            tmp.Timestamp = Environment.TickCount;
+            MouseStruct tmp = new()
+            {
+                Point = Point,
+                MouseData = MouseData,
+                Timestamp = Environment.TickCount
+            };
             return tmp;
         }
     }

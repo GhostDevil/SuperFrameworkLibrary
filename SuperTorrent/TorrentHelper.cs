@@ -121,7 +121,7 @@ namespace SuperFramework.SuperTorrent
 
         public TorrentHelper(string filePath)
         {
-            System.IO.FileStream torrentFile = new System.IO.FileStream(filePath, System.IO.FileMode.Open);
+            System.IO.FileStream torrentFile = new(filePath, System.IO.FileMode.Open);
             byte[] buffer = new byte[torrentFile.Length];
             torrentFile.Read(buffer, 0, buffer.Length);
             torrentFile.Close();
@@ -270,7 +270,7 @@ namespace SuperFramework.SuperTorrent
         /// <param name="listCount"></param>
         private ArrayList GetKeyData(byte[] buffer, ref int starIndex, ref int listCount)
         {
-            ArrayList _tempList = new ArrayList();
+            ArrayList _tempList = new();
             while (true)
             {
                 string textStar = System.Text.Encoding.UTF8.GetString(buffer, starIndex, 1);
@@ -399,7 +399,7 @@ namespace SuperFramework.SuperTorrent
             {
                 int readNumb = int.Parse(textNumb);
                 startIndex = startIndex + numb + 1;
-                System.IO.MemoryStream keyMemory = new System.IO.MemoryStream(buffer, startIndex, readNumb);
+                System.IO.MemoryStream keyMemory = new(buffer, startIndex, readNumb);
                 byte[] keyBytes = new byte[readNumb];
                 keyMemory.Read(keyBytes, 0, readNumb);
                 keyMemory.Close();
@@ -425,7 +425,7 @@ namespace SuperFramework.SuperTorrent
 
             if (GetKeyText(buffer, ref startIndex).ToString().ToUpper() == "FILES")
             {
-                TorrentFileInfo info = new TorrentFileInfo();
+                TorrentFileInfo info = new();
 
                 while (true)
                 {

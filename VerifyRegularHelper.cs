@@ -155,7 +155,7 @@ namespace SuperFramework
                 return false;//省份验证
             }
             string birth = Id.Substring(6, 8).Insert(6, "-").Insert(4, "-");
-            DateTime time = new DateTime();
+            DateTime time = new();
             if (DateTime.TryParse(birth, out time) == false)
             {
                 return false;//生日验证
@@ -194,7 +194,7 @@ namespace SuperFramework
                 return false;//省份验证
             }
             string birth = Id.Substring(6, 6).Insert(4, "-").Insert(2, "-");
-            DateTime time = new DateTime();
+            DateTime time = new();
             if (DateTime.TryParse(birth, out time) == false)
             {
                 return false;//生日验证
@@ -211,7 +211,7 @@ namespace SuperFramework
         /// <returns>符合返回true，不符合返回false</returns>
         public static bool IsInt(string source)
         {
-            Regex regex = new Regex(@"^(-){0,1}\d+$");
+            Regex regex = new(@"^(-){0,1}\d+$");
             if (regex.Match(source).Success)
             {
                 if ((long.Parse(source) > 0x7fffffffL) || (long.Parse(source) < -2147483648L))
@@ -265,7 +265,7 @@ namespace SuperFramework
         public static bool IsPhone(string input)
         {
             string pattern = "^\\(0\\d{2}\\)[- ]?\\d{8}$|^0\\d{2}[- ]?\\d{8}$|^\\(0\\d{3}\\)[- ]?\\d{7}$|^0\\d{3}[- ]?\\d{7}$";
-            Regex regex = new Regex(pattern);
+            Regex regex = new(pattern);
             return regex.IsMatch(input);
         }
         #endregion
@@ -311,7 +311,7 @@ namespace SuperFramework
         /// <param name="inputData">字符串</param> 
         public static int GetCHZNLength(string inputData)
         {
-            ASCIIEncoding n = new ASCIIEncoding();
+            ASCIIEncoding n = new();
             byte[] bytes = n.GetBytes(inputData);
 
             int length = 0; // l 为字符串之实际长度 
@@ -410,7 +410,7 @@ namespace SuperFramework
         public static bool IsHerf(string input)
         {
             string pattern = @"^[a-zA-Z]+://(\w+(-\w+)*)(\.(\w+(-\w+)*))*(\?\S*)?$";
-            Regex regex = new Regex(pattern);
+            Regex regex = new(pattern);
             return regex.IsMatch(input);
         }
         #endregion
@@ -424,7 +424,7 @@ namespace SuperFramework
         public static bool IsNumAndEnCh(string input)
         {
             string pattern = @"^[A-Za-z0-9]+$";
-            Regex regex = new Regex(pattern);
+            Regex regex = new(pattern);
             return regex.IsMatch(input);
         }
         #endregion
@@ -437,7 +437,7 @@ namespace SuperFramework
         /// <returns>符合返回true，不符合返回false</returns>
         public static bool IsEnglisCh(string input)
         {
-            Regex regex = new Regex("^[A-Za-z]+$");
+            Regex regex = new("^[A-Za-z]+$");
             return regex.IsMatch(input);
         }
         #endregion
@@ -450,7 +450,7 @@ namespace SuperFramework
         /// <returns>符合返回true，不符合返回false</returns>
         public static bool IsUint(string input)
         {
-            Regex regex = new Regex("^[0-9]*[1-9][0-9]*$");
+            Regex regex = new("^[0-9]*[1-9][0-9]*$");
             return regex.IsMatch(input);
         }
         #endregion
@@ -463,7 +463,7 @@ namespace SuperFramework
         /// <returns>符合返回true，不符合返回false</returns>
         public static bool IsNotNagtive(string input)
         {
-            Regex regex = new Regex(@"^\d+$");
+            Regex regex = new(@"^\d+$");
             return regex.IsMatch(input);
         }
         #endregion
@@ -478,7 +478,7 @@ namespace SuperFramework
         public static bool IsNumber(string input)
         {
             string pattern = "^-?\\d+$|^(-?\\d+)(\\.\\d+)?$";
-            Regex regex = new Regex(pattern);
+            Regex regex = new(pattern);
             return regex.IsMatch(input);
         }
         #endregion
@@ -491,7 +491,7 @@ namespace SuperFramework
         /// <returns>符合返回true，不符合返回false</returns>
         public static bool IsNull(string input)
         {
-            Regex regex = new Regex("^\\S+$");
+            Regex regex = new("^\\S+$");
             return regex.IsMatch(input);
         }
         #endregion
@@ -529,7 +529,7 @@ namespace SuperFramework
         /// <returns>符合返回true，不符合返回false</returns>
         public static bool GetRegexInput(string str, string regexStr)
         {
-            Regex rStr = new Regex(regexStr);
+            Regex rStr = new(regexStr);
             bool bResult = false;
             if (rStr.IsMatch(str))
             {
@@ -567,7 +567,7 @@ namespace SuperFramework
         /// <returns>符合返回true，不符合返回false</returns>
         public static bool IsLetter(string str)
         {
-            Regex rex = new Regex("[a-z|A-Z]{8}");
+            Regex rex = new("[a-z|A-Z]{8}");
             Match ma = rex.Match(str);
             if (ma.Success)
                 return true;
@@ -584,7 +584,7 @@ namespace SuperFramework
         /// <returns>符合返回true，不符合返回false</returns>
         public static bool IsAllNumber(string str)
         {
-            Regex rex = new Regex("[0-9]{8}");
+            Regex rex = new("[0-9]{8}");
             Match ma = rex.Match(str);
             if (ma.Success)
                 return true;
@@ -603,9 +603,9 @@ namespace SuperFramework
         {
             try
             {
-                using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                using (FileStream fs = new(fileName, FileMode.Open, FileAccess.Read))
                 {
-                    using (BinaryReader br = new BinaryReader(fs))
+                    using (BinaryReader br = new(fs))
                     {
                         string fileType = string.Empty;
                         byte data = br.ReadByte();
@@ -635,7 +635,7 @@ namespace SuperFramework
         {
             try
             {
-                using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                using (FileStream fs = new(fileName, FileMode.Open, FileAccess.Read))
                 {
                     bool isTextFile = true;
                     int i = 0;
@@ -684,9 +684,9 @@ namespace SuperFramework
         /// <returns>返回文件格式</returns>
         public static string GetFileExtension(string fileName)
         {
-            using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            using (FileStream fs = new(fileName, FileMode.Open, FileAccess.Read))
             {
-                using (BinaryReader br = new BinaryReader(fs))
+                using (BinaryReader br = new(fs))
                 {
                     string fileType = string.Empty;
                     byte data = br.ReadByte();

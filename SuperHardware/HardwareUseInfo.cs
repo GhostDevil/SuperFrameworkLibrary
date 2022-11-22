@@ -44,29 +44,29 @@ namespace SuperFramework.SuperHardware
         public float NetTrafficSend { get; set; }
         public float NetTrafficReceive { get; set; }
         public DateTime SamplingTime { get; set; }
-        private PerformanceCounter cpuProcessorTime = new PerformanceCounter("Processor", "% Processor Time", "_Total");
-        private PerformanceCounter cpuPrivilegedTime = new PerformanceCounter("Processor", "% Privileged Time", "_Total");
-        private PerformanceCounter cpuInterruptTime = new PerformanceCounter("Processor", "% Interrupt Time", "_Total");
-        private PerformanceCounter cpuDPCTime = new PerformanceCounter("Processor", "% DPC Time", "_Total");
-        private PerformanceCounter memAvailable = new PerformanceCounter("Memory", "Available MBytes", null);
-        private PerformanceCounter memCommited = new PerformanceCounter("Memory", "Committed Bytes", null);
-        private PerformanceCounter memCommitLimit = new PerformanceCounter("Memory", "Commit Limit", null);
-        private PerformanceCounter memCommitedPerc = new PerformanceCounter("Memory", "% Committed Bytes In Use", null);
-        private PerformanceCounter memPollPaged = new PerformanceCounter("Memory", "Pool Paged Bytes", null);
-        private PerformanceCounter memPollNonPaged = new PerformanceCounter("Memory", "Pool Nonpaged Bytes", null);
-        private PerformanceCounter memCached = new PerformanceCounter("Memory", "Cache Bytes", null);
-        private PerformanceCounter pageFile = new PerformanceCounter("Paging File", "% Usage", "_Total");
-        private PerformanceCounter processorQueueLengh = new PerformanceCounter("System", "Processor Queue Length", null);
-        private PerformanceCounter diskQueueLengh = new PerformanceCounter("PhysicalDisk", "Avg. Disk Queue Length", "_Total");
-        private PerformanceCounter diskRead = new PerformanceCounter("PhysicalDisk", "Disk Read Bytes/sec", "_Total");
-        private PerformanceCounter diskWrite = new PerformanceCounter("PhysicalDisk", "Disk Write Bytes/sec", "_Total");
-        private PerformanceCounter diskAveraGetimeRead = new PerformanceCounter("PhysicalDisk", "Avg. Disk sec/Read", "_Total");
-        private PerformanceCounter diskAveraGetimeWrite = new PerformanceCounter("PhysicalDisk", "Avg. Disk sec/Write", "_Total");
-        private PerformanceCounter diskTime = new PerformanceCounter("PhysicalDisk", "% Disk Time", "_Total");
-        private PerformanceCounter handleCountCounter = new PerformanceCounter("Process", "Handle Count", "_Total");
-        private PerformanceCounter threadCount = new PerformanceCounter("Process", "Thread Count", "_Total");
-        private PerformanceCounter contentSwitches = new PerformanceCounter("System", "Context Switches/sec", null);
-        private PerformanceCounter systemCalls = new PerformanceCounter("System", "System Calls/sec", null);
+        private PerformanceCounter cpuProcessorTime = new("Processor", "% Processor Time", "_Total");
+        private PerformanceCounter cpuPrivilegedTime = new("Processor", "% Privileged Time", "_Total");
+        private PerformanceCounter cpuInterruptTime = new("Processor", "% Interrupt Time", "_Total");
+        private PerformanceCounter cpuDPCTime = new("Processor", "% DPC Time", "_Total");
+        private PerformanceCounter memAvailable = new("Memory", "Available MBytes", null);
+        private PerformanceCounter memCommited = new("Memory", "Committed Bytes", null);
+        private PerformanceCounter memCommitLimit = new("Memory", "Commit Limit", null);
+        private PerformanceCounter memCommitedPerc = new("Memory", "% Committed Bytes In Use", null);
+        private PerformanceCounter memPollPaged = new("Memory", "Pool Paged Bytes", null);
+        private PerformanceCounter memPollNonPaged = new("Memory", "Pool Nonpaged Bytes", null);
+        private PerformanceCounter memCached = new("Memory", "Cache Bytes", null);
+        private PerformanceCounter pageFile = new("Paging File", "% Usage", "_Total");
+        private PerformanceCounter processorQueueLengh = new("System", "Processor Queue Length", null);
+        private PerformanceCounter diskQueueLengh = new("PhysicalDisk", "Avg. Disk Queue Length", "_Total");
+        private PerformanceCounter diskRead = new("PhysicalDisk", "Disk Read Bytes/sec", "_Total");
+        private PerformanceCounter diskWrite = new("PhysicalDisk", "Disk Write Bytes/sec", "_Total");
+        private PerformanceCounter diskAveraGetimeRead = new("PhysicalDisk", "Avg. Disk sec/Read", "_Total");
+        private PerformanceCounter diskAveraGetimeWrite = new("PhysicalDisk", "Avg. Disk sec/Write", "_Total");
+        private PerformanceCounter diskTime = new("PhysicalDisk", "% Disk Time", "_Total");
+        private PerformanceCounter handleCountCounter = new("Process", "Handle Count", "_Total");
+        private PerformanceCounter threadCount = new("Process", "Thread Count", "_Total");
+        private PerformanceCounter contentSwitches = new("System", "Context Switches/sec", null);
+        private PerformanceCounter systemCalls = new("System", "System Calls/sec", null);
         private PerformanceCounterCategory performanceNetCounterCategory;
         private PerformanceCounter[] trafficSentCounters;
         private PerformanceCounter[] trafficReceivedCounters;
@@ -237,11 +237,11 @@ namespace SuperFramework.SuperHardware
         {
             try
             {
-                PerformanceCounterCategory processcounter = new PerformanceCounterCategory(categoryName);
+                PerformanceCounterCategory processcounter = new(categoryName);
                 string[] instances = processcounter.GetInstanceNames();
                 foreach (string instance in instances)
                 {
-                    PerformanceCounter counter = new PerformanceCounter(categoryName, counterName, instance);
+                    PerformanceCounter counter = new(categoryName, counterName, instance);
                     //Logger.Info("对比in mothod GetInstanceName，" + counter.NextValue() + "：" + p.Id);
                     if (counter.NextValue() == p.Id)
                     {
@@ -496,7 +496,7 @@ namespace SuperFramework.SuperHardware
         public static float GetNetData(NetData nd)
         {
             double receiveSum = 0;
-            PerformanceCounterCategory category = new PerformanceCounterCategory("Network Interface");
+            PerformanceCounterCategory category = new("Network Interface");
 
             foreach (string name in category.GetInstanceNames())
             {
@@ -525,7 +525,7 @@ namespace SuperFramework.SuperHardware
         {
              sentBytes = 0;
              recivedBytes = 0;
-            List<NetworkInterface> _operationalNiCs = new List<NetworkInterface>();
+            List<NetworkInterface> _operationalNiCs = new();
             foreach (NetworkInterface t in NetworkInterface.GetAllNetworkInterfaces())
             {
                 if (t.OperationalStatus.ToString() == "Up")
@@ -562,7 +562,7 @@ namespace SuperFramework.SuperHardware
         {
             string diskSpace = string.Empty;
             object device, space;
-            ManagementObjectSearcher objCS = new ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk");
+            ManagementObjectSearcher objCS = new("SELECT * FROM Win32_LogicalDisk");
             foreach (ManagementObject objMgmt in objCS.Get())
             {
                 device = objMgmt["DeviceID"];       // C:
@@ -609,7 +609,7 @@ namespace SuperFramework.SuperHardware
         private static string QueryComputerSystem(string type)
         {
             string str = null;
-            ManagementObjectSearcher objCS = new ManagementObjectSearcher("SELECT * FROM Win32_ComputerSystem");
+            ManagementObjectSearcher objCS = new("SELECT * FROM Win32_ComputerSystem");
             foreach (ManagementObject objMgmt in objCS.Get())
             {
                 str = objMgmt[type].ToString();
@@ -633,14 +633,14 @@ namespace SuperFramework.SuperHardware
         #region 内部对象
         static bool _compactFormat;
 
-        static PerformanceCounter _memoryCounter = new PerformanceCounter();
-        static PerformanceCounter _cpuCounter = new PerformanceCounter();
-        static PerformanceCounter _diskReadCounter = new PerformanceCounter();
-        static PerformanceCounter _diskWriteCounter = new PerformanceCounter();
+        static PerformanceCounter _memoryCounter = new();
+        static PerformanceCounter _cpuCounter = new();
+        static PerformanceCounter _diskReadCounter = new();
+        static PerformanceCounter _diskWriteCounter = new();
 
         static string[] _instanceNames;
-        static PerformanceCounter _netRecvCounters=new PerformanceCounter();
-        static PerformanceCounter _netSentCounters=new PerformanceCounter();
+        static PerformanceCounter _netRecvCounters=new();
+        static PerformanceCounter _netSentCounters=new();
 
         #endregion
 

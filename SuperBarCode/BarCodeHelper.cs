@@ -76,7 +76,7 @@ namespace SuperFramework.SuperBarCode
         public static Image Generate(string captchaText)
         {
             int fontsize = 24;
-            Font font = new Font("Arial", fontsize);
+            Font font = new("Arial", fontsize);
 
             SizeF sizeF;
             using (Graphics g = Graphics.FromImage(new Bitmap(1, 1)))
@@ -87,7 +87,7 @@ namespace SuperFramework.SuperBarCode
             int image2d_x = (int)sizeF.Width;
             int image2d_y = (int)(fontsize * 1.3);
 
-            Bitmap image2d = new Bitmap(image2d_x, image2d_y);
+            Bitmap image2d = new(image2d_x, image2d_y);
             Color black = Color.Black;
             Color white = Color.White;
 
@@ -97,7 +97,7 @@ namespace SuperFramework.SuperBarCode
                 g.DrawString(captchaText, font, Brushes.White, 0, 0);
             }
 
-            Random rnd = new Random();
+            Random rnd = new();
             double[] T = CameraTransform(new double[] { rnd.Next(-90, 90), -200, rnd.Next(150, 250) }, new double[] { 0, 0, 0 });
             T = MatrixProduct(T, ViewingTransform(60, 300, 3000));
 
@@ -120,7 +120,7 @@ namespace SuperFramework.SuperBarCode
 
             int image3d_x = 256;
             int image3d_y = image3d_x * 9 / 16;
-            Bitmap image3d = new Bitmap(image3d_x, image3d_y);
+            Bitmap image3d = new(image3d_x, image3d_y);
             Color fgcolor = Color.White;
             Color bgcolor = Color.Black;
             using (Graphics g = Graphics.FromImage(image3d))

@@ -147,7 +147,7 @@ namespace SuperFramework.SuperAlgorithm
         /// <returns>返回因数集合</returns>
         public static List<int> DecompositionFactor(int x)
         {
-            List<int> temp = new List<int>();
+            List<int> temp = new();
             int y = x;
             //这是补丁，用来解决1和2的问题
             if (y == 1 || y == 2)

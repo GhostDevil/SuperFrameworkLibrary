@@ -97,7 +97,7 @@ namespace SuperFramework
         /// <summary>
         /// 广播消息，所有顶级窗体都会接收
         /// </summary>
-        private static readonly IntPtr HWND_BROADCAST = new IntPtr(0xffff);
+        private static readonly IntPtr HWND_BROADCAST = new(0xffff);
         #endregion
 
         #region  API函数 
@@ -166,8 +166,8 @@ namespace SuperFramework
             if (!CheckEntryPoint("advapi32.dll", "AdjustTokenPrivileges"))
                 return;
             IntPtr tokenHandle = IntPtr.Zero;
-            LUID privilegeLUID = new LUID();
-            TOKEN_PRIVILEGES newPrivileges = new TOKEN_PRIVILEGES();
+            LUID privilegeLUID = new();
+            TOKEN_PRIVILEGES newPrivileges = new();
             TOKEN_PRIVILEGES tokenPrivileges;
             if (OpenProcessToken(Process.GetCurrentProcess().Handle, TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, ref tokenHandle) == 0)
                 throw new PrivilegeException(FormatError(Marshal.GetLastWin32Error()));
@@ -222,7 +222,7 @@ namespace SuperFramework
         /// <returns>代表指定错误号的字符串.</returns>
         private static string FormatError(int number)
         {
-            StringBuilder buffer = new StringBuilder(255);
+            StringBuilder buffer = new(255);
             WindowsAPI.User32API.FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, IntPtr.Zero, number, 0, buffer, buffer.Capacity, 0);
             return buffer.ToString();
         }
@@ -325,7 +325,7 @@ namespace SuperFramework
         public static Point GetCaretPos()
         {
             IntPtr ptr = WindowsAPI.User32API.GetForegroundWindow();
-            Point p = new Point();
+            Point p = new();
 
             //得到Caret在屏幕上的位置   
             if (ptr.ToInt32() != 0)
@@ -538,7 +538,7 @@ namespace SuperFramework
         /// <param name="description">用户描述</param>
         public static void CreateLocalUser(string username, string password, string description)
         {
-            DirectoryEntry localMachine = new DirectoryEntry(string.Format("WinNT://{0},computer", Environment.MachineName));
+            DirectoryEntry localMachine = new(string.Format("WinNT://{0},computer", Environment.MachineName));
             var newUser = localMachine.Children.Add(username, "user");
             newUser.Invoke("SetPassword", new object[] { password });
             newUser.Invoke("Put", new object[] { "Description", description });
@@ -555,7 +555,7 @@ namespace SuperFramework
         {
             string _Path = "WinNT://" + Environment.MachineName;
 
-            DirectoryEntry machine = new DirectoryEntry(_Path); //获得计算机实例
+            DirectoryEntry machine = new(_Path); //获得计算机实例
             DirectoryEntry user = machine.Children.Find(userName, "User"); //找得用户
             if (user != null)
             {
@@ -571,7 +571,7 @@ namespace SuperFramework
         /// <param name="newPwd">新密码</param>
         public static void ChangeWinUserPasswd(string username, string oldPwd, string newPwd)
         {
-            DirectoryEntry localMachine = new DirectoryEntry(string.Format("WinNT://{0},computer", Environment.MachineName));
+            DirectoryEntry localMachine = new(string.Format("WinNT://{0},computer", Environment.MachineName));
             DirectoryEntry user = localMachine.Children.Find(username, "user");
             object[] password = new object[] { oldPwd, newPwd };
             object ret = user.Invoke("ChangePassword", password);
@@ -588,7 +588,7 @@ namespace SuperFramework
         {
             try
             {
-                using (DirectoryEntry localMachine = new DirectoryEntry(string.Format("WinNT://{0},computer", Environment.MachineName)))
+                using (DirectoryEntry localMachine = new(string.Format("WinNT://{0},computer", Environment.MachineName)))
                 {
                     var user = localMachine.Children.Find(username, "user");
                     return user != null;
@@ -609,7 +609,7 @@ namespace SuperFramework
         {
             try
             {
-                using (DirectoryEntry localMachine = new DirectoryEntry(string.Format("WinNT://{0},computer", Environment.MachineName)))
+                using (DirectoryEntry localMachine = new(string.Format("WinNT://{0},computer", Environment.MachineName)))
                 {
                     //删除存在用户
                     var delUser = localMachine.Children.Find(username, "user");
@@ -634,7 +634,7 @@ namespace SuperFramework
         public static void Disable(string username, bool isDisable)
         {
             var userDn = string.Format("WinNT://{0}/{1},user", Environment.MachineName, username);
-            DirectoryEntry user = new DirectoryEntry(userDn);
+            DirectoryEntry user = new(userDn);
             user.InvokeSet("AccountDisabled", isDisable);
             user.CommitChanges();
             user.Close();
@@ -711,8 +711,8 @@ namespace SuperFramework
         /// <returns></returns>
         [DllImport("user32.dll")]
         public static extern DISP_CHANGE ChangeDisplaySettingsEx(string lpszDeviceName, ref DEVMODE lpDevMode, IntPtr hwnd, uint dwflags, IntPtr lParam);
-        DEVMODE ddActive = new DEVMODE();
-        DEVMODE ddInactive = new DEVMODE();
+        DEVMODE ddActive = new();
+        DEVMODE ddInactive = new();
         string szActiveDeviceName;
         string szInactiveDeviceName;
         const int ENUM_REGISTRY_SETTINGS = -2;
@@ -721,11 +721,11 @@ namespace SuperFramework
             ddActive.dmSize = (short)Marshal.SizeOf(ddActive);
             ddInactive.dmSize = (short)Marshal.SizeOf(ddInactive);
             uint iDeviceCntr = 0;
-            DISPLAY_DEVICE dd = new DISPLAY_DEVICE();
+            DISPLAY_DEVICE dd = new();
             dd.cb = Marshal.SizeOf(dd);
             while (EnumDisplayDevices(null, iDeviceCntr, ref dd, 0))
             {
-                DEVMODE dMode = new DEVMODE();
+                DEVMODE dMode = new();
                 dMode.dmSize = (short)Marshal.SizeOf(dMode);
                 if (EnumDisplaySettings(dd.DeviceName, ENUM_REGISTRY_SETTINGS, ref dMode))
                 {
@@ -805,11 +805,11 @@ namespace SuperFramework
             //ddActive.dmSize = (short)Marshal.SizeOf(ddActive);
             //ddInactive.dmSize = (short)Marshal.SizeOf(ddInactive);
             uint iDeviceCntr = 0;
-            DISPLAY_DEVICE dd = new DISPLAY_DEVICE();
+            DISPLAY_DEVICE dd = new();
             dd.cb = Marshal.SizeOf(dd);
             while (EnumDisplayDevices(null, iDeviceCntr, ref dd, 0))
             {
-                DEVMODE dMode = new DEVMODE();
+                DEVMODE dMode = new();
                 dMode.dmSize = (short)Marshal.SizeOf(dMode);
                 if (EnumDisplaySettings(dd.DeviceName, ENUM_REGISTRY_SETTINGS, ref dMode))
                 {
@@ -1090,7 +1090,7 @@ namespace SuperFramework
         {
             try
             {
-                Process process = new Process();
+                Process process = new();
                 string str = Environment.GetEnvironmentVariable("windir");//获取系统目录
                 string dir = "System32";
                 if (!Environment.Is64BitProcess)
@@ -1144,7 +1144,7 @@ namespace SuperFramework
         };
             string tempType = null;
             int softNum = 0;//所有已经安装的程序数量
-            List<ProgramInfo> ls = new List<ProgramInfo>();
+            List<ProgramInfo> ls = new();
 
             foreach (var item222 in tags)
             {
@@ -1154,7 +1154,7 @@ namespace SuperFramework
                         continue;
                     foreach (string item in pregkey?.GetSubKeyNames())               //循环所有子键
                     {
-                        ProgramInfo programInfo = new ProgramInfo();
+                        ProgramInfo programInfo = new();
                         using (RegistryKey currentKey = pregkey.OpenSubKey(item, false))
                         {
                             try
@@ -1286,7 +1286,7 @@ namespace SuperFramework
         /// <returns>程序名称,安装路径···</returns> 
         public async static Task<List<ProgramInfo>> GetSoftWares()
         {
-            List<RegistryKey> registryKeys = new List<RegistryKey>
+            List<RegistryKey> registryKeys = new()
             {
                 //Registry.ClassesRoot,
                 //Registry.CurrentConfig,

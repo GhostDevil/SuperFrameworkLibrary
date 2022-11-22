@@ -94,7 +94,7 @@ namespace SuperFramework
             else
             {
                 MethodInfo targetMethod = null;
-                StringBuilder pb = new StringBuilder();
+                StringBuilder pb = new();
                 foreach (MemberInfo mi in mis)
                 {
                     if (mi.MemberType != MemberTypes.Method)
@@ -220,7 +220,7 @@ namespace SuperFramework
         public static Bitmap LoadBitmap(Type assemblyType, string resourceHolder, string imageName)
         {
             Assembly thisAssembly = Assembly.GetAssembly(assemblyType);
-            ResourceManager rm = new ResourceManager(resourceHolder, thisAssembly);
+            ResourceManager rm = new(resourceHolder, thisAssembly);
             return (Bitmap)rm.GetObject(imageName);
         }
 
@@ -233,7 +233,7 @@ namespace SuperFramework
         public static string GetStringRes(Type assemblyType, string resName, string resourceHolder)
         {
             Assembly thisAssembly = Assembly.GetAssembly(assemblyType);
-            ResourceManager rm = new ResourceManager(resourceHolder, thisAssembly);
+            ResourceManager rm = new(resourceHolder, thisAssembly);
             return rm.GetString(resName);
         }
 

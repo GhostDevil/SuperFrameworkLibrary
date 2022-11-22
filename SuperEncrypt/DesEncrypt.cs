@@ -53,8 +53,8 @@ namespace SuperFramework.SuperEncrypt
                 byte[] rgbIV = IV;
                 byte[] inputByteArray = Encoding.UTF8.GetBytes(encryptString);
                 DES dCSP = DES.Create();
-                MemoryStream mStream = new MemoryStream();
-                CryptoStream cStream = new CryptoStream(mStream, dCSP.CreateEncryptor(rgbKey, rgbIV), CryptoStreamMode.Write);
+                MemoryStream mStream = new();
+                CryptoStream cStream = new(mStream, dCSP.CreateEncryptor(rgbKey, rgbIV), CryptoStreamMode.Write);
                 cStream.Write(inputByteArray, 0, inputByteArray.Length);
                 cStream.FlushFinalBlock();
                 return Convert.ToBase64String(mStream.ToArray());
@@ -76,8 +76,8 @@ namespace SuperFramework.SuperEncrypt
             try
             {
                 DES dCSP = DES.Create();
-                MemoryStream mStream = new MemoryStream();
-                CryptoStream cStream = new CryptoStream(mStream, dCSP.CreateEncryptor(key, iv), CryptoStreamMode.Write);
+                MemoryStream mStream = new();
+                CryptoStream cStream = new(mStream, dCSP.CreateEncryptor(key, iv), CryptoStreamMode.Write);
                 cStream.Write(decryptString, 0, decryptString.Length);
                 cStream.FlushFinalBlock();
                 return Convert.ToBase64String(mStream.ToArray());
@@ -104,8 +104,8 @@ namespace SuperFramework.SuperEncrypt
                 byte[] rgbIV = IV;
                 byte[] inputByteArray = Convert.FromBase64String(decryptString);
                 DES DCSP = DES.Create();
-                MemoryStream mStream = new MemoryStream();
-                CryptoStream cStream = new CryptoStream(mStream, DCSP.CreateDecryptor(rgbKey, rgbIV), CryptoStreamMode.Write);
+                MemoryStream mStream = new();
+                CryptoStream cStream = new(mStream, DCSP.CreateDecryptor(rgbKey, rgbIV), CryptoStreamMode.Write);
                 cStream.Write(inputByteArray, 0, inputByteArray.Length);
                 cStream.FlushFinalBlock();
                 return Encoding.UTF8.GetString(mStream.ToArray());
@@ -128,8 +128,8 @@ namespace SuperFramework.SuperEncrypt
             try
             {
                 DES DCSP = DES.Create();
-                MemoryStream mStream = new MemoryStream();
-                CryptoStream cStream = new CryptoStream(mStream, DCSP.CreateDecryptor(key, iv), CryptoStreamMode.Write);
+                MemoryStream mStream = new();
+                CryptoStream cStream = new(mStream, DCSP.CreateDecryptor(key, iv), CryptoStreamMode.Write);
                 cStream.Write(decryptString, 0, decryptString.Length);
                 cStream.FlushFinalBlock();
                 return Encoding.UTF8.GetString(mStream.ToArray());
@@ -207,8 +207,8 @@ namespace SuperFramework.SuperEncrypt
             try
             {
                 //创建的文件流来处理输入和输出文件.
-                FileStream fin = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-                FileStream fout = new FileStream(savePath, FileMode.OpenOrCreate, FileAccess.Write);
+                FileStream fin = new(filePath, FileMode.Open, FileAccess.Read);
+                FileStream fout = new(savePath, FileMode.OpenOrCreate, FileAccess.Write);
                 fout.SetLength(0);
                 byte[] desKey = GetDSCKey(key); ;
                 //创建变量，以帮助读写。
@@ -217,7 +217,7 @@ namespace SuperFramework.SuperEncrypt
                 long totlen = fin.Length;    //这是输入文件的总长度。
                 int len;                     //这是要被写入一次的字节数。
                 DES des = DES.Create();
-                CryptoStream encStream = new CryptoStream(fout, des.CreateEncryptor(desKey, IV), CryptoStreamMode.Write);
+                CryptoStream encStream = new(fout, des.CreateEncryptor(desKey, IV), CryptoStreamMode.Write);
                 //读取输入文件，然后加密并写入到输出文件中。
                 while (rdlen < totlen)
                 {
@@ -250,8 +250,8 @@ namespace SuperFramework.SuperEncrypt
             try
             {
                 //创建的文件流来处理输入和输出文件.
-                FileStream fin = new FileStream(inName, FileMode.Open, FileAccess.Read);
-                FileStream fout = new FileStream(savePath, FileMode.OpenOrCreate, FileAccess.Write);
+                FileStream fin = new(inName, FileMode.Open, FileAccess.Read);
+                FileStream fout = new(savePath, FileMode.OpenOrCreate, FileAccess.Write);
                 fout.SetLength(0);
                 byte[] desKey = GetDSCKey(key);
                 //创建变量，以帮助读写。
@@ -260,7 +260,7 @@ namespace SuperFramework.SuperEncrypt
                 long totlen = fin.Length;    //这是输入文件的总长度。
                 int len;                     //这是要被写入一次的字节数。
                 DES des = DES.Create();
-                CryptoStream encStream = new CryptoStream(fout, des.CreateDecryptor(desKey, IV), CryptoStreamMode.Write);
+                CryptoStream encStream = new(fout, des.CreateDecryptor(desKey, IV), CryptoStreamMode.Write);
                 //读取输入文件，然后解密并写入到输出文件中。
                 while (rdlen < totlen)
                 {
@@ -366,8 +366,8 @@ namespace SuperFramework.SuperEncrypt
                     byte[] keyByteArray = Encoding.Default.GetBytes(resule.Substring(0, 8));
                     des.Key = keyByteArray;
                     des.IV = keyByteArray;
-                    MemoryStream ms = new MemoryStream();
-                    CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(), CryptoStreamMode.Write);
+                    MemoryStream ms = new();
+                    CryptoStream cs = new(ms, des.CreateEncryptor(), CryptoStreamMode.Write);
                     cs.Write(inputByteArray, 0, inputByteArray.Length);
                     cs.FlushFinalBlock();
                     fs = File.OpenWrite(savePath);
@@ -400,8 +400,8 @@ namespace SuperFramework.SuperEncrypt
                 if (File.Exists(filePath) && savePath != "")
                 {
                     byte[] info;
-                    FileInfo MyFileInfo = new FileInfo(filePath);
-                    StreamReader mp3info = new StreamReader(filePath);
+                    FileInfo MyFileInfo = new(filePath);
+                    StreamReader mp3info = new(filePath);
                     info = new byte[MyFileInfo.Length];
                     info = File.ReadAllBytes(filePath);
                     byte[] newjiamifile = new byte[MyFileInfo.Length - 1000];
@@ -420,8 +420,8 @@ namespace SuperFramework.SuperEncrypt
                     byte[] keyByteArray = Encoding.Default.GetBytes(resule.Substring(0, 8));
                     des.Key = keyByteArray;
                     des.IV = keyByteArray;
-                    MemoryStream ms = new MemoryStream();
-                    CryptoStream cs = new CryptoStream(ms, des.CreateDecryptor(), CryptoStreamMode.Write);
+                    MemoryStream ms = new();
+                    CryptoStream cs = new(ms, des.CreateDecryptor(), CryptoStreamMode.Write);
                     cs.Write(inputByteArray, 0, inputByteArray.Length);
                     cs.FlushFinalBlock();
                     fs = File.OpenWrite(savePath);
@@ -453,14 +453,14 @@ namespace SuperFramework.SuperEncrypt
             try
             {
                 byte[] bytIn = Source;
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = new();
                 byte[] byKey = GetDSCKey(key);
                 byte[] byIV = IV;
                 DES des = DES.Create();
                 des.Key = byKey;
                 des.IV = byIV;
                 ICryptoTransform encrypto = des.CreateEncryptor();
-                CryptoStream cs = new CryptoStream(ms, encrypto, CryptoStreamMode.Write);
+                CryptoStream cs = new(ms, encrypto, CryptoStreamMode.Write);
                 cs.Write(bytIn, 0, bytIn.Length);
                 cs.FlushFinalBlock();
                 ms.Close();
@@ -486,15 +486,15 @@ namespace SuperFramework.SuperEncrypt
             try
             {
                 byte[] bytIn = Source;
-                MemoryStream ms = new MemoryStream(bytIn, 0, bytIn.Length);
+                MemoryStream ms = new(bytIn, 0, bytIn.Length);
                 byte[] byKey = GetDSCKey(key);
                 byte[] byIV = IV;
                 DES des = DES.Create();
                 des.Key = byKey;
                 des.IV = byIV;
                 ICryptoTransform encrypto = des.CreateDecryptor();
-                CryptoStream cs = new CryptoStream(ms, encrypto, CryptoStreamMode.Read);
-                StreamReader sr = new StreamReader(cs);
+                CryptoStream cs = new(ms, encrypto, CryptoStreamMode.Read);
+                StreamReader sr = new(cs);
                 return UTF8Encoding.UTF8.GetBytes(sr.ReadToEnd());
             }
             catch (Exception ex)

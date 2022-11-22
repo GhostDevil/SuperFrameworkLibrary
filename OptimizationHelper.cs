@@ -16,11 +16,9 @@ namespace SuperFramework
 
     **/
     /// <summary>
-    /// 类 名:OptimizationHelper
     /// 版 本:Release
     /// 日 期:2014-12-10
     /// 作 者:不良帥
-    /// 描 述:App优化辅助
     /// </summary>
     class OptimizationHelper
     {
@@ -36,7 +34,7 @@ namespace SuperFramework
             GC.WaitForPendingFinalizers();
             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
-                SetProcessWorkingSetSize(System.Diagnostics.Process.GetCurrentProcess().Handle, -1, -1);
+                _ = SetProcessWorkingSetSize(System.Diagnostics.Process.GetCurrentProcess().Handle, -1, -1);
             }
         }
         #endregion

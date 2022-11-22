@@ -136,11 +136,11 @@ namespace SuperFramework
         /// <param name="workPath">工作目录</param>
         public AssemblyResult GetAssemblyName(string workPath)
         {
-            AssemblyResult result = new AssemblyResult();
+            AssemblyResult result = new();
             string[] dicFileName = Directory.GetFileSystemEntries(workPath);
             if (dicFileName != null)
             {
-                List<string> assemblyList = new List<string>();
+                List<string> assemblyList = new();
                 foreach (string name in dicFileName)
                 {
                     assemblyList.Add(name.Substring(name.LastIndexOf('/') + 1));
@@ -157,13 +157,13 @@ namespace SuperFramework
         /// <param name="workPath">工作目录</param>
         public AssemblyResult GetClassName(string assemblyName, string workPath)
         {
-            AssemblyResult result = new AssemblyResult();
+            AssemblyResult result = new();
             if (!string.IsNullOrEmpty(assemblyName))
             {
                 assemblyName =Path.Combine(workPath, assemblyName);
                 Assembly assembly = Assembly.LoadFrom(assemblyName);
                 Type[] ts = assembly.GetTypes();
-                List<string> classList = new List<string>();
+                List<string> classList = new();
                 foreach (Type t in ts)
                 {
                     //classList.Add(t.Name);  
@@ -182,7 +182,7 @@ namespace SuperFramework
         /// <param name="workPath">工作目录</param>
         public AssemblyResult GetClassInfo(string assemblyName, string className, string workPath)
         {
-            AssemblyResult result = new AssemblyResult();
+            AssemblyResult result = new();
             if (!string.IsNullOrEmpty(assemblyName) && !string.IsNullOrEmpty(className))
             {
                 assemblyName = Path.Combine(workPath, assemblyName);
@@ -191,7 +191,7 @@ namespace SuperFramework
                 if (type != null)
                 {
                     //类的属性  
-                    List<string> propertieList = new List<string>();
+                    List<string> propertieList = new();
                     PropertyInfo[] propertyinfo = type.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
                     foreach (PropertyInfo p in propertyinfo)
                     {
@@ -200,7 +200,7 @@ namespace SuperFramework
                     result.Properties = propertieList;
 
                     //类的方法  
-                    List<string> methods = new List<string>();
+                    List<string> methods = new();
                     MethodInfo[] methodInfos = type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                     foreach (MethodInfo mi in methodInfos)
                     {

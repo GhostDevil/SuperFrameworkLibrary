@@ -96,7 +96,7 @@ namespace SuperFramework
         public static bool AppIsAdmin()
         {
             WindowsIdentity current = WindowsIdentity.GetCurrent();
-            WindowsPrincipal windowsPrincipal = new WindowsPrincipal(current);
+            WindowsPrincipal windowsPrincipal = new(current);
             //WindowsBuiltInRole可以枚举出很多权限，例如系统用户、User、Guest等等
             return windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator);
         }
@@ -124,7 +124,7 @@ namespace SuperFramework
         /// <param name="sleep">必须等待，否则重启的程序还未启动完成时将推出cmd；根据情况调整等待时间</param>
         public static void AppStartByCmd(string sExePath, string sArguments = "", int sleep = 5000)
         {
-            Process p = new Process();
+            Process p = new();
             p.StartInfo.FileName = "cmd.exe";
             p.StartInfo.UseShellExecute = false;
             p.StartInfo.RedirectStandardInput = true;

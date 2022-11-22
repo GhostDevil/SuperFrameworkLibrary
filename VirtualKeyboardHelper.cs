@@ -118,7 +118,7 @@ namespace SuperFramework
             try
             {
                 ManagementObjectSearcher searcher =
-                    new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_Keyboard");
+                    new("root\\CIMV2", "SELECT * FROM Win32_Keyboard");
 
                 int devCount = 0;
 

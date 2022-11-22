@@ -93,13 +93,13 @@ namespace SuperFramework.SuperDate
         #region 基本常量
         private const int MinYear = 1900;
         private const int MaxYear = 2050;
-        private static DateTime MinDay = new DateTime(1900, 1, 30);
-        private static DateTime MaxDay = new DateTime(2049, 12, 31);
+        private static DateTime MinDay = new(1900, 1, 30);
+        private static DateTime MaxDay = new(2049, 12, 31);
         private const int GanZhiStartYear = 1864; //干支计算起始年
-        private static DateTime GanZhiStartDay = new DateTime(1899, 12, 22);//起始日
+        private static DateTime GanZhiStartDay = new(1899, 12, 22);//起始日
         private const string HZNum = "零一二三四五六七八九";
         private const int AnimalStartYear = 1900; //1900年为鼠年
-        private static DateTime ChineseConstellationReferDay = new DateTime(2007, 9, 13);//28星宿参考值,本日为角
+        private static DateTime ChineseConstellationReferDay = new(2007, 9, 13);//28星宿参考值,本日为角
         #endregion
 
         #region 阴历数据
@@ -759,7 +759,7 @@ namespace SuperFramework.SuperDate
             {
                 if (ConvertDayOfWeek(date.DayOfWeek) == day) //星期几相同
                 {
-                    DateTime firstDay = new DateTime(date.Year, date.Month, 1);//生成当月第一天
+                    DateTime firstDay = new(date.Year, date.Month, 1);//生成当月第一天
                     int i = ConvertDayOfWeek(firstDay.DayOfWeek);
                     int firWeekDays = 7 - ConvertDayOfWeek(firstDay.DayOfWeek) + 1; //计算第一周剩余天数
 
@@ -1126,7 +1126,7 @@ namespace SuperFramework.SuperDate
         {
             get
             {
-                DateTime baseDateAndTime = new DateTime(1900, 1, 6, 2, 5, 0); //#1/6/1900 2:05:00 AM#
+                DateTime baseDateAndTime = new(1900, 1, 6, 2, 5, 0); //#1/6/1900 2:05:00 AM#
                 DateTime newDate;
                 double num;
                 int y;
@@ -1154,7 +1154,7 @@ namespace SuperFramework.SuperDate
         {
             get
             {
-                DateTime baseDateAndTime = new DateTime(1900, 1, 6, 2, 5, 0); //#1/6/1900 2:05:00 AM#
+                DateTime baseDateAndTime = new(1900, 1, 6, 2, 5, 0); //#1/6/1900 2:05:00 AM#
                 DateTime newDate;
                 double num;
                 int y;
@@ -1185,7 +1185,7 @@ namespace SuperFramework.SuperDate
         {
             get
             {
-                DateTime baseDateAndTime = new DateTime(1900, 1, 6, 2, 5, 0); //#1/6/1900 2:05:00 AM#
+                DateTime baseDateAndTime = new(1900, 1, 6, 2, 5, 0); //#1/6/1900 2:05:00 AM#
                 DateTime newDate;
                 double num;
                 int y;

@@ -68,7 +68,7 @@ namespace SuperFramework.SuperNLogger
         /// <param name="encoding">×Ö·û±àÂë¸ñÊ½</param>
         public void Load(string propertiesFileName, Encoding encoding)
         {
-            StreamReader objReader = new StreamReader(propertiesFileName, encoding);
+            StreamReader objReader = new(propertiesFileName, encoding);
 
             Load(objReader);
 
@@ -122,12 +122,12 @@ namespace SuperFramework.SuperNLogger
         /// <param name="encoding">×Ö·û±àÂë¸ñÊ½</param>
         public void Store(string propertiesFileName, Encoding encoding)
         {
-            FileInfo fi = new FileInfo(propertiesFileName);
+            FileInfo fi = new(propertiesFileName);
             if (!fi.Directory.Exists)
             {
                 fi.Directory.Create();//fi.DirectoryName :: fi.Name
             }
-            StreamWriter objWriter = new StreamWriter(propertiesFileName, false, encoding);
+            StreamWriter objWriter = new(propertiesFileName, false, encoding);
 
             Store(objWriter);
 

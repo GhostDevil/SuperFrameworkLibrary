@@ -51,15 +51,15 @@ namespace SuperFramework.SuperWindows.WPFEffect
         /// <summary>
         /// 粒子数组
         /// </summary>
-        static readonly List<GrainBase> grains = new List<GrainBase>();
+        static readonly List<GrainBase> grains = new();
         /// <summary>
         /// 鼠标粒子信息
         /// </summary>
-        static readonly GrainBase mousePoint = new GrainBase();
+        static readonly GrainBase mousePoint = new();
         /// <summary>
         /// 随机数
         /// </summary>
-        static readonly Random rand = new Random();
+        static readonly Random rand = new();
         #endregion
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace SuperFramework.SuperWindows.WPFEffect
                 dot.ya *= (dot.y.Value > Cav.ActualHeight || dot.y.Value < 0) ? -1 : 1;
                 // 绘制点
 
-                Ellipse elip = new Ellipse() { Width = 2, Height = 2 };
+                Ellipse elip = new() { Width = 2, Height = 2 };
                 Canvas.SetLeft(elip, dot.x.Value - 0.5);
                 Canvas.SetTop(elip, dot.y.Value - 0.5);
                 elip.Fill = new SolidColorBrush(c1);
@@ -177,7 +177,7 @@ namespace SuperFramework.SuperWindows.WPFEffect
                     {
                         // 计算距离比
                         ratio = (d2.max - dis) / d2.max;
-                        Line line = new Line();
+                        Line line = new();
                         double opacity = ratio + 0.2;
                         if (opacity > 1) { opacity = 1; }
                         byte ar = (byte)(opacity * 255);
@@ -203,7 +203,7 @@ namespace SuperFramework.SuperWindows.WPFEffect
         {
             if (e.MouseDevice.LeftButton == MouseButtonState.Pressed)
             {
-                GrainBase gb = new GrainBase();
+                GrainBase gb = new();
                 var ui = e.GetPosition(Cav);
                 gb.x = ui.X;
                 gb.y = ui.Y;

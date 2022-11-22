@@ -22,7 +22,7 @@ namespace SuperFramework.SuperImage
             {
                 int Height = img.Height;
                 int Width = img.Width;
-                Bitmap bitmap = new Bitmap(Width, Height, PixelFormat.Format24bppRgb);
+                Bitmap bitmap = new(Width, Height, PixelFormat.Format24bppRgb);
                 Bitmap MyBitmap = (Bitmap)img;
 
                 BitmapData oldData = MyBitmap.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
@@ -69,7 +69,7 @@ namespace SuperFramework.SuperImage
             {
                 int Height = img.Height;
                 int Width = img.Width;
-                Bitmap bitmap = new Bitmap(Width, Height, PixelFormat.Format32bppRgb);
+                Bitmap bitmap = new(Width, Height, PixelFormat.Format32bppRgb);
                 Bitmap MyBitmap = (Bitmap)img;
 
                 BitmapData oldData = MyBitmap.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
@@ -140,7 +140,7 @@ namespace SuperFramework.SuperImage
             {
                 int Height =img.Height;
                 int Width =img.Width;
-                Bitmap bitmap = new Bitmap(Width, Height, PixelFormat.Format32bppRgb);
+                Bitmap bitmap = new(Width, Height, PixelFormat.Format32bppRgb);
                 Bitmap MyBitmap = (Bitmap)img;
 
                 BitmapData oldData = MyBitmap.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
@@ -205,7 +205,7 @@ namespace SuperFramework.SuperImage
 
                 int Height =img.Height;
                 int Width =img.Width;
-                Bitmap bitmap = new Bitmap(Width, Height, PixelFormat.Format24bppRgb);
+                Bitmap bitmap = new(Width, Height, PixelFormat.Format24bppRgb);
                 Bitmap MyBitmap = (Bitmap)img;
                 BitmapData oldData = MyBitmap.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
                 BitmapData newData = bitmap.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
@@ -261,7 +261,7 @@ namespace SuperFramework.SuperImage
             {
                 int Height =img.Height;
                 int Width =img.Width;
-                Bitmap bitmap = new Bitmap(Width, Height, PixelFormat.Format24bppRgb);
+                Bitmap bitmap = new(Width, Height, PixelFormat.Format24bppRgb);
                 Bitmap MyBitmap = (Bitmap)img;
                 BitmapData oldData = MyBitmap.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
                 BitmapData newData = bitmap.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
@@ -303,7 +303,7 @@ namespace SuperFramework.SuperImage
             {
                 int Height =img.Height;
                 int Width =img.Width;
-                Bitmap bitmap = new Bitmap(Width, Height);
+                Bitmap bitmap = new(Width, Height);
                 Bitmap Mybitmap = (Bitmap)img;
                 BitmapData oldData = Mybitmap.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
                 BitmapData newData = bitmap.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
@@ -357,7 +357,7 @@ namespace SuperFramework.SuperImage
 
                 int Height =img.Height;
                 int Width =img.Width;
-                Bitmap bitmap = new Bitmap(Width, Height, PixelFormat.Format24bppRgb);
+                Bitmap bitmap = new(Width, Height, PixelFormat.Format24bppRgb);
                 Bitmap MyBitmap = (Bitmap)img;
                 BitmapData oldData = MyBitmap.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb); //原图
                 BitmapData newData = bitmap.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);  //新图即边缘图

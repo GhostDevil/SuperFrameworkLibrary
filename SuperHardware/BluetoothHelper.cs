@@ -1,18 +1,17 @@
-﻿using System;
+﻿
+using InTheHand.Net;
+using InTheHand.Net.Bluetooth;
+using InTheHand.Net.Sockets;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-#if NET461_OR_GREATER
-using InTheHand.Net;
-using InTheHand.Net.Bluetooth;
-using InTheHand.Net.Sockets;
-#endif
+
 namespace SuperFramework.SuperHardware
 {
     public class BluetoothHelper
     {
-#if NET461_OR_GREATER
 
         /// <summary>
         /// 是否接收数据
@@ -117,11 +116,9 @@ namespace SuperFramework.SuperHardware
             List<byte> temp = new List<byte>();
             while (IsReceiving)
             {
-                Stream peerStream = blueclient.GetStream();
-
+                using Stream peerStream = blueclient.GetStream();
                 byte[] recvBytes = new byte[1024];
                 int bytes = 0;
-
                 if (peerStream.CanRead)
                 {
                     bytes = peerStream.Read(recvBytes, 0, recvBytes.Length);
@@ -155,6 +152,6 @@ namespace SuperFramework.SuperHardware
         {
             IsReceiving = false;
         }
-#endif
+
     }
 }

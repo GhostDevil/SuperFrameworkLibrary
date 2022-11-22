@@ -143,16 +143,16 @@ namespace SuperFramework.SuperRemote
         {
             if (!File.Exists(filePath))
             {
-                FileStream fs1 = new FileStream(filePath, FileMode.Create, FileAccess.Write);//创建写入文件
-                StreamWriter sw = new StreamWriter(fs1);
+                FileStream fs1 = new(filePath, FileMode.Create, FileAccess.Write);//创建写入文件
+                StreamWriter sw = new(fs1);
                 sw.WriteLine(fileContent);//开始写入值
                 sw.Close();
                 fs1.Close();
             }
             else
             {
-                FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Write);
-                StreamWriter sr = new StreamWriter(fs);
+                FileStream fs = new(filePath, FileMode.Open, FileAccess.Write);
+                StreamWriter sr = new(fs);
                 sr.WriteLine(fileContent);//开始写入值
                 sr.Close();
                 fs.Close();
@@ -170,7 +170,7 @@ namespace SuperFramework.SuperRemote
             try
             {
                 string targetDir = string.Format(thisbatpath);//this is where testChange.bat lies
-                Process proc = new Process();
+                Process proc = new();
                 proc.StartInfo.WorkingDirectory = targetDir;
                 proc.StartInfo.FileName = batName;
                 proc.StartInfo.Arguments = string.Format("10");//this is argument
@@ -193,9 +193,11 @@ namespace SuperFramework.SuperRemote
         private static void ExecuteVbs(string vbsName)
         {
             string path = Directory.GetCurrentDirectory() + @"\" + vbsName;
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = "wscript.exe";
-            startInfo.Arguments = path;
+            ProcessStartInfo startInfo = new()
+            {
+                FileName = "wscript.exe",
+                Arguments = path
+            };
             Process.Start(startInfo);
         }
 
@@ -207,8 +209,8 @@ namespace SuperFramework.SuperRemote
         private static void NewVbs(string vbsName)
         {
             string path = Directory.GetCurrentDirectory() + @"\" + vbsName;
-            FileStream fsvbs = new FileStream(path, FileMode.Create, FileAccess.Write);
-            StreamWriter runBat = new StreamWriter(path);
+            FileStream fsvbs = new(path, FileMode.Create, FileAccess.Write);
+            StreamWriter runBat = new(path);
             runBat.WriteLine("set ws=WScript.CreateObject(\"WScript.Shell\")");
             runBat.WriteLine("ws.Run\"runRdp.bat\",0");
             runBat.Close();

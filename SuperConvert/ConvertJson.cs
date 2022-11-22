@@ -16,7 +16,7 @@ namespace SuperFramework.SuperConvert
         /// </summary>
         private static string String2Json(string s)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             for (int i = 0; i < s.Length; i++)
             {
                 char c = s.ToCharArray()[i];
@@ -86,7 +86,7 @@ namespace SuperFramework.SuperConvert
         /// </summary>
         public static string ListToJson<T>(IList<T> list, string jsonName)
         {
-            StringBuilder Json = new StringBuilder();
+            StringBuilder Json = new();
             if (string.IsNullOrEmpty(jsonName)) jsonName = list[0].GetType().Name;
             Json.Append("{\"" + jsonName + "\":[");
             if (list.Count > 0)
@@ -217,7 +217,7 @@ namespace SuperFramework.SuperConvert
         /// <returns>Json字符串</returns> 
         public static string ToJson(DataTable dt)
         {
-            StringBuilder jsonString = new StringBuilder();
+            StringBuilder jsonString = new();
             jsonString.Append("[");
             DataRowCollection drc = dt.Rows;
             for (int i = 0; i < drc.Count; i++)
@@ -251,7 +251,7 @@ namespace SuperFramework.SuperConvert
         /// </summary>
         public static string ToJson(DataTable dt, string jsonName)
         {
-            StringBuilder Json = new StringBuilder();
+            StringBuilder Json = new();
             if (string.IsNullOrEmpty(jsonName)) jsonName = dt.TableName;
             Json.Append("{\"" + jsonName + "\":[");
             if (dt.Rows.Count > 0)
@@ -288,7 +288,7 @@ namespace SuperFramework.SuperConvert
         /// <returns>Json字符串</returns> 
         public static string ToJson(DbDataReader dataReader)
         {
-            StringBuilder jsonString = new StringBuilder();
+            StringBuilder jsonString = new();
             jsonString.Append("[");
             while (dataReader.Read())
             {

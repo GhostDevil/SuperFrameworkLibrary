@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace SuperFramework
 {
@@ -36,13 +36,13 @@ namespace SuperFramework
         }
         public bool ReadBytes(int count, out byte[] data, int timeout = -1)
         {
-            var buffer = new byte[0];
+            var buffer = Array.Empty<byte>();
             do
             {
                 var temp = ReadByStream(count - (buffer?.Length ?? 0), timeout);
                 if (temp?.Length > 0)
                 {
-                    buffer = buffer.Join(temp);
+                    buffer = buffer.AddRange(temp);
                 }
                 else
                 {
@@ -64,14 +64,22 @@ namespace SuperFramework
         {
             if (BeginFrame?.Length == 0)
                 throw new Exception("按帧头接数据必须重写 \"BeginFrame\" 属性以指定帧头");
-            byte[] buffer = null;
+            byte[] buffer = Array.Empty<byte>();
             int index = -1;
             do
             {
-                buffer = buffer.Join(ReadByStream(BeginFrame.Length - (buffer?.Length ?? 0), -1));
-                index = buffer.IndexOfBlock(BeginFrame, index);
-                if ((buffer?.Length >= BeginFrame?.Length) && index < 0)
-                    buffer = buffer.RemoveBlock(0, 1);
+                var bytes = ReadByStream(BeginFrame.Length - (buffer?.Length ?? 0), 1000);
+                if ((int)(bytes?.Length ?? 0) > 0)
+                {
+                    buffer = buffer.AddRange(bytes);
+
+                    index = buffer.IndexOfBlock(BeginFrame, index);
+                    if ((buffer?.Length >= BeginFrame?.Length) && index < 0)
+                        buffer = buffer.RemoveRange(0, 1);
+                }
+                else
+                   return false;
+                
             } while (index < 0);
             return true;
         }
@@ -79,17 +87,17 @@ namespace SuperFramework
         {
             if (BeginFrame?.Length == 0 || EndFrame?.Length == 0)
                 throw new Exception("按帧头接数据必须重写 \"BeginFrame\"&\"EndFrame\"&\"CheckData\" 属性以指定帧头&帧尾和数据确认方法");
-            byte[] buffer = null;
+            byte[] buffer = Array.Empty<byte>();
             int index = -1;
-            buffer = ReadByStream(EndFrame.Length - (buffer?.Length ?? 0), -1);
+            buffer = ReadByStream(EndFrame.Length - (buffer?.Length ?? 0), 1000);
         FIND_FRAME:
             index = buffer.IndexOfBlock(EndFrame, index);
             if (index < 0 || !CheckData(buffer))
             {
-                buffer = buffer.Join(ReadByStream(1, -1));
+                buffer = buffer.AddRange(ReadByStream(1, 1000));
                 goto FIND_FRAME;
             }
-            return buffer.GetBlock(0, buffer.Length - EndFrame.Length);
+            return buffer.GetRange(0, buffer.Length - EndFrame.Length);
         }
     }
 }

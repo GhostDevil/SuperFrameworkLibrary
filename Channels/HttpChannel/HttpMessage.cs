@@ -6,37 +6,31 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SuperFramework.Channels.Channel
 {
-    public class HttpMessage : MessageBase
+    public class HttpMessage : RequestBase
     {
-        public Dictionary<string, string> Headers = new Dictionary<string, string>();
+        //public Dictionary<string, string> Headers = new Dictionary<string, string>();
 
         protected override void Init(string host)
         {
-            if(Uri.IsWellFormedUriString(host, UriKind.Absolute))
+            if (Uri.IsWellFormedUriString(host, UriKind.Absolute))
                 Url = new Uri(host);
         }
-
-        protected override T Execute<T>(object[] @params)
+        protected T RequestExecute<T>(Dictionary<string, object> valuePairs, Dictionary<string, string> headers)
         {
-            StackTrace stack = new StackTrace();
+            object data = valuePairs;
+            return RequestExecute<T>(data, headers);
+
+        }
+        protected override T RequestExecute<T>(object[] @params, Dictionary<string, string> headers)
+        {
+
+
+            StackTrace stack = new();
             var method = stack.GetFrame(1).GetMethod();//想要获取关于方法的信息，可以自己断点调试这里
-
-            var route = method.GetCustomAttribute<RouteAttribute>(true) == null ? "" : method.GetCustomAttribute<RouteAttribute>(true).Value;
-            HttpMethod httpMethod = method.GetCustomAttribute<HttpMethodAttribute>(true) == null ?
-                HttpMethod.POST : method.GetCustomAttribute<HttpMethodAttribute>(true).Method;
-
-            var contentType = method.GetCustomAttribute<ContentTypeAttribute>(true) == null ? ContentType.Json : method.GetCustomAttribute<ContentTypeAttribute>(true).Value;
-
-            var webRequest = (HttpWebRequest)WebRequest.Create(new Uri(Url, route));
-            webRequest.Method = httpMethod.ToString();
-
-            foreach (var kv in Headers)
-            {
-                webRequest.Headers.Add(kv.Key, kv.Value);
-            }
 
             object data = null;
             if (@params != null && @params.Length > 0)
@@ -47,7 +41,7 @@ namespace SuperFramework.Channels.Channel
                 }
                 else
                 {
-                    Dictionary<string, object> keys = new Dictionary<string, object>();
+                    Dictionary<string, object> keys = new();
                     var ps = method.GetParameters();
 
                     if (ps.Length != @params.Length)
@@ -61,7 +55,28 @@ namespace SuperFramework.Channels.Channel
                             keys[ps[i].Name] = @params[i];
                         }
                     }
+                    data = keys;
                 }
+            }
+            return RequestExecute<T>(data, headers);
+        }
+        T RequestExecute<T>(object data, Dictionary<string, string> headers)
+        {
+
+
+            StackTrace stack = new();
+            var method = stack.GetFrame(2).GetMethod();//想要获取关于方法的信息，可以自己断点调试这里
+            var route = method.GetCustomAttribute<RouteAttribute>(true)?.Value ?? "";
+            HttpMethod httpMethod = method.GetCustomAttribute<HttpMethodAttribute>(true)?.Method ?? HttpMethod.POST;
+
+            var contentType = method.GetCustomAttribute<ContentTypeAttribute>(true)?.Value ?? ContentType.Json;
+
+            var webRequest = (HttpWebRequest)WebRequest.Create(new Uri(Url, route));
+            webRequest.Method = httpMethod.ToString();
+
+            foreach (var kv in headers)
+            { 
+                webRequest.Headers.Add(kv.Key, kv.Value);
             }
 
             if (httpMethod != HttpMethod.GET)
@@ -82,7 +97,7 @@ namespace SuperFramework.Channels.Channel
                                     //文件数据模板
                                     string fileFormdataTemplate =
                                         "\r\n--" + boundary +
-                                        "\r\nContent-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"" +
+                                        "\r\nContent-Disp、osition: form-data; name=\"{0}\"; filename=\"{1}\"" +
                                         "\r\nContent-Type: application/octet-stream" +
                                         "\r\n\r\n";
                                     //文本数据模板
@@ -158,7 +173,7 @@ namespace SuperFramework.Channels.Channel
 
                             if (data != null)
                             {
-                                string json = JsonConvert.SerializeObject(data, Formatting.None, new JsonSerializerSettings { ContractResolver = ShouldSerializeContractResolver.Instance });
+                                string json = JsonConvert.SerializeObject(data, Formatting.None);//, new JsonSerializerSettings { ContractResolver = ShouldSerializeContractResolver.Instance }
                                 stream.Write(Encoding.UTF8.GetBytes(json));
                             }
                             break;
@@ -167,13 +182,20 @@ namespace SuperFramework.Channels.Channel
                     }
                 }
             }
-            var response = (HttpWebResponse)webRequest.GetResponse();
-            using (var stream = new StreamReader(response.GetResponseStream()))
+            T resultT = default;
+            var response = webRequest.GetResponseAsync().GetAwaiter();
+
+            while (!response.IsCompleted)
             {
-                return (T)JsonConvert.DeserializeObject(stream.ReadToEnd(), typeof(T));
+                Task.Delay(50).Wait();
+            }
+            using (var stream = new StreamReader(response.GetResult().GetResponseStream()))
+            {
+                string result = stream.ReadToEnd();
+                resultT = (T)JsonConvert.DeserializeObject(result, typeof(T));
             }
 
-            return default(T);
+            return resultT;
         }
     }
 

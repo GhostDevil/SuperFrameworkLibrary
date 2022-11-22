@@ -10,7 +10,7 @@ namespace SuperFramework.SuperHook
 {
     public class SuperMouseKeyHook
     {
-        
+        object objlock = new object();
         /// <summary>
         /// 安装钩子
         /// </summary>
@@ -74,15 +74,10 @@ namespace SuperFramework.SuperHook
         private const byte VK_SHIFT = 0x10;
         private const byte VK_CAPITAL = 0x14;
         private const byte VK_NUMLOCK = 0x90;
-        IntPtr prco = IntPtr.Zero;
         
         public SuperMouseKeyHook()
         {
-            Start();
-        }
-        public SuperMouseKeyHook(IntPtr intPtr, bool InstallMouseHook, bool InstallKeyboardHook, int theadId = 0)
-        {
-            Start(intPtr, InstallMouseHook, InstallKeyboardHook, theadId);
+            //Start(intPtr, InstallMouseHook, InstallKeyboardHook, theadId);
         }
 
         ~SuperMouseKeyHook()
@@ -101,85 +96,80 @@ namespace SuperFramework.SuperHook
         private static HookProc MouseHookProcedure;
         private static HookProc KeyboardHookProcedure;
 
-        //---------------------------------------------------------------------------
         public void Start()
         {
             Start(IntPtr.Zero, true, true);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="intPtr">安装对象句柄，IntPtr.Zero为本程序</param>
+        /// <param name="InstallMouseHook"></param>
+        /// <param name="InstallKeyboardHook"></param>
+        /// <param name="theadId"></param>
+        /// <exception cref="Win32Exception"></exception>
         public void Start(IntPtr intPtr, bool InstallMouseHook=true, bool InstallKeyboardHook=true,int theadId=0)
         {
-            IntPtr HM = Marshal.GetHINSTANCE(Assembly.GetExecutingAssembly().GetModules()[0]);
-            if (intPtr == IntPtr.Zero)
-                intPtr = GetModuleHandleW(Process.GetCurrentProcess().MainModule.ModuleName);//本进程模块句柄
-            var mar = LoadLibrary("user32.dll");
-            if (hMouseHook == 0 && InstallMouseHook)
+            lock (objlock)
             {
-               
-                MouseHookProcedure = new HookProc(MouseHookProc);//钩子的处理函数
-
-                hMouseHook = SetWindowsHookEx(
-                        WH_MOUSE_LL,
-                        MouseHookProcedure,
-                        mar,//intPtr,
-                        theadId);
-                if (hMouseHook == 0)
+                IntPtr HM = Marshal.GetHINSTANCE(Assembly.GetExecutingAssembly().GetModules()[0]);
+                if (intPtr == IntPtr.Zero)
+                    intPtr = GetModuleHandleW(Process.GetCurrentProcess().MainModule.ModuleName);//本进程模块句柄
+                var mar = LoadLibrary("user32.dll");
+                if (hMouseHook == 0 && InstallMouseHook)
                 {
-                    int errorCode = Marshal.GetLastWin32Error();
-                    Stop(true, false, false);
-                    throw new Win32Exception(errorCode);
+                    MouseHookProcedure = new HookProc(MouseHookProc);//钩子的处理函数
+                    hMouseHook = SetWindowsHookEx(WH_MOUSE_LL, MouseHookProcedure, mar,/*intPtr,*/ theadId);
+                    if (hMouseHook == 0)
+                    {
+                        int errorCode = Marshal.GetLastWin32Error();
+                        Stop(true, false, false);
+                        throw new Win32Exception(errorCode);
+                    }
                 }
-            }
 
-            if (hKeyboardHook == 0 && InstallKeyboardHook)
-            {
-                KeyboardHookProcedure = new HookProc(KeyboardHookProc);
-                hKeyboardHook = SetWindowsHookEx(
-                        WH_KEYBOARD_LL,
-                        KeyboardHookProcedure,
-                       //Marshal.GetHINSTANCE( Assembly.GetExecutingAssembly().GetModules()[0]),
-                         mar,
-                        theadId);
-                if (hKeyboardHook == 0)
+                if (hKeyboardHook == 0 && InstallKeyboardHook)
                 {
-                    int errorCode = Marshal.GetLastWin32Error();
-                    Stop(false, true, false);
-                    throw new Win32Exception(errorCode);
+                    KeyboardHookProcedure = new HookProc(KeyboardHookProc);
+                    hKeyboardHook = SetWindowsHookEx(WH_KEYBOARD_LL, KeyboardHookProcedure, /*Marshal.GetHINSTANCE( Assembly.GetExecutingAssembly().GetModules()[0]),*/ mar, theadId);
+                    if (hKeyboardHook == 0)
+                    {
+                        int errorCode = Marshal.GetLastWin32Error();
+                        Stop(false, true, false);
+                        throw new Win32Exception(errorCode);
+                    }
                 }
             }
         }
-        //-------------------------------------------------
-        public void Stop()
+        
+        public void Stop(bool UninstallMouseHook=true, bool UninstallKeyboardHook = true, bool ThrowExceptions = true)
         {
-            Stop(true, true, true);
-        }
-
-        public void Stop(bool UninstallMouseHook, bool UninstallKeyboardHook, bool ThrowExceptions)
-        {
-            if (hMouseHook != 0 && UninstallMouseHook)
+            lock (objlock)
             {
-                int retMouse = UnhookWindowsHookEx(hMouseHook);
-                hMouseHook = 0;
-                if (retMouse == 0 && ThrowExceptions)
+                if (hMouseHook != 0 && UninstallMouseHook)
                 {
-                    int errorCode = Marshal.GetLastWin32Error();
-                    throw new Win32Exception(errorCode);
+                    int retMouse = UnhookWindowsHookEx(hMouseHook);
+                    hMouseHook = 0;
+                    if (retMouse == 0 && ThrowExceptions)
+                    {
+                        int errorCode = Marshal.GetLastWin32Error();
+                        throw new Win32Exception(errorCode);
+                    }
                 }
-            }
 
-            if (hKeyboardHook != 0 && UninstallKeyboardHook)
-            {
-                int retKeyboard = UnhookWindowsHookEx(hKeyboardHook);
-                hKeyboardHook = 0;
-                if (retKeyboard == 0 && ThrowExceptions)
+                if (hKeyboardHook != 0 && UninstallKeyboardHook)
                 {
-                    int errorCode = Marshal.GetLastWin32Error();
-                    throw new Win32Exception(errorCode);
+                    int retKeyboard = UnhookWindowsHookEx(hKeyboardHook);
+                    hKeyboardHook = 0;
+                    if (retKeyboard == 0 && ThrowExceptions)
+                    {
+                        int errorCode = Marshal.GetLastWin32Error();
+                        throw new Win32Exception(errorCode);
+                    }
                 }
             }
         }
-        //-------------------------------------------------------------------------------
-
+        
         private int MouseHookProc(int nCode, int wParam, IntPtr lParam)
         {
             if ((nCode >= 0) && (OnMouseActivity != null))
@@ -217,17 +207,11 @@ namespace SuperFramework.SuperHook
                         break;
                 }
 
-                MouseEventArgs e = new MouseEventArgs(
-                                                   button,
-                                                   clickCount,
-                                                   mouseHookStruct.pt.x,
-                                                   mouseHookStruct.pt.y,
-                                                   mouseDelta);
+                MouseEventArgs e = new(button, clickCount, mouseHookStruct.pt.x, mouseHookStruct.pt.y, mouseDelta);
                 OnMouseActivity(this, e);//转给委托函数
             }
             return CallNextHookEx(hMouseHook, nCode, wParam, lParam);
         }
-        //------------------------------------------------------------------------------------
         private int KeyboardHookProc(int nCode, int wParam, IntPtr lParam)
         {
             bool handled = false;
@@ -237,28 +221,24 @@ namespace SuperFramework.SuperHook
                 if (KeyDown != null && (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN))
                 {
                     Keys keyData = (Keys)MyKeyboardHookStruct.vkCode;
-                    KeyEventArgs e = new KeyEventArgs(keyData);
+                    KeyEventArgs e = new(keyData);
                     KeyDown(this, e);               //转给委托函数
                     handled = handled || e.Handled;
                 }
 
                 if (KeyPress != null && wParam == WM_KEYDOWN)
                 {
-                    bool isDownShift = ((GetKeyState(VK_SHIFT) & 0x80) == 0x80 ? true : false);
-                    bool isDownCapslock = (GetKeyState(VK_CAPITAL) != 0 ? true : false);
+                    bool isDownShift = (GetKeyState(VK_SHIFT) & 0x80) == 0x80;
+                    bool isDownCapslock = GetKeyState(VK_CAPITAL) != 0;
 
                     byte[] keyState = new byte[256];
                     GetKeyboardState(keyState);
                     byte[] inBuffer = new byte[2];
-                    if (ToAscii(MyKeyboardHookStruct.vkCode,
-                              MyKeyboardHookStruct.scanCode,
-                              keyState,
-                              inBuffer,
-                              MyKeyboardHookStruct.flags) == 1)
+                    if (ToAscii(MyKeyboardHookStruct.vkCode, MyKeyboardHookStruct.scanCode, keyState, inBuffer, MyKeyboardHookStruct.flags) == 1)
                     {
                         char key = (char)inBuffer[0];
                         if ((isDownCapslock ^ isDownShift) && char.IsLetter(key)) key = char.ToUpper(key);
-                        KeyPressEventArgs e = new KeyPressEventArgs(key);
+                        KeyPressEventArgs e = new(key);
                         KeyPress(this, e);
                         handled = handled || e.Handled;
                     }
@@ -267,7 +247,7 @@ namespace SuperFramework.SuperHook
                 if (KeyUp != null && (wParam == WM_KEYUP || wParam == WM_SYSKEYUP))
                 {
                     Keys keyData = (Keys)MyKeyboardHookStruct.vkCode;
-                    KeyEventArgs e = new KeyEventArgs(keyData);
+                    KeyEventArgs e = new(keyData);
                     KeyUp(this, e);
                     handled = handled || e.Handled;
                 }

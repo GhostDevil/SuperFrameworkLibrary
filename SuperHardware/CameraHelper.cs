@@ -70,7 +70,7 @@ namespace SuperFramework.SuperHardware
 
                 capPreview(lwndC, true);
                 capOverlay(lwndC, true);
-                AviCapture.BITMAPINFO bitmapinfo = new AviCapture.BITMAPINFO();
+                AviCapture.BITMAPINFO bitmapinfo = new();
                 bitmapinfo.bmiHeader.biSize = SuperFramework.SuperHardware.AviCapture.SizeOf(bitmapinfo.bmiHeader);
                 bitmapinfo.bmiHeader.biWidth = mWidth;
                 bitmapinfo.bmiHeader.biHeight = mHeight;
@@ -114,7 +114,7 @@ namespace SuperFramework.SuperHardware
         /// </summary>
         public void SetCaptureSource()
         {
-            AviCapture.CAPDRIVERCAPS caps = new AviCapture.CAPDRIVERCAPS();
+            AviCapture.CAPDRIVERCAPS caps = new();
             SuperFramework.SuperHardware.AviCapture.SendMessage(lwndC, SuperFramework.SuperHardware.AviCapture.WM_CAP_GET_CAPS, SuperFramework.SuperHardware.AviCapture.SizeOf(caps), ref caps);
             if (caps.fHasDlgVideoSource)
             {
@@ -129,7 +129,7 @@ namespace SuperFramework.SuperHardware
         /// </summary>
         public void SetCaptureFormat()
         {
-            AviCapture.CAPDRIVERCAPS caps = new AviCapture.CAPDRIVERCAPS();
+            AviCapture.CAPDRIVERCAPS caps = new();
             SuperFramework.SuperHardware.AviCapture.SendMessage(lwndC, SuperFramework.SuperHardware.AviCapture.WM_CAP_GET_CAPS, SuperFramework.SuperHardware.AviCapture.SizeOf(caps), ref caps);
             if (caps.fHasDlgVideoSource)
             {
@@ -171,7 +171,7 @@ namespace SuperFramework.SuperHardware
 
         private void FrameCallBack(IntPtr lwnd, IntPtr lpVHdr)
         {
-            AviCapture.VIDEOHDR videoHeader = new AviCapture.VIDEOHDR();
+            AviCapture.VIDEOHDR videoHeader = new();
             byte[] VideoData;
             videoHeader = (AviCapture.VIDEOHDR)SuperFramework.SuperHardware.AviCapture.GetStructure(lpVHdr, videoHeader);
             VideoData = new byte[videoHeader.dwBytesUsed];

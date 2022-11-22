@@ -54,11 +54,11 @@ namespace SuperFramework.SuperTorrent
         {
             string[] sortedFileName = TorrentUtility.OrdinalSortStringArray(fileName);
             // 1. create the torrent tree
-            BenDictionary root = new BenDictionary();
+            BenDictionary root = new();
             // 1.1 announce URL
             root.Add("announce",new BenStringFormString(announceUrl));
             // 1.2 info block
-            BenDictionary info = new BenDictionary();
+            BenDictionary info = new();
             // 1.2.1 name
             bool IsDirectory = !string.IsNullOrEmpty(torrentDirectoryName);
             string strNameValue;
@@ -71,14 +71,14 @@ namespace SuperFramework.SuperTorrent
                 strNameValue = Path.GetFileName(sortedFileName[0]);
             }
             BenStringFormString nameValue = 
-                new BenStringFormString(strNameValue);
+                new(strNameValue);
             info.Add("name", nameValue);
             // 1.2.2 piece length
-            BenInt pieceLength = new BenInt(1024 * 1024);
+            BenInt pieceLength = new(1024 * 1024);
             info.Add("piece length", pieceLength);
             // 1.2.3 pieces
             BenBinaryFormString pieces =
-                new BenBinaryFormString(Get1MBasedHashFromFiles(sortedFileName));
+                new(Get1MBasedHashFromFiles(sortedFileName));
             info.Add("pieces", pieces);
             // 1.2.4 single file
             if (IsDirectory)
@@ -89,14 +89,14 @@ namespace SuperFramework.SuperTorrent
             else
             {
                 BenInt length =
-                    new BenInt(
+                    new(
                     TorrentUtility.GetFileLength(sortedFileName[0])
                     );
                 info.Add("length", length);
             }
             root.Add("info", info);
             // 2. write to the file
-            using (FileStream torrentFileStream = new FileStream(torrentFileName,
+            using (FileStream torrentFileStream = new(torrentFileName,
                 FileMode.Create, FileAccess.Write))
             {
                 byte[] torrentFileByte = root.ToByteArray();
@@ -108,11 +108,11 @@ namespace SuperFramework.SuperTorrent
         static private byte[] Get1MBasedHashFromFiles(string[] fileName)
         {
             const int blockSize = 1024 * 1024;
-            List<byte> hashList = new List<byte>();
+            List<byte> hashList = new();
             SHA1 sha1 = SHA1.Create();
             byte[] hash;
             FileBlockReader blockReader =
-                new FileBlockReader(fileName, blockSize);
+                new(fileName, blockSize);
             byte[] buffer = new byte[blockSize];
             while (!blockReader.EOF)
             {
@@ -127,17 +127,17 @@ namespace SuperFramework.SuperTorrent
 
         static BenList GetFilesBlock(string[] fileName)
         {
-            BenList files = new BenList();
+            BenList files = new();
             foreach (string file in fileName)
             {
                 BenDictionary fileEntry =
-                    new BenDictionary();
+                    new();
                 // 1. length
                 BenInt length = 
-                    new BenInt(TorrentUtility.GetFileLength(file));
+                    new(TorrentUtility.GetFileLength(file));
                 fileEntry.Add("length", length);
                 // 2. path
-                BenList path = new BenList();
+                BenList path = new();
                 string fileNameSegment = Path.GetFileName(file);
                 path.Add(new BenStringFormString(fileNameSegment));
                 fileEntry.Add("path", path);

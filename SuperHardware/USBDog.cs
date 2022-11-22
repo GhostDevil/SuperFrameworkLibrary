@@ -14,7 +14,7 @@ namespace SuperFramework.SuperHardware
     /// </summary>
     public class USBDog
     {
-        static XuKe myxuke = new XuKe();
+        static XuKe myxuke = new();
         /// <summary>
         /// 检查许可，加密狗授权
         /// </summary>
@@ -263,7 +263,7 @@ namespace SuperFramework.SuperHardware
             public string GetInfo()
             {
                 string cpuInfo = "";//cpu序列号
-                ManagementClass cimobject = new ManagementClass("Win32_Processor");
+                ManagementClass cimobject = new("Win32_Processor");
                 ManagementObjectCollection moc = cimobject.GetInstances();
                 foreach (ManagementObject mo in moc)
                 {
@@ -275,7 +275,7 @@ namespace SuperFramework.SuperHardware
                 byte[] getjg = mymd5.ComputeHash(getmd5);
                 cpuInfo = BitConverter.ToString(getjg).Replace("-", "");
                 cpuInfo = cpuInfo.Replace("A", "-");
-                ManagementClass cimobject1 = new ManagementClass("Win32_DiskDrive");
+                ManagementClass cimobject1 = new("Win32_DiskDrive");
                 ManagementObjectCollection moc1 = cimobject1.GetInstances();
                 foreach (ManagementObject mo in moc1)
                 {
@@ -335,9 +335,9 @@ namespace SuperFramework.SuperHardware
             /// <param name="UsbKey">usb key</param>
             public void WriteConfigFile(string Filepath, string Mystr24, string QSTime33, string JSTime39, string UsbKey)
             {
-                FileStream fs = new FileStream(@Filepath, FileMode.OpenOrCreate);
+                FileStream fs = new(@Filepath, FileMode.OpenOrCreate);
                 fs.Close();
-                StreamWriter sw = new StreamWriter(@Filepath);
+                StreamWriter sw = new(@Filepath);
                 string stb = "";
                 stb = stb + "[info]" + Encrypt(UsbKey) + "\n";
                 stb = stb + "drivername=MSSGTHRSVC" + "\n";
@@ -420,7 +420,7 @@ namespace SuperFramework.SuperHardware
                 string ConfigContents = "";
                 try
                 {
-                    StreamReader sr = new StreamReader(@Filepath);
+                    StreamReader sr = new(@Filepath);
                     string str = SKeyDecrypt(sr.ReadToEnd());
                     string str1 = BUDecrypt(str);
                     string str2 = DESDecrypt(str1);
@@ -443,7 +443,7 @@ namespace SuperFramework.SuperHardware
             {
                 string[] diskArray;
                 string driveNumber;
-                List<string> _serialNumber = new List<string>();
+                List<string> _serialNumber = new();
                 var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_LogicalDiskToPartition");
                 foreach (ManagementObject dm in searcher.Get())
                 {
@@ -580,11 +580,11 @@ namespace SuperFramework.SuperHardware
             public string RijndaelEncrypt(string Source)
             {
                 byte[] bytIn = UTF8Encoding.UTF8.GetBytes(Source);
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = new();
                 mobjCryptoService.Key = GetLegalKey();
                 mobjCryptoService.IV = GetLegalIV();
                 ICryptoTransform encrypto = mobjCryptoService.CreateEncryptor();
-                CryptoStream cs = new CryptoStream(ms, encrypto, CryptoStreamMode.Write);
+                CryptoStream cs = new(ms, encrypto, CryptoStreamMode.Write);
                 cs.Write(bytIn, 0, bytIn.Length);
                 cs.FlushFinalBlock();
                 ms.Close();
@@ -602,12 +602,12 @@ namespace SuperFramework.SuperHardware
                 try
                 {
                     byte[] bytIn = Convert.FromBase64String(Source);
-                    MemoryStream ms = new MemoryStream(bytIn, 0, bytIn.Length);
+                    MemoryStream ms = new(bytIn, 0, bytIn.Length);
                     mobjCryptoService.Key = GetLegalKey();
                     mobjCryptoService.IV = GetLegalIV();
                     ICryptoTransform encrypto = mobjCryptoService.CreateDecryptor();
-                    CryptoStream cs = new CryptoStream(ms, encrypto, CryptoStreamMode.Read);
-                    StreamReader sr = new StreamReader(cs);
+                    CryptoStream cs = new(ms, encrypto, CryptoStreamMode.Read);
+                    StreamReader sr = new(cs);
                     return sr.ReadToEnd();
                 }
                 catch (Exception ex)
@@ -662,8 +662,8 @@ namespace SuperFramework.SuperHardware
                 {
                     DES des = DES.Create();
                     byte[] inputByteArray = Encoding.UTF8.GetBytes(strText);
-                    MemoryStream ms = new MemoryStream();
-                    CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(byKey64, Iv64), CryptoStreamMode.Write);
+                    MemoryStream ms = new();
+                    CryptoStream cs = new(ms, des.CreateEncryptor(byKey64, Iv64), CryptoStreamMode.Write);
                     cs.Write(inputByteArray, 0, inputByteArray.Length);
                     cs.FlushFinalBlock();
                     return Convert.ToBase64String(ms.ToArray());
@@ -682,8 +682,8 @@ namespace SuperFramework.SuperHardware
                 {
                     DES des = DES.Create();
                     inputByteArray = Convert.FromBase64String(strText);
-                    MemoryStream ms = new MemoryStream();
-                    CryptoStream cs = new CryptoStream(ms, des.CreateDecryptor(byKey64, Iv64), CryptoStreamMode.Write);
+                    MemoryStream ms = new();
+                    CryptoStream cs = new(ms, des.CreateDecryptor(byKey64, Iv64), CryptoStreamMode.Write);
                     cs.Write(inputByteArray, 0, inputByteArray.Length);
                     cs.FlushFinalBlock();
                     Encoding encoding = System.Text.Encoding.UTF8;
@@ -718,8 +718,8 @@ namespace SuperFramework.SuperHardware
                 sa.Key = key;
                 sa.Mode = CipherMode.ECB;
                 sa.Padding = PaddingMode.Zeros;
-                MemoryStream ms = new MemoryStream();
-                CryptoStream cs = new CryptoStream(ms, sa.CreateEncryptor(), CryptoStreamMode.Write);
+                MemoryStream ms = new();
+                CryptoStream cs = new(ms, sa.CreateEncryptor(), CryptoStreamMode.Write);
                 byte[] byt = Encoding.Unicode.GetBytes(strSource);
                 cs.Write(byt, 0, byt.Length);
                 cs.FlushFinalBlock();
@@ -748,9 +748,9 @@ namespace SuperFramework.SuperHardware
                     sa.Padding = PaddingMode.Zeros;
                     ICryptoTransform ct = sa.CreateDecryptor();
                     byte[] byt = Convert.FromBase64String(strSource);
-                    MemoryStream ms = new MemoryStream(byt);
-                    CryptoStream cs = new CryptoStream(ms, ct, CryptoStreamMode.Read);
-                    StreamReader sr = new StreamReader(cs, Encoding.Unicode);
+                    MemoryStream ms = new(byt);
+                    CryptoStream cs = new(ms, ct, CryptoStreamMode.Read);
+                    StreamReader sr = new(cs, Encoding.Unicode);
                     return sr.ReadToEnd();
                 }
                 catch (Exception ex)
@@ -811,7 +811,7 @@ namespace SuperFramework.SuperHardware
             {
                 MD5 md5Hasher = MD5.Create();
                 byte[] data = md5Hasher.ComputeHash(Encoding.Default.GetBytes(input));
-                StringBuilder sBuilder = new StringBuilder();
+                StringBuilder sBuilder = new();
                 for (int i = 0; i < data.Length; i++)
                     sBuilder.Append(data[i].ToString("x2"));
                 return sBuilder.ToString();

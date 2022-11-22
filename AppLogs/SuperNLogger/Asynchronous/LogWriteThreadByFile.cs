@@ -28,8 +28,10 @@ namespace SuperFramework.SuperNLogger.Asynchronous
         {
             _filename_full = filename_full;
             _queue_contents = Queue.Synchronized(new Queue(512));
-            _thread = new Thread(WriteLogContents);
-            _thread.IsBackground = NLogger.GetInstance().THREAD_IS_BACKGROUD;
+            _thread = new Thread(WriteLogContents)
+            {
+                IsBackground = NLogger.GetInstance().THREAD_IS_BACKGROUD
+            };
             _thread.Start();
             if (NLogger.GetInstance().LOG_THREAD_WAIT > 0)
             {
@@ -64,7 +66,7 @@ namespace SuperFramework.SuperNLogger.Asynchronous
                     LogEntity entity = QUEUE_CONTENTS.Dequeue() as LogEntity;
                     if (entity != null)
                     {
-                        FileInfo fi = new FileInfo(FILENAME_FULL);
+                        FileInfo fi = new(FILENAME_FULL);
                         if (fi.Exists)
                         {
                             //1M = 1*1024*1024=1048576

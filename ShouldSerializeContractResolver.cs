@@ -8,7 +8,7 @@ namespace SuperFramework
 {
     public class ShouldSerializeContractResolver : DefaultContractResolver
     {
-        public static readonly ShouldSerializeContractResolver Instance = new ShouldSerializeContractResolver();
+        public static readonly ShouldSerializeContractResolver Instance = new();
 
         protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
         {
@@ -27,7 +27,7 @@ namespace SuperFramework
                 // Do not include zero DateTime
                 property.ShouldSerialize = instance =>
                 {
-                    return Convert.ToDateTime(instance.GetType().GetProperty(member.Name).GetValue(instance, null)) != default(DateTime);
+                    return Convert.ToDateTime(instance.GetType().GetProperty(member.Name).GetValue(instance, null)) != default;
                 };
             }
             else if (typeof(IEnumerable).IsAssignableFrom(property.PropertyType))

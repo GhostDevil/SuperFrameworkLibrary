@@ -5,7 +5,8 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Text.Json;
+using Newtonsoft.Json;
+
 namespace SuperFramework.SuperHost
 {
     public static class ContextType
@@ -52,8 +53,8 @@ namespace SuperFramework.SuperHost
 
     public class HttpHost : SafeObject
     {
-        private HttpListener _listener = new HttpListener();
-        private Dictionary<string, Type> _controllers = new Dictionary<string, Type>();
+        private HttpListener _listener = new();
+        private Dictionary<string, Type> _controllers = new();
 
         public HttpHost()
         {
@@ -136,7 +137,7 @@ namespace SuperFramework.SuperHost
 
                                 if (context.Request.ContentType == ContextType.APPLICATION_JSON) // json数据体
                                 {
-                                    Dictionary<string, object> dic = JsonSerializer.Deserialize<Dictionary<string, object>>(text);
+                                    Dictionary<string, object> dic = JsonConvert.DeserializeObject<Dictionary<string, object>>(text);
                                     for (int i = 0; i < arguments.Length; i++)
                                     {
                                         var qKey = dic.Keys.FirstOrDefault(q => q.Equals(arguments[i].Name, StringComparison.CurrentCultureIgnoreCase));
@@ -174,25 +175,25 @@ namespace SuperFramework.SuperHost
                                 var result = method.Invoke(controller, args);
                                 if (result != null)
                                 {
-                                    writer.Write(JsonSerializer.Serialize(result));
+                                    writer.Write(JsonConvert.SerializeObject(result));
                                 }
                             }
                             else
                             {
                                 context.Response.StatusCode = 404;
-                                writer.Write(JsonSerializer.Serialize("Service NotFound!"));
+                                writer.Write(JsonConvert.SerializeObject("Service NotFound!"));
                             }
                         }
                         else
                         {
                             context.Response.StatusCode = 404;
-                            writer.Write(JsonSerializer.Serialize("Service NotFound!"));
+                            writer.Write(JsonConvert.SerializeObject("Service NotFound!"));
                         }
                     }
                     catch (Exception e)
                     {
                         context.Response.StatusCode = 500;
-                        writer.Write(JsonSerializer.Serialize($"Service ERROR! ({e.Message})"));
+                        writer.Write(JsonConvert.SerializeObject($"Service ERROR! ({e.Message})"));
                     }
                 }
             }

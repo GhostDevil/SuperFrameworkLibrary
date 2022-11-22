@@ -30,8 +30,8 @@ namespace SuperFramework.SuperEncrypt
             byte[] btData = Encoding.Default.GetBytes(str);
             int j, k, m;
             int len = randStr.Length;
-            StringBuilder sb = new StringBuilder();
-            Random rand = new Random();
+            StringBuilder sb = new();
+            Random rand = new();
             for (int i = 0; i < btData.Length; i++)
             {
                 j = (byte)rand.Next(6);
@@ -171,7 +171,7 @@ namespace SuperFramework.SuperEncrypt
             // 输入字符串转换为字节数组，计算哈希值。
             byte[] data = md5Hasher.ComputeHash(Encoding.Default.GetBytes(str));
             // 创建一个新的StringBuilder收集字节，创建一个字符串。
-            StringBuilder sBuilder = new StringBuilder();
+            StringBuilder sBuilder = new();
             // 通过散列数据的每个字节循环
             // 并格式化每一个作为十六进制字符串
             for (int i = 0; i < data.Length; i++)
@@ -191,14 +191,14 @@ namespace SuperFramework.SuperEncrypt
         {
             try
             {
-                using (FileStream get_file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (FileStream get_file = new(path, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     // 建立MD5对象的一个新实例.
                     MD5 md5Hasher = MD5.Create();
                     // 输入字符串转换为字节数组，计算哈希值。
                     byte[] data = md5Hasher.ComputeHash(get_file);
                     // 创建一个新的StringBuilder收集字节，创建一个字符串。
-                    StringBuilder sBuilder = new StringBuilder();
+                    StringBuilder sBuilder = new();
                     // 通过散列数据的每个字节循环
                     // 并格式化每一个作为十六进制字符串
                     for (int i = 0; i < data.Length; i++)
@@ -224,7 +224,7 @@ namespace SuperFramework.SuperEncrypt
             // 输入字符串转换为字节数组，计算哈希值。
             byte[] data = algorithm.ComputeHash(Encoding.Default.GetBytes(str));
             // 创建一个新的StringBuilder收集字节，创建一个字符串。
-            StringBuilder sBuilder = new StringBuilder();
+            StringBuilder sBuilder = new();
             // 通过散列数据的每个字节循环
             // 并格式化每一个作为十六进制字符串
             for (int i = 0; i < data.Length; i++)
@@ -246,14 +246,14 @@ namespace SuperFramework.SuperEncrypt
             {
                 if (!System.IO.File.Exists(path))
                     return string.Empty;
-                using (FileStream get_file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (FileStream get_file = new(path, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     // 建立HashAlgorithm对象的一个新实例.
                     HashAlgorithm algorithm = SHA1.Create();
                     // 输入字符串转换为字节数组，计算哈希值。
                     byte[] data = algorithm.ComputeHash(get_file);
                     // 创建一个新的StringBuilder收集字节，创建一个字符串。
-                    StringBuilder sBuilder = new StringBuilder();
+                    StringBuilder sBuilder = new();
                     // 通过散列数据的每个字节循环
                     // 并格式化每一个作为十六进制字符串
                     for (int i = 0; i < data.Length; i++)

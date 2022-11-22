@@ -133,7 +133,7 @@ namespace SuperFramework
         {
             dpix = 0;
             dpiy = 0;
-            using (System.Management.ManagementClass mc = new System.Management.ManagementClass("Win32_DesktopMonitor"))
+            using (System.Management.ManagementClass mc = new("Win32_DesktopMonitor"))
             {
                 using (System.Management.ManagementObjectCollection moc = mc.GetInstances())
                 {

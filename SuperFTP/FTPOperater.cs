@@ -134,10 +134,10 @@ namespace SuperFramework.SuperFTP
             path = path.Substring(0, path.LastIndexOf("\\"));
             try
             {
-                FileStream fsFile = new FileStream(ftpFolder + "\\" + ftpFileName, FileMode.Open);
-                FileStream fsFileWrite = new FileStream(localFolder + "\\" + localFileName, FileMode.Create);
-                StreamReader sr = new StreamReader(fsFile);
-                StreamWriter sw = new StreamWriter(fsFileWrite);
+                FileStream fsFile = new(ftpFolder + "\\" + ftpFileName, FileMode.Open);
+                FileStream fsFileWrite = new(localFolder + "\\" + localFileName, FileMode.Create);
+                StreamReader sr = new(fsFile);
+                StreamWriter sw = new(fsFileWrite);
                 sr.BaseStream.Seek(0, SeekOrigin.Begin);
                 while (sr.Peek() > -1)
                 {
@@ -341,7 +341,7 @@ namespace SuperFramework.SuperFTP
         /// </summary>
         public FTPClient GetFtpClient()
         {
-            FTPClient ft = new FTPClient() { RemoteHost = Server, RemoteUser = User, RemotePass = Pass };
+            FTPClient ft = new() { RemoteHost = Server, RemoteUser = User, RemotePass = Pass };
             return ft;
         }
     }

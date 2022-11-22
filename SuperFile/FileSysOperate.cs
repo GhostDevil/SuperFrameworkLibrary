@@ -120,7 +120,7 @@ namespace SuperFramework.SuperFile
         /// <returns>操作执行结果标识，删除文件成功返回0，否则，返回错误代码</returns>
         private static int ToDelete(string fileName, ref string errorMsg, bool toRecycle = true, bool showDialog = false, bool showProgress = true)
         {
-            SHFILEOPSTRUCT lpFileOp = new SHFILEOPSTRUCT() { wFunc = wFunc.FO_DELETE, pFrom = fileName + "\0" /*将文件名以结尾字符"\0"结束*/, fFlags = FILEOP_FLAGS.FOF_NOERRORUI };
+            SHFILEOPSTRUCT lpFileOp = new() { wFunc = wFunc.FO_DELETE, pFrom = fileName + "\0" /*将文件名以结尾字符"\0"结束*/, fFlags = FILEOP_FLAGS.FOF_NOERRORUI };
             if (toRecycle)
                 lpFileOp.fFlags |= FILEOP_FLAGS.FOF_ALLOWUNDO;  //设定删除到回收站
             if (!showDialog)
@@ -280,7 +280,7 @@ namespace SuperFramework.SuperFile
         /// <returns>返回移动操作是否成功的标识，成功返回0，失败返回错误代码</returns>
         private static int ToMoveOrCopy(wFunc flag, string sourceFileName, string destinationFileName, ref string errorMsg, bool showDialog=false, bool showProgress=true, bool autoRename=false)
         {
-            SHFILEOPSTRUCT lpFileOp = new SHFILEOPSTRUCT() { wFunc = flag, pFrom = sourceFileName + "\0" /*将文件名以结尾字符"\0\0"结束*/, pTo = destinationFileName + "\0\0", fFlags = FILEOP_FLAGS.FOF_NOERRORUI };
+            SHFILEOPSTRUCT lpFileOp = new() { wFunc = flag, pFrom = sourceFileName + "\0" /*将文件名以结尾字符"\0\0"结束*/, pTo = destinationFileName + "\0\0", fFlags = FILEOP_FLAGS.FOF_NOERRORUI };
             lpFileOp.fFlags |= FILEOP_FLAGS.FOF_NOCONFIRMMKDIR; //指定在需要时可以直接创建路径
             if (!showDialog)
                 lpFileOp.fFlags |= FILEOP_FLAGS.FOF_NOCONFIRMATION;     //设定不显示提示对话框
@@ -313,12 +313,14 @@ namespace SuperFramework.SuperFile
 
             try
             {
-                SHFILEOPSTRUCT lpFileOp = new SHFILEOPSTRUCT();
-                lpFileOp.wFunc = wFunc.FO_RENAME;
-                lpFileOp.pFrom = FileHelper.GetFullName(sourceFileName) + "\0\0";         //将文件名以结尾字符"\0\0"结束
-                lpFileOp.pTo = FileHelper.GetFullName(destinationFileName) + "\0\0";
+                SHFILEOPSTRUCT lpFileOp = new()
+                {
+                    wFunc = wFunc.FO_RENAME,
+                    pFrom = FileHelper.GetFullName(sourceFileName) + "\0\0",         //将文件名以结尾字符"\0\0"结束
+                    pTo = FileHelper.GetFullName(destinationFileName) + "\0\0",
 
-                lpFileOp.fFlags = FILEOP_FLAGS.FOF_NOERRORUI;
+                    fFlags = FILEOP_FLAGS.FOF_NOERRORUI
+                };
                 if (!showDialog)
                     lpFileOp.fFlags |= FILEOP_FLAGS.FOF_NOCONFIRMATION;     //设定不显示提示对话框
 

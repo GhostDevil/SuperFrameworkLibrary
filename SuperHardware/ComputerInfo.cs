@@ -51,9 +51,11 @@ namespace SuperFramework.SuperHardware
         /// <returns>返回系统日志</returns>
         public StringBuilder GetSystemLog()
         {
-            StringBuilder sb = new StringBuilder();
-            EventLog mylog = new EventLog();
-            mylog.Log = "Application";  // System[系统日志] | Application[应用日志] | Security[安全日志]
+            StringBuilder sb = new();
+            EventLog mylog = new()
+            {
+                Log = "Application"  // System[系统日志] | Application[应用日志] | Security[安全日志]
+            };
             EventLogEntryCollection myCollection = mylog.Entries;
             for (int i = 0; i < myCollection.Count; i++)
             {
@@ -75,7 +77,7 @@ namespace SuperFramework.SuperHardware
             int tickDay = tickSecond / 60 / 24;
             int tickHour = (tickSecond / 60) % 24;
             int tickMinute = tickSecond % 60;
-            TimeSpan ts = new TimeSpan(tickDay, tickHour, tickMinute, tickMinute, tickSecond);
+            TimeSpan ts = new(tickDay, tickHour, tickMinute, tickMinute, tickSecond);
             //String runTime = String.Format("{0} 天 {1} 小时 {2} 分", tickDay, tickHour, tickMinute);
             return ts;
         }
@@ -89,7 +91,7 @@ namespace SuperFramework.SuperHardware
             int tickDay = tickSecond / 60 / 24;
             int tickHour = (tickSecond / 60) % 24;
             int tickMinute = tickSecond % 60;
-            TimeSpan ts = new TimeSpan(tickDay, tickHour, tickMinute, tickMinute, tickSecond);
+            TimeSpan ts = new(tickDay, tickHour, tickMinute, tickMinute, tickSecond);
             return string.Format("{0} 天 {1} 小时 {2} 分", tickDay, tickHour, tickMinute);
           
         }
@@ -128,7 +130,7 @@ namespace SuperFramework.SuperHardware
             {
                 //获取CPU序列号代码   
                 string cpuInfo = "";//cpu序列号   
-                ManagementClass mc = new ManagementClass("Win32_Processor");
+                ManagementClass mc = new("Win32_Processor");
                 ManagementObjectCollection moc = mc.GetInstances();
                 foreach (ManagementObject mo in moc)
                 {
@@ -156,7 +158,7 @@ namespace SuperFramework.SuperHardware
             {
                 //获取网卡硬件地址   
                 string mac = "";
-                ManagementClass mc = new ManagementClass("Win32_NetworkAdapterConfiguration");
+                ManagementClass mc = new("Win32_NetworkAdapterConfiguration");
                 ManagementObjectCollection moc = mc.GetInstances();
                 foreach (ManagementObject mo in moc)
                 {
@@ -215,7 +217,7 @@ namespace SuperFramework.SuperHardware
             {
                 //获取IP地址   
                 string st = "";
-                ManagementClass mc = new ManagementClass("Win32_NetworkAdapterConfiguration");
+                ManagementClass mc = new("Win32_NetworkAdapterConfiguration");
                 ManagementObjectCollection moc = mc.GetInstances();
                 foreach (ManagementObject mo in moc)
                 {
@@ -249,7 +251,7 @@ namespace SuperFramework.SuperHardware
             {
                 //获取硬盘ID   
                 string HDid = "";
-                ManagementClass mc = new ManagementClass("Win32_DiskDrive");
+                ManagementClass mc = new("Win32_DiskDrive");
                 ManagementObjectCollection moc = mc.GetInstances();
                 foreach (ManagementObject mo in moc)
                 {
@@ -276,7 +278,7 @@ namespace SuperFramework.SuperHardware
             try
             {
                 string st = "";
-                ManagementClass mc = new ManagementClass("Win32_ComputerSystem");
+                ManagementClass mc = new("Win32_ComputerSystem");
                 ManagementObjectCollection moc = mc.GetInstances();
                 foreach (ManagementObject mo in moc)
                 {
@@ -303,7 +305,7 @@ namespace SuperFramework.SuperHardware
             try
             {
                 string st = "";
-                ManagementClass mc = new ManagementClass("Win32_ComputerSystem");
+                ManagementClass mc = new("Win32_ComputerSystem");
                 ManagementObjectCollection moc = mc.GetInstances();
                 foreach (ManagementObject mo in moc)
                 {
@@ -330,7 +332,7 @@ namespace SuperFramework.SuperHardware
             try
             {
                 string st = "";
-                ManagementClass mc = new ManagementClass("Win32_ComputerSystem");
+                ManagementClass mc = new("Win32_ComputerSystem");
                 ManagementObjectCollection moc = mc.GetInstances();
                 foreach (ManagementObject mo in moc)
                 {

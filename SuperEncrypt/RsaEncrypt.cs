@@ -19,8 +19,8 @@ namespace SuperFramework.SuperEncrypt
         /// <returns>Dictionary(密匙类型，密匙值)</returns>
         public static Dictionary<string, string> GetRSCKey()
         {
-            Dictionary<string, string> key = new Dictionary<string, string>();
-            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
+            Dictionary<string, string> key = new();
+            RSACryptoServiceProvider rsa = new();
             string publicKey = rsa.ToXmlString(false);//公钥
             string privateKey = rsa.ToXmlString(true);//密钥
             key.Add("PublicKey", publicKey);
@@ -38,7 +38,7 @@ namespace SuperFramework.SuperEncrypt
         /// <returns>加密后的字符串</returns>
         public static string EncryptByRSA(string source, string xmlPublicKey)
         {
-            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
+            RSACryptoServiceProvider rsa = new();
             rsa.FromXmlString(xmlPublicKey);
             byte[] done = rsa.Encrypt(Convert.FromBase64String(source), false);
             return Convert.ToBase64String(done);
@@ -55,7 +55,7 @@ namespace SuperFramework.SuperEncrypt
         /// <returns>解密后的字符串</returns>
         public static string DecryptByRSA(string source, string xmlPrivateKey)
         {
-            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
+            RSACryptoServiceProvider rsa = new();
             rsa.FromXmlString(xmlPrivateKey);
             byte[] done = rsa.Decrypt(Convert.FromBase64String(source), false);
             return Convert.ToBase64String(done);
@@ -71,7 +71,7 @@ namespace SuperFramework.SuperEncrypt
         /// <returns></returns>
         public static byte[] EncryptByRSA(byte[] source, string xmlPublicKey)
         {
-            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
+            RSACryptoServiceProvider rsa = new();
             rsa.FromXmlString(xmlPublicKey);
             return rsa.Encrypt(source, false);
         }
@@ -86,7 +86,7 @@ namespace SuperFramework.SuperEncrypt
         /// <returns>返回解密后的数组</returns>
         public static byte[] DecryptByRSA(byte[] source, string xmlPrivateKey)
         {
-            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
+            RSACryptoServiceProvider rsa = new();
             rsa.FromXmlString(xmlPrivateKey);
             return rsa.Decrypt(source, false);
         }
@@ -105,10 +105,10 @@ namespace SuperFramework.SuperEncrypt
             bool state;
             try
             {
-                RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
+                RSACryptoServiceProvider rsa = new();
                 rsa.FromXmlString(xmlPublicKey);
-                FileStream fin = new FileStream(inFileName, FileMode.Open, FileAccess.Read);
-                FileStream fout = new FileStream(outFileName, FileMode.OpenOrCreate, FileAccess.Write);
+                FileStream fin = new(inFileName, FileMode.Open, FileAccess.Read);
+                FileStream fout = new(outFileName, FileMode.OpenOrCreate, FileAccess.Write);
                 fout.SetLength(0);
                 byte[] bin = new byte[1000];
                 long rdlen = 0;
@@ -143,10 +143,10 @@ namespace SuperFramework.SuperEncrypt
             bool state;
             try
             {
-                RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
+                RSACryptoServiceProvider rsa = new();
                 rsa.FromXmlString(xmlPrivateKey);
-                FileStream fin = new FileStream(inFileName, FileMode.Open, FileAccess.Read);
-                FileStream fout = new FileStream(outFileName, FileMode.OpenOrCreate, FileAccess.Write);
+                FileStream fin = new(inFileName, FileMode.Open, FileAccess.Read);
+                FileStream fout = new(outFileName, FileMode.OpenOrCreate, FileAccess.Write);
                 fout.SetLength(0);
                 byte[] bin = new byte[1000];
                 long rdlen = 0;

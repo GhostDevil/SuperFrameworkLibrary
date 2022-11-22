@@ -1,5 +1,6 @@
-﻿#if !NET6_0_OR_GREATER && !NET6_0
-using OpenHardwareMonitor.Hardware;
+﻿
+
+using LibreHardwareMonitor.Hardware;
 
 namespace SuperFramework.SuperHardware
 {
@@ -75,4 +76,3 @@ namespace SuperFramework.SuperHardware
 
     }
 }
-#endif

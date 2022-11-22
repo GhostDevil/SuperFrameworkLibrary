@@ -27,7 +27,7 @@ namespace SuperFramework.SuperConvert
         /// <returns></returns>
         public static List<string> DifferenceList(string[] str1, string[] str2)
         {
-            List<string> strs = new List<string>();
+            List<string> strs = new();
             if (str1 != null && str2 != null)
             {
                 int length1 = str1.Length;
@@ -54,7 +54,7 @@ namespace SuperFramework.SuperConvert
         /// <returns>键值对数组字典</returns> 
         public static Dictionary<string, List<Dictionary<string, object>>> DataSetToDic(DataSet ds)
         {
-            Dictionary<string, List<Dictionary<string, object>>> result = new Dictionary<string, List<Dictionary<string, object>>>();
+            Dictionary<string, List<Dictionary<string, object>>> result = new();
             foreach (DataTable dt in ds.Tables)
                 result.Add(dt.TableName, DataTableToList(dt));
             return result;
@@ -71,10 +71,10 @@ namespace SuperFramework.SuperConvert
         /// <returns>哈希表数组</returns> 
         private static List<Dictionary<string, object>> DataTableToList(DataTable dt)
         {
-            List<Dictionary<string, object>> list = new List<Dictionary<string, object>>();
+            List<Dictionary<string, object>> list = new();
             foreach (DataRow dr in dt.Rows)
             {
-                Dictionary<string, object> dic = new Dictionary<string, object>();
+                Dictionary<string, object> dic = new();
                 foreach (DataColumn dc in dt.Columns)
                 {
                     dic.Add(dc.ColumnName, dr[dc.ColumnName]);
@@ -93,7 +93,7 @@ namespace SuperFramework.SuperConvert
         /// <returns>转换后的拼音字符串</returns>
         public static string ConvertCh(string chstr)
         {
-            Regex reg = new Regex("^[\u4e00-\u9fa5]$");//验证是否输入汉字
+            Regex reg = new("^[\u4e00-\u9fa5]$");//验证是否输入汉字
             byte[] arr = new byte[2];
             string pystr = "";
             int M2;
@@ -472,7 +472,7 @@ namespace SuperFramework.SuperConvert
         /// <returns>返回字符串</returns>
         public static string GetArrayValueStr(Dictionary<int, int> list)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             foreach (KeyValuePair<int, int> kvp in list)
             {
                 sb.Append(kvp.Value + ",");
@@ -519,7 +519,7 @@ namespace SuperFramework.SuperConvert
         /// <param name="list">集合</param>
         public static DataTable IListToDataTable(IList list)
         {
-            DataTable result = new DataTable();
+            DataTable result = new();
             if (list.Count > 0)
             {
                 PropertyInfo[] propertys = list[0].GetType().GetProperties();
@@ -530,7 +530,7 @@ namespace SuperFramework.SuperConvert
 
                 for (int i = 0; i < list.Count; i++)
                 {
-                    ArrayList tempList = new ArrayList();
+                    ArrayList tempList = new();
                     foreach (PropertyInfo pi in propertys)
                     {
                         object obj = pi.GetValue(list[i], null);
@@ -631,7 +631,7 @@ namespace SuperFramework.SuperConvert
             {
                 for (int i = 0; i < collection.Count(); i++)
                 {
-                    ArrayList tempList = new ArrayList();
+                    ArrayList tempList = new();
                     foreach (PropertyInfo pi in props)
                     {
                         object obj = pi.GetValue(collection.ElementAt(i), null);
@@ -653,10 +653,10 @@ namespace SuperFramework.SuperConvert
         /// <returns>数据集(表)</returns>
         public static DataTable ToDataTable<T>(IList<T> list, params string[] propertyName)
         {
-            List<string> propertyNameList = new List<string>();
+            List<string> propertyNameList = new();
             if (propertyName != null) propertyNameList.AddRange(propertyName);
 
-            DataTable result = new DataTable();
+            DataTable result = new();
             if (list.Count > 0)
             {
                 PropertyInfo[] propertys = list[0].GetType().GetProperties();
@@ -674,7 +674,7 @@ namespace SuperFramework.SuperConvert
 
                 for (int i = 0; i < list.Count; i++)
                 {
-                    ArrayList tempList = new ArrayList();
+                    ArrayList tempList = new();
                     foreach (PropertyInfo pi in propertys)
                     {
                         if (propertyNameList.Count == 0)
@@ -731,7 +731,7 @@ namespace SuperFramework.SuperConvert
         {
             if (gbList != null && gbList.Count > 1)
             {
-                List<T> list = new List<T>();
+                List<T> list = new();
                 for (int i = 0; i < gbList.Count; i++)
                 {
                     T temp = gbList[i] as T;
@@ -758,7 +758,7 @@ namespace SuperFramework.SuperConvert
                 return null;
             }
 
-            List<DataRow> rows = new List<DataRow>();
+            List<DataRow> rows = new();
 
             foreach (DataRow row in table.Rows)
             {
@@ -833,12 +833,12 @@ namespace SuperFramework.SuperConvert
         private static List<T> TableToEntity<T>(DataTable dt) where T : class, new()
         {
             Type type = typeof(T);
-            List<T> list = new List<T>();
+            List<T> list = new();
 
             foreach (DataRow row in dt.Rows)
             {
                 PropertyInfo[] pArray = type.GetProperties();
-                T entity = new T();
+                T entity = new();
                 foreach (PropertyInfo p in pArray)
                 {
                     if (row[p.Name] is long)
@@ -885,7 +885,7 @@ namespace SuperFramework.SuperConvert
         /// <returns>返回Ip字符串</returns>
         public static string LongToIP(long longIP)
         {
-            StringBuilder sb = new StringBuilder("");
+            StringBuilder sb = new("");
             sb.Append(longIP >> 24);
             sb.Append(".");
             //将高8位置0，然后右移16为
@@ -1433,7 +1433,7 @@ namespace SuperFramework.SuperConvert
         public static int[] StringsToInts(string[] strs)
         {
             if (strs == null)
-                return new int[] { };
+                return Array.Empty<int>();
             try
             {
                 if (strs.Length > 0)
@@ -1448,9 +1448,9 @@ namespace SuperFramework.SuperConvert
             }
             catch (Exception)
             {
-                return new int[] { };
+                return Array.Empty<int>();
             }
-            return new int[] { };
+            return Array.Empty<int>();
         }
         #endregion
 
@@ -1465,11 +1465,11 @@ namespace SuperFramework.SuperConvert
             try
             {
                 byte[] bytes = Convert.FromBase64String(base64Str);
-                using (MemoryStream stream = new MemoryStream())
+                using (MemoryStream stream = new())
                 {
                     //BinaryFormatter binary = new BinaryFormatter();
                     stream.Write(bytes, 0, bytes.Length);
-                    using (Bitmap bitmap = new Bitmap(stream))
+                    using (Bitmap bitmap = new(stream))
                     {
                         stream.Close();
                         return bitmap;  //(Image)binary.Deserialize(stream);

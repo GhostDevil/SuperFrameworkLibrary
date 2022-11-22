@@ -20,8 +20,8 @@ namespace SuperFramework.SuperConfig.Xml
         /// <param name="item">对象</param>
         public static string XmlSerialize<T>(T item)
         {
-            XmlSerializer serializer = new XmlSerializer(item.GetType());
-            StringBuilder sb = new StringBuilder();
+            XmlSerializer serializer = new(item.GetType());
+            StringBuilder sb = new();
             using (XmlWriter writer = XmlWriter.Create(sb))
             {
                 serializer.Serialize(writer, item);
@@ -43,9 +43,9 @@ namespace SuperFramework.SuperConfig.Xml
         {
             try
             {
-                using (StringReader sr = new StringReader(xml))
+                using (StringReader sr = new(xml))
                 {
-                    XmlSerializer xmldes = new XmlSerializer(type);
+                    XmlSerializer xmldes = new(type);
                     return xmldes.Deserialize(sr);
                 }
             }
@@ -87,9 +87,9 @@ namespace SuperFramework.SuperConfig.Xml
         /// <returns>返回xml字符串</returns>
         public static string XmlSerializer(Type type, object obj)
         {
-            using (MemoryStream Stream = new MemoryStream())
+            using (MemoryStream Stream = new())
             {
-                XmlSerializer xml = new XmlSerializer(type);
+                XmlSerializer xml = new(type);
                 try
                 {
                     //序列化对象
@@ -100,7 +100,7 @@ namespace SuperFramework.SuperConfig.Xml
                     throw;
                 }
                 Stream.Position = 0;
-                using (StreamReader sr = new StreamReader(Stream))
+                using (StreamReader sr = new(Stream))
                 {
                     return sr.ReadToEnd();
                     //sr.Dispose();
@@ -121,14 +121,14 @@ namespace SuperFramework.SuperConfig.Xml
             /* 
             不能转换成Xml不能反序列化成为UTF8XML声明的情况，就是这个原因。
             */
-            XmlWriterSettings xmlSettings = new XmlWriterSettings() { OmitXmlDeclaration = omitXmlDeclaration, Encoding = new UTF8Encoding(false) };
-            using (MemoryStream stream = new MemoryStream())// var writer = new StringWriter();
+            XmlWriterSettings xmlSettings = new() { OmitXmlDeclaration = omitXmlDeclaration, Encoding = new UTF8Encoding(false) };
+            using (MemoryStream stream = new())// var writer = new StringWriter();
             {
                 using (XmlWriter xmlwriter = XmlWriter.Create(stream/*writer*/, xmlSettings))
                 { //这里如果直接写成：Encoding = Encoding.UTF8 会在生成的xml中加入BOM(Byte-order Mark) 信息(Unicode 字节顺序标记) ， 所以new System.Text.UTF8Encoding(false)是最佳方式，省得再做替换的麻烦
-                    XmlSerializerNamespaces xmlns = new XmlSerializerNamespaces();
+                    XmlSerializerNamespaces xmlns = new();
                     xmlns.Add(string.Empty, string.Empty); //在XML序列化时去除默认命名空间xmlns:xsd和xmlns:xsi
-                    XmlSerializer ser = new XmlSerializer(typeof(T));
+                    XmlSerializer ser = new(typeof(T));
                     ser.Serialize(xmlwriter, obj, xmlns);
                     return Encoding.UTF8.GetString(stream.ToArray());//writer.ToString()
                 }
@@ -143,13 +143,13 @@ namespace SuperFramework.SuperConfig.Xml
         /// <param name="removeDefaultNamespace">是否移除默认名称空间(如果对象定义时指定了:XmlRoot(Namespace = "http://www.xxx.com/xsd")则需要传false值进来)</param>
         public static void XmlSerialize<T>(string path, T obj, bool omitXmlDeclaration, bool removeDefaultNamespace)
         {
-            XmlWriterSettings xmlSetings = new XmlWriterSettings() { OmitXmlDeclaration = omitXmlDeclaration };
+            XmlWriterSettings xmlSetings = new() { OmitXmlDeclaration = omitXmlDeclaration };
             using (XmlWriter xmlwriter = XmlWriter.Create(path, xmlSetings))
             {
-                XmlSerializerNamespaces xmlns = new XmlSerializerNamespaces();
+                XmlSerializerNamespaces xmlns = new();
                 if (removeDefaultNamespace)
                     xmlns.Add(string.Empty, string.Empty); //在XML序列化时去除默认命名空间xmlns:xsd和xmlns:xsi
-                XmlSerializer ser = new XmlSerializer(typeof(T));
+                XmlSerializer ser = new(typeof(T));
                 ser.Serialize(xmlwriter, obj, xmlns);
             }
         }
@@ -178,9 +178,9 @@ namespace SuperFramework.SuperConfig.Xml
                     }
                     catch { }
                 }
-                using (FileStream fs = new FileStream(SavePath, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
+                using (FileStream fs = new(SavePath, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
                 {
-                    XmlSerializer serializer = new XmlSerializer(obj.GetType());
+                    XmlSerializer serializer = new(obj.GetType());
                     serializer.Serialize(fs, obj);
                     return true;
                 }
@@ -204,9 +204,9 @@ namespace SuperFramework.SuperConfig.Xml
         {
             try
             {
-                using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (FileStream fs = new(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    XmlSerializer serializer = new XmlSerializer(type);
+                    XmlSerializer serializer = new(type);
                     return serializer.Deserialize(fs);
                 }
             }
@@ -232,8 +232,8 @@ namespace SuperFramework.SuperConfig.Xml
         /// <returns>序列化后类对象</returns>
         public static T ReadXmlFile<T>(string path)
         {
-            XmlSerializer reader = new XmlSerializer(typeof(T));
-            StreamReader file = new StreamReader(path);
+            XmlSerializer reader = new(typeof(T));
+            StreamReader file = new(path);
             return (T)reader.Deserialize(file);
         }
         #endregion
@@ -249,7 +249,7 @@ namespace SuperFramework.SuperConfig.Xml
         public static bool WriteXML<T>(T obj, string xmlPath)
         {
             int i = 0;//控制写入文件的次数，
-            XmlSerializer serializer = new XmlSerializer(obj.GetType());
+            XmlSerializer serializer = new(obj.GetType());
             bool flag;
             while (true)
             {
@@ -260,7 +260,7 @@ namespace SuperFramework.SuperConfig.Xml
                     fs = File.Create(xmlPath);
                     fs.Close();
                     TextWriter writer = new StreamWriter(xmlPath, false, Encoding.UTF8);
-                    XmlSerializerNamespaces xml = new XmlSerializerNamespaces();
+                    XmlSerializerNamespaces xml = new();
                     xml.Add(string.Empty, string.Empty);
                     serializer.Serialize(writer, obj, xml);
                     writer.Flush();
@@ -309,7 +309,7 @@ namespace SuperFramework.SuperConfig.Xml
                     System.Threading.Thread.Sleep(50); //悲观情况下总共最多消耗1/4秒，读取文件
                 }
             }
-            XmlDocument doc = new XmlDocument();
+            XmlDocument doc = new();
             doc.Load(new MemoryStream(bytes));
             if (doc.DocumentElement != null)
                 return (T)new XmlSerializer(typeof(T)).Deserialize(new XmlNodeReader(doc.DocumentElement));
@@ -320,7 +320,7 @@ namespace SuperFramework.SuperConfig.Xml
             byte[] bytes;
             //避免"正由另一进程使用,因此该进程无法访问此文件"造成异常 共享锁 flieShare必须为ReadWrite，
             //但是如果文件不存在的话，还是会出现异常，所以这里不能吃掉任何异常，但是需要考虑到这些问题 
-            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (FileStream fs = new(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 bytes = new byte[fs.Length];
                 int numBytesToRead = (int)fs.Length;

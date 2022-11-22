@@ -93,7 +93,7 @@ namespace SuperFramework.SuperConvert
         /// <returns>返回ASSCII码</returns>
         public static string HexToAscii(string hexString)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             for (int i = 0; i <= hexString.Length - 2; i += 2)
             {
                 sb.Append(
@@ -142,7 +142,7 @@ namespace SuperFramework.SuperConvert
             }
             string z = null;
             int X = Convert.ToInt32(x);
-            Stack a = new Stack();
+            Stack a = new();
             int i = 0;
             while (X > 0)
             {
@@ -194,7 +194,7 @@ namespace SuperFramework.SuperConvert
         /// <returns>返回10进制字符串</returns>
         public static string BinToDec(string x, short iLength)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             int iCount = x.Length / iLength;
             if (x.Length % iLength > 0)
             {
@@ -237,7 +237,7 @@ namespace SuperFramework.SuperConvert
         /// <returns>返回16进制字符串</returns>
         public static string BinToHex(string x, short iLength)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             int iCount = x.Length / iLength;
             if (x.Length % iLength > 0)
             {
@@ -308,7 +308,7 @@ namespace SuperFramework.SuperConvert
                 return "0";
             }
 
-            Stack a = new Stack();
+            Stack a = new();
             int i = 0, j = 0, l = x.Length;
             long Tong = 0;
             while (i < l)
@@ -338,7 +338,7 @@ namespace SuperFramework.SuperConvert
             string hexString = string.Empty;
             if (bytes != null)
             {
-                StringBuilder strB = new StringBuilder();
+                StringBuilder strB = new();
 
                 for (int i = 0; i < bytes.Length; i++)
                 {

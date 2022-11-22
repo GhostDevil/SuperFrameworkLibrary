@@ -21,7 +21,7 @@ namespace SuperFramework.SuperFile
         /// <returns>返回文件的编码类型</returns>
         public static Encoding GetType(string filePath)
         {
-            FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            FileStream fs = new(filePath, FileMode.Open, FileAccess.Read);
             Encoding r = GetType(fs);
             fs.Close();
             return r;
@@ -39,7 +39,7 @@ namespace SuperFramework.SuperFile
             byte[] UTF8 = new byte[] { 0xEF, 0xBB, 0xBF }; //带BOM
             Encoding reVal = Encoding.Default;
 
-            BinaryReader r = new BinaryReader(fs, System.Text.Encoding.Default);
+            BinaryReader r = new(fs, System.Text.Encoding.Default);
             int i;
             int.TryParse(fs.Length.ToString(), out i);
             byte[] ss = r.ReadBytes(i);
@@ -126,7 +126,7 @@ namespace SuperFramework.SuperFile
         public static string[] GetFileNameOrPath(string fileName = "", string path = "")
         {
             StringBuilder rBuilder;
-            List<string> name = new List<string>();
+            List<string> name = new();
             if (!string.IsNullOrEmpty(fileName) && string.IsNullOrEmpty(path))
             {
                 rBuilder = new StringBuilder(fileName);
@@ -270,7 +270,7 @@ namespace SuperFramework.SuperFile
             {
                 if (IsExistFile(filePath))
                 {
-                    FileInfo objFI = new FileInfo(filePath);
+                    FileInfo objFI = new(filePath);
                     str = string.Format("详细路径:{0}；文件名称:{1}；文件长度:{2}字节；创建时间{3}；最后访问时间:{4}；修改时间:{5}；所在目录:{6}；扩展名:{7}", objFI.FullName, objFI.Name, objFI.Length, objFI.CreationTime, objFI.LastAccessTime, objFI.LastWriteTime, objFI.DirectoryName, objFI.Extension);
                     fileattribute.CreationTime = objFI.CreationTime;
                     fileattribute.DirectoryName = objFI.DirectoryName;
@@ -390,7 +390,7 @@ namespace SuperFramework.SuperFile
         {
             try
             {
-                using (FileStream fs = new FileStream(openPath, FileMode.Open))
+                using (FileStream fs = new(openPath, FileMode.Open))
                 {
                     size *= 1024;
                     byte[] by = new byte[size];
@@ -401,7 +401,7 @@ namespace SuperFramework.SuperFile
                         int f = fs.Read(by, 0, by.Length);
                         if (f == 0)
                             break;
-                        FileStream fsm = new FileStream(savePath + "\\" + i.ToString() + ".part", FileMode.Create);
+                        FileStream fsm = new(savePath + "\\" + i.ToString() + ".part", FileMode.Create);
                         fsm.Write(by, 0, f);
                         fsm.Flush();
                         fsm.Close();
@@ -424,13 +424,13 @@ namespace SuperFramework.SuperFile
         {
             try
             {
-                DirectoryInfo dir = new DirectoryInfo(openPath);
+                DirectoryInfo dir = new(openPath);
                 FileInfo[] files = dir.GetFiles();
-                using (FileStream fs = new FileStream(savePath, FileMode.Create))
+                using (FileStream fs = new(savePath, FileMode.Create))
                 {
                     foreach (FileInfo item in files)
                     {
-                        using (FileStream f = new FileStream(item.FullName, FileMode.Open))
+                        using (FileStream f = new(item.FullName, FileMode.Open))
                         {
                             byte[] by = new byte[f.Length];
                             int x = f.Read(by, 0, by.Length);
@@ -453,7 +453,7 @@ namespace SuperFramework.SuperFile
         /// <returns>返回生成文件的完整路径名</returns>
         public static string GetFullName(string fileName)
         {
-            FileInfo fi = new FileInfo(fileName);
+            FileInfo fi = new(fileName);
             return fi.FullName;
         }
         #endregion
@@ -479,7 +479,7 @@ namespace SuperFramework.SuperFile
                     oldFixStr = "*" + oldFixStr;
                 if (!newFixStr.Contains("."))
                     newFixStr = "." + newFixStr;
-                DirectoryInfo di = new DirectoryInfo(dirPath);
+                DirectoryInfo di = new(dirPath);
                 FileInfo[] filelist = di.GetFiles(oldFixStr);
                 string strFileFolder = dirPath;
                 int i = 0;
@@ -537,7 +537,7 @@ namespace SuperFramework.SuperFile
                     oldFixStr = "*" + oldFixStr;
                 if (!newFixStr.Contains("."))
                     newFixStr = "." + newFixStr;
-                DirectoryInfo di = new DirectoryInfo(dirPath);
+                DirectoryInfo di = new(dirPath);
                 FileInfo[] filelist = di.GetFiles(oldFixStr);
                 string strFileFolder = dirPath;
                 int i = 0;
@@ -623,7 +623,7 @@ namespace SuperFramework.SuperFile
             double lSize = 0;
             if (sMask.Trim() == "")
                 return lSize;
-            DirectoryInfo pDirectoryInfo = new DirectoryInfo(sFilePath);
+            DirectoryInfo pDirectoryInfo = new(sFilePath);
             if (pDirectoryInfo.Exists == false)
                 return lSize;
             FileInfo[] pFileInfos = pDirectoryInfo.GetFiles(sMask, SearchOption.TopDirectoryOnly);
@@ -638,7 +638,7 @@ namespace SuperFramework.SuperFile
         #region 检测文件被占用
         public const int OF_READWRITE = 2;
         public const int OF_SHARE_DENY_NONE = 0x40;
-        public static readonly IntPtr HFILE_ERROR = new IntPtr(-1);
+        public static readonly IntPtr HFILE_ERROR = new(-1);
         /// <summary>
         /// 检测文件被占用
         /// </summary>

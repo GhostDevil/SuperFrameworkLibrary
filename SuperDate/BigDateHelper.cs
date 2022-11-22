@@ -145,7 +145,7 @@ namespace SuperFramework.SuperDate
         }
         public List<int> GetIntercalaryYears(BigDateHelper _diffdate)  //获取指定范围之间的闰年年份
         {
-            List<int> leaps = new List<int>();
+            List<int> leaps = new();
             if (Math.Abs(CompareOfYear(_diffdate)[0] - CompareOfYear(_diffdate)[1]) < 2)
             {
                 throw new DifferenceTooSmallException("指定范围的年份差的绝对值不能小于2！");

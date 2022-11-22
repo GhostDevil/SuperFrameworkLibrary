@@ -147,7 +147,7 @@ namespace SuperFramework.SuperHardware
         /// <returns>计算机种类:台式机-Desktop，笔记本-NoteBook</returns>
         public static string GetComputerType()
         {
-            ManagementClass mc = new ManagementClass("Win32_SystemEnclosure");
+            ManagementClass mc = new("Win32_SystemEnclosure");
             string type = "";
             foreach (ManagementObject obj in mc.GetInstances())
             {
@@ -181,7 +181,7 @@ namespace SuperFramework.SuperHardware
         {
             try
             {
-                ManagementClass mc = new ManagementClass("Win32_NetworkAdapterConfiguration");
+                ManagementClass mc = new("Win32_NetworkAdapterConfiguration");
                 ManagementObjectCollection moc = mc.GetInstances();
                 string mac = "";
                 foreach (ManagementObject mo in moc)
@@ -211,7 +211,7 @@ namespace SuperFramework.SuperHardware
         {
             try
             {
-                ManagementClass mc = new ManagementClass("Win32_NetworkAdapterConfiguration");
+                ManagementClass mc = new("Win32_NetworkAdapterConfiguration");
                 ManagementObjectCollection moc = mc.GetInstances();
                 string ip = "";
                 foreach (ManagementObject mo in moc)
@@ -242,7 +242,7 @@ namespace SuperFramework.SuperHardware
         {
             try
             {
-                ManagementClass mc = new ManagementClass("Win32_ComputerSystem");
+                ManagementClass mc = new("Win32_ComputerSystem");
                 ManagementObjectCollection moc = mc.GetInstances();
                 string type = "";
                 foreach (ManagementObject mo in moc)
@@ -275,7 +275,7 @@ namespace SuperFramework.SuperHardware
                 //moc.Dispose();
                 //mc = null;
                 //moc = null;
-                Microsoft.VisualBasic.Devices.ComputerInfo p = new Microsoft.VisualBasic.Devices.ComputerInfo();
+                Microsoft.VisualBasic.Devices.ComputerInfo p = new();
                 return double.Parse((p.TotalPhysicalMemory / 1024 / 1024).ToString("#0.00"));
             }
             catch (Exception) { return 0; }
@@ -304,7 +304,7 @@ namespace SuperFramework.SuperHardware
                 //moc.Dispose();
                 //mc = null;
                 //moc = null;
-                Microsoft.VisualBasic.Devices.ComputerInfo p = new Microsoft.VisualBasic.Devices.ComputerInfo();
+                Microsoft.VisualBasic.Devices.ComputerInfo p = new();
              //   Console.WriteLine("全部物理内存：{0}",
              //ByteChangeToM(p.TotalPhysicalMemory) + "M");
              //   Console.WriteLine("全部虚拟内存：{0}",
@@ -329,7 +329,7 @@ namespace SuperFramework.SuperHardware
         {
             double availablebytes = 0;
 
-            ManagementClass mc = new ManagementClass("Win32_OperatingSystem");
+            ManagementClass mc = new("Win32_OperatingSystem");
             foreach (ManagementObject mo in mc.GetInstances())
             {
                 if (mo["FreePhysicalMemory"] != null)
@@ -349,8 +349,8 @@ namespace SuperFramework.SuperHardware
         /// <returns>主机板对象</returns>
         public static HardwareStruct.BaseBoardInfo GetBaseBoardInfos()
         {
-            ManagementObjectSearcher mos = new ManagementObjectSearcher("Select * From Win32_BaseBoard");
-            HardwareStruct.BaseBoardInfo motherBoard = new HardwareStruct.BaseBoardInfo();
+            ManagementObjectSearcher mos = new("Select * From Win32_BaseBoard");
+            HardwareStruct.BaseBoardInfo motherBoard = new();
             
             foreach (ManagementObject mo in mos.Get())
             {
@@ -415,7 +415,7 @@ namespace SuperFramework.SuperHardware
         public static List<HardwareStruct.ScreenInfo> GetScreenInfos()
         {
             System.Windows.Forms.Screen[] screens = System.Windows.Forms.Screen.AllScreens;
-            List<HardwareStruct.ScreenInfo> screen = new List<HardwareStruct.ScreenInfo>();            
+            List<HardwareStruct.ScreenInfo> screen = new();            
             foreach (var item in screens)
             {
                 screen.Add(new HardwareStruct.ScreenInfo()
@@ -436,9 +436,9 @@ namespace SuperFramework.SuperHardware
         /// <returns>监视器对象</returns>
         public static List<HardwareStruct.DesktopMonitorInfo> GetDesktopMonitorInfos()
         {
-            ManagementClass mc = new ManagementClass("Win32_DesktopMonitor");
+            ManagementClass mc = new("Win32_DesktopMonitor");
             ManagementObjectCollection moc = mc.GetInstances();
-            List<HardwareStruct.DesktopMonitorInfo> monitorInfos = new List<HardwareStruct.DesktopMonitorInfo>();
+            List<HardwareStruct.DesktopMonitorInfo> monitorInfos = new();
             foreach (ManagementObject mo in mc.GetInstances())
             {
                 try
@@ -477,8 +477,8 @@ namespace SuperFramework.SuperHardware
         /// <returns></returns>
         public static  List<string> GetMonitorPnpDeviceId()
         {
-            List<string> rt = new List<string>();
-            using (ManagementClass mc = new ManagementClass("Win32_DesktopMonitor"))
+            List<string> rt = new();
+            using (ManagementClass mc = new("Win32_DesktopMonitor"))
             {
                 using (ManagementObjectCollection moc = mc.GetInstances())
                 {
@@ -503,7 +503,7 @@ namespace SuperFramework.SuperHardware
         /// <returns></returns>
         public static  byte[] GetMonitorEdid(string monitorPnpDevId)
         {
-            return (byte[])Registry.GetValue(@"HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Enum\" + monitorPnpDevId + @"\Device Parameters", "EDID", new byte[] { });
+            return (byte[])Registry.GetValue(@"HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Enum\" + monitorPnpDevId + @"\Device Parameters", "EDID", Array.Empty<byte>());
         }
 
         /// <summary>
@@ -538,7 +538,7 @@ namespace SuperFramework.SuperHardware
         /// </summary>
         public static HardwareStruct.SystemInfo GetSystemInfos()
         {
-            ManagementClass mc = new ManagementClass("Win32_ComputerSystem");
+            ManagementClass mc = new("Win32_ComputerSystem");
             ManagementObjectCollection moc = mc.GetInstances();
             foreach (ManagementObject mo in moc)
             {
@@ -592,9 +592,9 @@ namespace SuperFramework.SuperHardware
         /// <returns>bios对象集合</returns>
         public static List<HardwareStruct.BIOSInfo> GetBIOSInfos()
         {
-            ManagementClass mc = new ManagementClass("Win32_BIOS");
+            ManagementClass mc = new("Win32_BIOS");
             ManagementObjectCollection moc = mc.GetInstances();
-            List<HardwareStruct.BIOSInfo> biosInfos = new List<HardwareStruct.BIOSInfo>();
+            List<HardwareStruct.BIOSInfo> biosInfos = new();
             foreach (ManagementObject mo in moc)
             {
                 string str = "";
@@ -629,9 +629,9 @@ namespace SuperFramework.SuperHardware
         /// </summary>
         public static List<HardwareStruct.CPUInfo> GetProcessorInfos()
         {
-            ManagementClass mc = new ManagementClass("Win32_Processor");
+            ManagementClass mc = new("Win32_Processor");
             ManagementObjectCollection moc = mc.GetInstances();
-            List<HardwareStruct.CPUInfo> cpus = new List<HardwareStruct.CPUInfo>();
+            List<HardwareStruct.CPUInfo> cpus = new();
             foreach (ManagementObject mo in moc)
             {
                 string str = "";
@@ -674,9 +674,9 @@ namespace SuperFramework.SuperHardware
         /// </summary>
         public static List<HardwareStruct.PhysicalMediaInfos> GetPhysicalMediaInfos()
         {
-            ManagementClass mc = new ManagementClass("Win32_PhysicalMedia");
+            ManagementClass mc = new("Win32_PhysicalMedia");
             ManagementObjectCollection moc = mc.GetInstances();
-            List<HardwareStruct.PhysicalMediaInfos> info = new List<HardwareStruct.PhysicalMediaInfos>();
+            List<HardwareStruct.PhysicalMediaInfos> info = new();
             foreach (ManagementObject mo in moc)
             {
                 string str = "";
@@ -713,9 +713,9 @@ namespace SuperFramework.SuperHardware
         /// </summary>
         public static List<HardwareStruct.SoundInfo> GetSoundInfos()
         {
-            ManagementClass mc = new ManagementClass("Win32_SoundDevice");
+            ManagementClass mc = new("Win32_SoundDevice");
             ManagementObjectCollection moc = mc.GetInstances();
-            List<HardwareStruct.SoundInfo> infos = new List<HardwareStruct.SoundInfo>();
+            List<HardwareStruct.SoundInfo> infos = new();
             foreach (ManagementObject mo in moc)
             {
                 string str = "";
@@ -749,9 +749,9 @@ namespace SuperFramework.SuperHardware
         /// </summary>
         public static List<HardwareStruct.NetworkAdapterInfo> GetNetworkAdapterInfos()
         {
-            ManagementClass mc = new ManagementClass("Win32_NetworkAdapter");
+            ManagementClass mc = new("Win32_NetworkAdapter");
             ManagementObjectCollection moc = mc.GetInstances();
-            List<HardwareStruct.NetworkAdapterInfo> infos = new List<HardwareStruct.NetworkAdapterInfo>();
+            List<HardwareStruct.NetworkAdapterInfo> infos = new();
             foreach (ManagementObject mo in moc)
             {
                 string str = "";
@@ -789,9 +789,9 @@ namespace SuperFramework.SuperHardware
         /// </summary>
         public static List<HardwareStruct.DeviceBaseInfos> GetDeviceBaseInfos(string type)
         {
-            ManagementClass mc = new ManagementClass(type);
+            ManagementClass mc = new(type);
             ManagementObjectCollection moc = mc.GetInstances();
-            List<HardwareStruct.DeviceBaseInfos> infos = new List<HardwareStruct.DeviceBaseInfos>();
+            List<HardwareStruct.DeviceBaseInfos> infos = new();
             foreach (ManagementObject mo in moc)
             {
                 string str = "";
@@ -824,9 +824,9 @@ namespace SuperFramework.SuperHardware
         /// </summary>
         public static List<HardwareStruct.HDInfo> GetHDInfos()
         {
-            ManagementClass mc = new ManagementClass("Win32_DiskDrive");
+            ManagementClass mc = new("Win32_DiskDrive");
             ManagementObjectCollection moc = mc.GetInstances();
-            List<HardwareStruct.HDInfo> hdinfos = new List<HardwareStruct.HDInfo>();
+            List<HardwareStruct.HDInfo> hdinfos = new();
             foreach (ManagementObject mo in moc)
             {
                 string str = "";
@@ -876,9 +876,9 @@ namespace SuperFramework.SuperHardware
         /// </summary>
         public static List<HardwareStruct.VideoControllerInfo> GetVideoControllerInfos()
         {
-            ManagementClass mc = new ManagementClass("Win32_VideoController");
+            ManagementClass mc = new("Win32_VideoController");
             ManagementObjectCollection moc = mc.GetInstances();
-            List<HardwareStruct.VideoControllerInfo> videocards = new List<HardwareStruct.VideoControllerInfo>();
+            List<HardwareStruct.VideoControllerInfo> videocards = new();
             foreach (ManagementObject mo in moc)
             {
 
@@ -926,9 +926,9 @@ namespace SuperFramework.SuperHardware
         /// </summary>
         public static List<HardwareStruct.PhysicalMemoryInfo> GetPhysicalMemoryInfos()
         {
-            ManagementClass mc = new ManagementClass("Win32_PhysicalMemory");
+            ManagementClass mc = new("Win32_PhysicalMemory");
             ManagementObjectCollection moc = mc.GetInstances();
-            List<HardwareStruct.PhysicalMemoryInfo> memorys = new List<HardwareStruct.PhysicalMemoryInfo>();//
+            List<HardwareStruct.PhysicalMemoryInfo> memorys = new();//
             try
             {
                 foreach (ManagementObject mo in moc)
@@ -971,7 +971,7 @@ namespace SuperFramework.SuperHardware
         /// <returns>返回USB盘的盘符及卷标集合</returns>
         public static List<string> GetUsbDisk()
         {
-            List<string> usbDiskNameList = new List<string>();
+            List<string> usbDiskNameList = new();
             try
             {
 
@@ -1013,10 +1013,10 @@ namespace SuperFramework.SuperHardware
         public static List<string> GetPartitionsPath()
         {
             DriveInfo[] drivers = DriveInfo.GetDrives();
-            List<string> path = new List<string>();
+            List<string> path = new();
             foreach (DriveInfo temp in drivers)
             {
-                DirectoryInfo dif = new DirectoryInfo(temp.Name);
+                DirectoryInfo dif = new(temp.Name);
                 string s;
                 if (temp.DriveType != DriveType.CDRom)
                     //卷标-VolumeLabel TotalFreeSpace驱动器的剩余空间，TotalSize驱动器的总空间

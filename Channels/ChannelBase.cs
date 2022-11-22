@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace SuperFramework.Channels
 {
-    public abstract class ChannelBase<T> : SafeObject where T : MessageBase
+    public abstract class ChannelBase<T> : SafeObject where T : RequestBase
     {
         public bool IsSecured { get; set; }
         public abstract string ChannelName { get; }

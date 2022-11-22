@@ -10,7 +10,7 @@ namespace SuperFramework
     public static class RandomHelper
     {
         //随机数对象
-        private static readonly Random random = new Random();
+        private static readonly Random random = new();
 
         #region  生成一个指定范围的随机整数 
         /// <summary>
@@ -77,7 +77,7 @@ namespace SuperFramework
             string str = string.Empty;
             long num2 = DateTime.Now.Ticks + rep;
             rep++;
-            Random random = new Random(((int)(((ulong)num2) & 0xffffffffL)) | ((int)(num2 >> rep)));
+            Random random = new(((int)(((ulong)num2) & 0xffffffffL)) | ((int)(num2 >> rep)));
             for (int i = 0; i < codeCount; i++)
             {
                 int num = random.Next();
@@ -96,7 +96,7 @@ namespace SuperFramework
             string str = string.Empty;
             long num2 = DateTime.Now.Ticks + rep;
             rep++;
-            Random random = new Random(((int)(((ulong)num2) & 0xffffffffL)) | ((int)(num2 >> rep)));
+            Random random = new(((int)(((ulong)num2) & 0xffffffffL)) | ((int)(num2 >> rep)));
             for (int i = 0; i < codeCount; i++)
             {
                 char ch;
@@ -126,7 +126,7 @@ namespace SuperFramework
             string[] allCharArray = allChar.Split(',');
             string RandomCode = "";
             int temp = -1;
-            Random rand = new Random();
+            Random rand = new();
             for (int i = 0; i < CodeCount; i++)
             {
                 if (temp != -1)
@@ -181,7 +181,7 @@ namespace SuperFramework
         {
             if (Sleep) System.Threading.Thread.Sleep(3);
             string result = "";
-            Random random = new Random();
+            Random random = new();
             for (int i = 0; i < Length; i++)
             {
                 result += random.Next(10).ToString();
@@ -211,7 +211,7 @@ namespace SuperFramework
             char[] Pattern = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
             string result = "";
             int n = Pattern.Length;
-            Random random = new Random(~unchecked((int)DateTime.Now.Ticks));
+            Random random = new(~unchecked((int)DateTime.Now.Ticks));
             for (int i = 0; i < Length; i++)
             {
                 int rnd = random.Next(0, n);
@@ -242,7 +242,7 @@ namespace SuperFramework
             char[] Pattern = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
             string result = "";
             int n = Pattern.Length;
-            Random random = new Random(~unchecked((int)DateTime.Now.Ticks));
+            Random random = new(~unchecked((int)DateTime.Now.Ticks));
             for (int i = 0; i < Length; i++)
             {
                 int rnd = random.Next(0, n);

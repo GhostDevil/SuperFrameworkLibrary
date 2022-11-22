@@ -59,7 +59,7 @@ namespace SuperFramework.SuperFTP
         /// <returns>成功返回true，失败返回false</returns>
         public bool Upload(string fileFullName)
         {
-            FileInfo fileInf = new FileInfo(fileFullName);
+            FileInfo fileInf = new(fileFullName);
             FtpWebRequest reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(string.Format("{0}/{1}", ftpURI, fileInf.Name)));
             reqFTP.Credentials = new NetworkCredential(ftpUserID, ftpPassword);
             reqFTP.Method = WebRequestMethods.Ftp.UploadFile;
@@ -104,7 +104,7 @@ namespace SuperFramework.SuperFTP
             {
                 if (!Directory.Exists(savePath))
                     Directory.CreateDirectory(savePath);
-                FileStream outputStream = new FileStream(string.Format("{0}\\{1}", savePath, saveName), FileMode.Create);
+                FileStream outputStream = new(string.Format("{0}\\{1}", savePath, saveName), FileMode.Create);
                 FtpWebRequest reqFTP;
                 reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(string.Format("{0}/{1}", ftpURI, fileName)));
                 reqFTP.Credentials = new NetworkCredential(ftpUserID, ftpPassword);
@@ -150,7 +150,7 @@ namespace SuperFramework.SuperFTP
             string[] fullname = Ftp(ftpads, name, WebRequestMethods.Ftp.ListDirectoryDetails);
             string[] onlyname = Ftp(ftpads, name, WebRequestMethods.Ftp.ListDirectory);
 
-            Dictionary<string, string> dic_full_only = new Dictionary<string, string>();
+            Dictionary<string, string> dic_full_only = new();
             for (int i = 0; i < fullname.Length; i++)
             {
                 if (fullname[i] != "" && onlyname[i] != "")
@@ -210,7 +210,7 @@ namespace SuperFramework.SuperFTP
                 ex.ToString();
 
             }
-            StringBuilder str = new StringBuilder();
+            StringBuilder str = new();
             string line = ftpFileListReader.ReadLine();
             while (line != null)
             {
@@ -231,7 +231,7 @@ namespace SuperFramework.SuperFTP
         {
             //FileMode常数确定如何打开或创建文件,指定操作系统应创建新文件。
             //FileMode.Create如果文件已存在，它将被改写
-            FileStream outputStream = new FileStream(adss, FileMode.Create);
+            FileStream outputStream = new(adss, FileMode.Create);
             FtpWebRequest downRequest = (FtpWebRequest)WebRequest.Create(new Uri(ftpadss));
             //设置要发送到 FTP 服务器的命令
             downRequest.Method = WebRequestMethods.Ftp.DownloadFile;
@@ -274,7 +274,7 @@ namespace SuperFramework.SuperFTP
                 FtpWebResponse response = (FtpWebResponse)reqFTP.GetResponse();
                 long size = response.ContentLength;
                 Stream datastream = response.GetResponseStream();
-                StreamReader sr = new StreamReader(datastream);
+                StreamReader sr = new(datastream);
                 result = sr.ReadToEnd();
                 sr.Close();
                 datastream.Close();
@@ -298,18 +298,18 @@ namespace SuperFramework.SuperFTP
         {
             try
             {
-                StringBuilder result = new StringBuilder();
+                StringBuilder result = new();
                 FtpWebRequest ftp;
                 ftp = (FtpWebRequest)FtpWebRequest.Create(new Uri(ftpURI));
                 ftp.Credentials = new NetworkCredential(ftpUserID, ftpPassword);
                 ftp.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
                 WebResponse response = ftp.GetResponse();
-                StreamReader reader = new StreamReader(response.GetResponseStream());
-                List<FileStruct> fs = new List<FileStruct>();
+                StreamReader reader = new(response.GetResponseStream());
+                List<FileStruct> fs = new();
                 string line = reader.ReadLine();
                 while (line != null)
                 {
-                    FileStruct f = new FileStruct();
+                    FileStruct f = new();
                     f = GetList(line);
                     string fileName = f.Name;                     //排除非文件夹 
                     line = reader.ReadLine();
@@ -344,7 +344,7 @@ namespace SuperFramework.SuperFTP
         /// <exception cref="Exception">未知错误，详见错误信息</exception>
         private string[] GetAllList()
         {
-            List<string> list = new List<string>();
+            List<string> list = new();
             FtpWebRequest req = (FtpWebRequest)WebRequest.Create(new Uri(ftpURI));
             req.Credentials = new NetworkCredential(ftpUserID, ftpPassword);
             req.Method = WebRequestMethods.Ftp.ListDirectory;
@@ -354,7 +354,7 @@ namespace SuperFramework.SuperFTP
             {
                 using (FtpWebResponse res = (FtpWebResponse)req.GetResponse())
                 {
-                    using (StreamReader sr = new StreamReader(res.GetResponseStream()))
+                    using (StreamReader sr = new(res.GetResponseStream()))
                     {
                         string s;
                         while ((s = sr.ReadLine()) != null)
@@ -378,7 +378,7 @@ namespace SuperFramework.SuperFTP
         /// <exception cref="Exception">URL错误</exception>
         public string[] GetFileList()
         {
-            StringBuilder result = new StringBuilder();
+            StringBuilder result = new();
             FtpWebRequest reqFTP;
             try
             {
@@ -387,7 +387,7 @@ namespace SuperFramework.SuperFTP
                 reqFTP.Credentials = new NetworkCredential(ftpUserID, ftpPassword);
                 reqFTP.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
                 WebResponse response = reqFTP.GetResponse();
-                StreamReader reader = new StreamReader(response.GetResponseStream());
+                StreamReader reader = new(response.GetResponseStream());
                 string line = reader.ReadLine();
                 while (line != null)
                 {
@@ -494,8 +494,8 @@ namespace SuperFramework.SuperFTP
             {
                 string[] folderArray = GetDeleteFolderArray(path);
                 string[] fileArray = GetDeleteFileArray(path);
-                ArrayList folderArrayList = new ArrayList();
-                ArrayList fileArrayList = new ArrayList();
+                ArrayList folderArrayList = new();
+                ArrayList fileArrayList = new();
                 //重新构造存放文件夹的数组(用动态数组实现) 
                 if (folderArray != null)
                 {
@@ -569,7 +569,7 @@ namespace SuperFramework.SuperFTP
         private string[] GetDeleteFolderArray(string path)
         {
             string[] deleteFolders;
-            StringBuilder result = new StringBuilder();
+            StringBuilder result = new();
             FtpWebRequest reqFTP;
             try
             {
@@ -581,12 +581,12 @@ namespace SuperFramework.SuperFTP
                 reqFTP.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
                 FtpWebResponse response = (FtpWebResponse)reqFTP.GetResponse();
                 Encoding encoding = Encoding.GetEncoding("GB2312");
-                StreamReader reader = new StreamReader(response.GetResponseStream(), encoding);
+                StreamReader reader = new(response.GetResponseStream(), encoding);
                 string line = reader.ReadLine();
                 bool flag = false;
                 while (line != null)
                 {
-                    FileStruct f = new FileStruct();
+                    FileStruct f = new();
                     f = GetList(line);
                     string fileName = f.Name;
                     if (f.IsDirectory)
@@ -628,7 +628,7 @@ namespace SuperFramework.SuperFTP
         private string[] GetDeleteFileArray(string path)
         {
             string[] DeleteFiles;
-            StringBuilder result = new StringBuilder();
+            StringBuilder result = new();
             FtpWebRequest reqFTP;
             try
             {
@@ -639,12 +639,12 @@ namespace SuperFramework.SuperFTP
                 reqFTP.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
                 FtpWebResponse response = (FtpWebResponse)reqFTP.GetResponse();
                 Encoding encoding = Encoding.GetEncoding("GB2312");
-                StreamReader reader = new StreamReader(response.GetResponseStream(), encoding);
+                StreamReader reader = new(response.GetResponseStream(), encoding);
                 string line = reader.ReadLine();
                 bool flag = false;
                 while (line != null)
                 {
-                    FileStruct f = new FileStruct();
+                    FileStruct f = new();
                     f = GetList(line);
                     string fileName = f.Name;                     //排除非文件夹 
                     if (!f.IsDirectory)
@@ -772,7 +772,7 @@ namespace SuperFramework.SuperFTP
         /// </summary>  
         private FileStruct[] ListFiles(FileStruct[] listAll)
         {
-            List<FileStruct> listFile = new List<FileStruct>();
+            List<FileStruct> listFile = new();
             foreach (FileStruct file in listAll)
                 if (!file.IsDirectory)
                     listFile.Add(file);
@@ -783,7 +783,7 @@ namespace SuperFramework.SuperFTP
         /// </summary>  
         private FileStruct[] ListDirectories(FileStruct[] listAll)
         {
-            List<FileStruct> listDirectory = new List<FileStruct>();
+            List<FileStruct> listDirectory = new();
             foreach (FileStruct file in listAll)
                 if (file.IsDirectory)
                     listDirectory.Add(file);
@@ -797,7 +797,7 @@ namespace SuperFramework.SuperFTP
         /// <returns></returns>
         private FileStruct GetList(string datastring)
         {
-            FileStruct f = new FileStruct();
+            FileStruct f = new();
             string[] dataRecords = datastring.Split('\n');
             FTPEnum.FileListStyle _directoryListStyle = GuessFileListStyle(dataRecords);
             if (_directoryListStyle != FTPEnum.FileListStyle.Unknown && datastring != "")
@@ -822,7 +822,7 @@ namespace SuperFramework.SuperFTP
         /// <returns></returns>
         private FileStruct ParseFileStructFromWindowsStyleRecord(string Record)
         {
-            FileStruct f = new FileStruct();
+            FileStruct f = new();
             string processstr = Record.Trim();
             string dateStr = processstr.Substring(0, 8);
             processstr = (processstr.Substring(8, processstr.Length - 8)).Trim();
@@ -873,7 +873,7 @@ namespace SuperFramework.SuperFTP
         /// <returns></returns>
         private FileStruct ParseFileStructFromUnixStyleRecord(string Record)
         {
-            FileStruct f = new FileStruct();
+            FileStruct f = new();
             string processstr = Record.Trim();
             f.Flags = processstr.Substring(0, 10);
             f.IsDirectory = (f.Flags[0] == 'd');

@@ -33,8 +33,8 @@ namespace SuperFramework
             g.SmoothingMode = SmoothingMode.AntiAlias;
             int width = 100;
             int height = 20 * CaptionNames.Count;
-            Font font = new Font("宋体", 10, FontStyle.Regular);
-            Color color = new Color();
+            Font font = new("宋体", 10, FontStyle.Regular);
+            Color color = new();
             int colorindex = 0;
             if (TjType == "折线图")
             {
@@ -178,12 +178,12 @@ namespace SuperFramework
             if ((maxValue % 10) != 0)
                 maxValue = 10 * ((int)maxValue / 10) + 10;
             maxValue /= 5;
-            List<float> y_value = new List<float>();
+            List<float> y_value = new();
             for (int i = 1; i <= 5; i++)
             {
                 y_value.Add(maxValue * i);
             }
-            List<string> x_zhi = new List<string>();
+            List<string> x_zhi = new();
             foreach (DataRow row in dt.Rows)
             {
                 x_zhi.Add(row[0].ToString());
@@ -204,37 +204,39 @@ namespace SuperFramework
             int y2 = height - 150;
             int datay2 = y2;
             int datax = x;
-            List<Color> colors = new List<Color>();
-            Random ran = new Random();
+            List<Color> colors = new();
+            Random ran = new();
             for (int i = 1; i < dt.Columns.Count; i++)
             {
                 colors.Add(Color.FromArgb(200, ran.Next(0, 200), ran.Next(0, 200), ran.Next(0, 200)));
             }
-            List<string> capname = new List<string>();
+            List<string> capname = new();
             for (int i = 1; i < dt.Columns.Count; i++)
             {
                 capname.Add(dt.Columns[i].ToString());
             }
 
-            Bitmap image = new Bitmap(width, height);
+            Bitmap image = new(width, height);
             Graphics g = Graphics.FromImage(image);
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.Clear(Color.White);
-            Font font1 = new Font("Arial", 10, FontStyle.Regular);
-            Font font2 = new Font("宋体", 10, FontStyle.Regular);
-            Font font3 = new Font("宋体", 10, FontStyle.Regular);
+            Font font1 = new("Arial", 10, FontStyle.Regular);
+            Font font2 = new("宋体", 10, FontStyle.Regular);
+            Font font3 = new("宋体", 10, FontStyle.Regular);
             Brush brushe1 = new SolidBrush(Color.Black);
             g.DrawString(title, font2, brushe1, width / 5, 30);
             g.DrawRectangle(new Pen(Color.Black), 0, 0, image.Width - 1, image.Height - 1);
 
-            Pen pen1 = new Pen(linecolor, 1);
-            Pen pen2 = new Pen(linecolor, 2);
+            Pen pen1 = new(linecolor, 1);
+            Pen pen2 = new(linecolor, 2);
             foreach (string xtitle in x_zhi)
             {
                 x += x_pitch;
                 g.DrawLine(pen1, x, y, x, y2);
-                StringFormat format = new StringFormat();
-                format.FormatFlags = StringFormatFlags.DirectionVertical | StringFormatFlags.DirectionRightToLeft;
+                StringFormat format = new()
+                {
+                    FormatFlags = StringFormatFlags.DirectionVertical | StringFormatFlags.DirectionRightToLeft
+                };
                 g.DrawString(xtitle, font3, brushe1, x + 5, y2, format);
             }
             x = datax;
@@ -305,13 +307,13 @@ namespace SuperFramework
             if ((maxValue % 10) != 0)
                 maxValue = 10 * ((int)maxValue / 10) + 10;
             maxValue /= 5;
-            List<float> y_value = new List<float>();
+            List<float> y_value = new();
             for (int i = 1; i <= 5; i++)
             {
                 y_value.Add(maxValue * i);
             }
 
-            List<string> x_zhi = new List<string>();
+            List<string> x_zhi = new();
             foreach (DataRow row in dt.Rows)
             {
                 x_zhi.Add(row[0].ToString());
@@ -332,15 +334,15 @@ namespace SuperFramework
             int y2 = height - 150;
             int datay2 = y2;
             int datax = x;
-            List<Color> colors = new List<Color>();
-            Random ran = new Random();
+            List<Color> colors = new();
+            Random ran = new();
             for (int i = 1; i < dt.Columns.Count; i++)
             {
                 colors.Add(Color.FromArgb(ran.Next(0, 200), ran.Next(0, 200), ran.Next(0, 200)));
             }
 
-            List<Color> colors1 = new List<Color>();
-            List<Color> colors2 = new List<Color>();
+            List<Color> colors1 = new();
+            List<Color> colors2 = new();
             foreach (Color color in colors)
             {
                 int r1 = (int)color.R - 30;
@@ -364,19 +366,19 @@ namespace SuperFramework
                 colors1.Add(Color.FromArgb(r1, g1, b1));
                 colors2.Add(Color.FromArgb(r2, g2, b2));
             }
-            List<string> capname = new List<string>();
+            List<string> capname = new();
             for (int i = 1; i < dt.Columns.Count; i++)
             {
                 capname.Add(dt.Columns[i].ToString());
             }
 
-            Bitmap image = new Bitmap(width, height);
+            Bitmap image = new(width, height);
             Graphics g = Graphics.FromImage(image);
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.Clear(Color.White);
-            Font font1 = new Font("Arial", 10, FontStyle.Regular);
-            Font font2 = new Font("宋体", 10, FontStyle.Regular);
-            Font font3 = new Font("宋体", 10, FontStyle.Regular);
+            Font font1 = new("Arial", 10, FontStyle.Regular);
+            Font font2 = new("宋体", 10, FontStyle.Regular);
+            Font font3 = new("宋体", 10, FontStyle.Regular);
             Brush brushe1 = new SolidBrush(Color.Black);
             g.DrawString(title, font2, brushe1, width / 5, 30);
             g.DrawRectangle(new Pen(Color.Black), 0, 0, image.Width - 1, image.Height - 1);
@@ -384,12 +386,14 @@ namespace SuperFramework
             foreach (string xtitle in x_zhi)
             {
                 x += x_pitch;
-                StringFormat format = new StringFormat();
-                format.FormatFlags = StringFormatFlags.DirectionVertical | StringFormatFlags.DirectionRightToLeft;
+                StringFormat format = new()
+                {
+                    FormatFlags = StringFormatFlags.DirectionVertical | StringFormatFlags.DirectionRightToLeft
+                };
                 g.DrawString(xtitle, font3, brushe1, x + 5, y2, format);
             }
             x = datax;
-            GraphicsPath path = new GraphicsPath(new Point[] { new Point(x, y), new Point(x + 10, y - 15), new Point(x + 10, y2 - 15), new Point(x, y2), new Point(x, y) }, new byte[] { (byte)PathPointType.Start, (byte)PathPointType.Line, (byte)PathPointType.Line, (byte)PathPointType.Line, (byte)PathPointType.Line });
+            GraphicsPath path = new(new Point[] { new Point(x, y), new Point(x + 10, y - 15), new Point(x + 10, y2 - 15), new Point(x, y2), new Point(x, y) }, new byte[] { (byte)PathPointType.Start, (byte)PathPointType.Line, (byte)PathPointType.Line, (byte)PathPointType.Line, (byte)PathPointType.Line });
             g.FillPath(new SolidBrush(pathcolor), path);
             g.DrawPath(new Pen(pathcolor), path);
             g.DrawString(x_name, font3, brushe1, x2, y2);
@@ -410,8 +414,8 @@ namespace SuperFramework
             {
                 int colorindex = 0;
                 int dataindex = 0;
-                List<string> datas = new List<string>();
-                List<float> gaos = new List<float>();
+                List<string> datas = new();
+                List<float> gaos = new();
                 for (int i = 1; i < dt.Columns.Count; i++)
                 {
                     path.Dispose();
@@ -420,33 +424,33 @@ namespace SuperFramework
                     float gao = Convert.ToSingle(data) / y_value[0] * y_pitch;
 
                     //侧面
-                    PointF point1_2 = new PointF(Convert.ToSingle(x + T_width * dataindex + T_width + 10), Convert.ToSingle(datay2 - gao + 0.1 - 15));
-                    PointF point2_2 = new PointF(Convert.ToSingle(x + T_width * dataindex + T_width), Convert.ToSingle(datay2 - gao + 0.1));
-                    PointF point3_2 = new PointF(Convert.ToSingle(x + T_width * dataindex + T_width), Convert.ToSingle(datay2));
-                    PointF point4_2 = new PointF(Convert.ToSingle(x + T_width * dataindex + T_width + 10), Convert.ToSingle(datay2 + 0.1 - 15));
-                    PointF point5_2 = new PointF(Convert.ToSingle(x + T_width * dataindex + T_width + 10), Convert.ToSingle(datay2 - gao + 0.1 - 15));
+                    PointF point1_2 = new(Convert.ToSingle(x + T_width * dataindex + T_width + 10), Convert.ToSingle(datay2 - gao + 0.1 - 15));
+                    PointF point2_2 = new(Convert.ToSingle(x + T_width * dataindex + T_width), Convert.ToSingle(datay2 - gao + 0.1));
+                    PointF point3_2 = new(Convert.ToSingle(x + T_width * dataindex + T_width), Convert.ToSingle(datay2));
+                    PointF point4_2 = new(Convert.ToSingle(x + T_width * dataindex + T_width + 10), Convert.ToSingle(datay2 + 0.1 - 15));
+                    PointF point5_2 = new(Convert.ToSingle(x + T_width * dataindex + T_width + 10), Convert.ToSingle(datay2 - gao + 0.1 - 15));
 
                     path = new GraphicsPath(new PointF[] { point1_2, point2_2, point3_2, point4_2, point5_2 }, new byte[] { (byte)PathPointType.Start, (byte)PathPointType.Line, (byte)PathPointType.Line, (byte)PathPointType.Line, (byte)PathPointType.Line });
 
                     g.FillPath(new SolidBrush(colors2[colorindex]), path);
 
                     //顶部
-                    PointF point1_1 = new PointF(Convert.ToSingle(x + T_width * dataindex), Convert.ToSingle(datay2 - gao + 0.1));
-                    PointF point2_1 = new PointF(Convert.ToSingle(x + T_width * dataindex + T_width), Convert.ToSingle(datay2 - gao + 0.1));
-                    PointF point3_1 = new PointF(Convert.ToSingle(x + T_width * dataindex + T_width + 10), Convert.ToSingle(datay2 - gao + 0.1 - 15));
-                    PointF point4_1 = new PointF(Convert.ToSingle(x + T_width * dataindex + 10), Convert.ToSingle(datay2 - gao + 0.1 - 15));
-                    PointF point5_1 = new PointF(Convert.ToSingle(x + T_width * dataindex), Convert.ToSingle(datay2 - gao + 0.1));
+                    PointF point1_1 = new(Convert.ToSingle(x + T_width * dataindex), Convert.ToSingle(datay2 - gao + 0.1));
+                    PointF point2_1 = new(Convert.ToSingle(x + T_width * dataindex + T_width), Convert.ToSingle(datay2 - gao + 0.1));
+                    PointF point3_1 = new(Convert.ToSingle(x + T_width * dataindex + T_width + 10), Convert.ToSingle(datay2 - gao + 0.1 - 15));
+                    PointF point4_1 = new(Convert.ToSingle(x + T_width * dataindex + 10), Convert.ToSingle(datay2 - gao + 0.1 - 15));
+                    PointF point5_1 = new(Convert.ToSingle(x + T_width * dataindex), Convert.ToSingle(datay2 - gao + 0.1));
 
                     path = new GraphicsPath(new PointF[] { point1_1, point2_1, point3_1, point4_1, point5_1 }, new byte[] { (byte)PathPointType.Start, (byte)PathPointType.Line, (byte)PathPointType.Line, (byte)PathPointType.Line, (byte)PathPointType.Line });
 
                     g.FillPath(new SolidBrush(colors1[colorindex]), path);
 
                     //正面
-                    PointF point1 = new PointF(Convert.ToSingle(x + T_width * dataindex), Convert.ToSingle(datay2 - gao + 0.1));
-                    PointF point2 = new PointF(Convert.ToSingle(x + T_width * dataindex + T_width), Convert.ToSingle(datay2 - gao + 0.1));
-                    PointF point3 = new PointF(Convert.ToSingle(x + T_width * dataindex + T_width), Convert.ToSingle(datay2));
-                    PointF point4 = new PointF(Convert.ToSingle(x + T_width * dataindex), Convert.ToSingle(datay2));
-                    PointF point5 = new PointF(Convert.ToSingle(x + T_width * dataindex), Convert.ToSingle(datay2 - gao + 0.1));
+                    PointF point1 = new(Convert.ToSingle(x + T_width * dataindex), Convert.ToSingle(datay2 - gao + 0.1));
+                    PointF point2 = new(Convert.ToSingle(x + T_width * dataindex + T_width), Convert.ToSingle(datay2 - gao + 0.1));
+                    PointF point3 = new(Convert.ToSingle(x + T_width * dataindex + T_width), Convert.ToSingle(datay2));
+                    PointF point4 = new(Convert.ToSingle(x + T_width * dataindex), Convert.ToSingle(datay2));
+                    PointF point5 = new(Convert.ToSingle(x + T_width * dataindex), Convert.ToSingle(datay2 - gao + 0.1));
 
                     path = new GraphicsPath(new PointF[] { point1, point2, point3, point4, point5 }, new byte[] { (byte)PathPointType.Start, (byte)PathPointType.Line, (byte)PathPointType.Line, (byte)PathPointType.Line, (byte)PathPointType.Line });
 
@@ -507,12 +511,12 @@ namespace SuperFramework
             if ((maxValue % 10) != 0)
                 maxValue = 10 * ((int)maxValue / 10) + 10;
             maxValue /= 5;
-            List<float> y_value = new List<float>();
+            List<float> y_value = new();
             for (int i = 1; i <= 5; i++)
             {
                 y_value.Add(maxValue * i);
             }
-            List<string> x_zhi = new List<string>();
+            List<string> x_zhi = new();
             foreach (DataRow row in dt.Rows)
             {
                 x_zhi.Add(row[0].ToString());
@@ -532,37 +536,39 @@ namespace SuperFramework
             int y2 = height - 120;
             int datay2 = y2;
             int datax = x;
-            List<Color> colors = new List<Color>();
-            Random ran = new Random();
+            List<Color> colors = new();
+            Random ran = new();
             for (int i = 1; i < dt.Columns.Count; i++)
             {
                 colors.Add(Color.FromArgb(200, ran.Next(0, 200), ran.Next(0, 200), ran.Next(0, 200)));
             }
-            List<string> capname = new List<string>();
+            List<string> capname = new();
             for (int i = 1; i < dt.Columns.Count; i++)
             {
                 capname.Add(dt.Columns[i].ToString());
             }
 
-            Bitmap image = new Bitmap(width, height);
+            Bitmap image = new(width, height);
             Graphics g = Graphics.FromImage(image);
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.Clear(Color.White);
-            Font font1 = new Font("Arial", 10, FontStyle.Regular);
-            Font font2 = new Font("宋体", 10, FontStyle.Regular);
-            Font font3 = new Font("宋体", 10, FontStyle.Regular);
+            Font font1 = new("Arial", 10, FontStyle.Regular);
+            Font font2 = new("宋体", 10, FontStyle.Regular);
+            Font font3 = new("宋体", 10, FontStyle.Regular);
             Brush brushe1 = new SolidBrush(Color.Black);
             g.DrawString(title, font2, brushe1, width / 5, 30);
             g.DrawRectangle(new Pen(Color.Black), 0, 0, image.Width - 1, image.Height - 1);
 
-            Pen pen1 = new Pen(linecolor, 1);
-            Pen pen2 = new Pen(linecolor, 2);
+            Pen pen1 = new(linecolor, 1);
+            Pen pen2 = new(linecolor, 2);
             foreach (string xtitle in x_zhi)
             {
                 x += x_pitch;
                 g.DrawLine(pen1, x, y, x, y2);
-                StringFormat format = new StringFormat();
-                format.FormatFlags = StringFormatFlags.DirectionVertical;
+                StringFormat format = new()
+                {
+                    FormatFlags = StringFormatFlags.DirectionVertical
+                };
                 g.DrawString(xtitle, font3, brushe1, x - 10, y2, format);
             }
             x = datax;
@@ -582,9 +588,9 @@ namespace SuperFramework
             int dataindex = 0;
             for (int i = 1; i < dt.Columns.Count; i++)
             {
-                Point p1 = new Point();
-                Point p2 = new Point();
-                Point p3 = new Point();
+                Point p1 = new();
+                Point p2 = new();
+                Point p3 = new();
                 int rowindex = 0;
                 x = datax + x_pitch;
                 foreach (DataRow row in dt.Rows)
@@ -647,12 +653,12 @@ namespace SuperFramework
             if ((maxValue % 10) != 0)
                 maxValue = 10 * ((int)maxValue / 10) + 10;
             maxValue /= 5;
-            List<float> y_value = new List<float>();
+            List<float> y_value = new();
             for (int i = 1; i <= 5; i++)
             {
                 y_value.Add(maxValue * i);
             }
-            List<string> x_zhi = new List<string>();
+            List<string> x_zhi = new();
             foreach (DataRow row in dt.Rows)
             {
                 x_zhi.Add(row[0].ToString());
@@ -672,36 +678,38 @@ namespace SuperFramework
             int y2 = height - 120;
             int datay2 = y2;
             int datax = x;
-            List<Color> colors = new List<Color>();
-            Random ran = new Random();
+            List<Color> colors = new();
+            Random ran = new();
             for (int i = 1; i < dt.Columns.Count; i++)
             {
                 colors.Add(Color.FromArgb(200, ran.Next(0, 200), ran.Next(0, 200), ran.Next(0, 200)));
             }
-            List<string> capname = new List<string>();
+            List<string> capname = new();
             for (int i = 1; i < dt.Columns.Count; i++)
             {
                 capname.Add(dt.Columns[i].ToString());
             }
 
-            Bitmap image = new Bitmap(width, height);
+            Bitmap image = new(width, height);
             Graphics g = Graphics.FromImage(image);
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.Clear(Color.White);
-            Font font1 = new Font("Arial", 10, FontStyle.Regular);
-            Font font2 = new Font("宋体", 10, FontStyle.Regular);
-            Font font3 = new Font("宋体", 10, FontStyle.Regular);
+            Font font1 = new("Arial", 10, FontStyle.Regular);
+            Font font2 = new("宋体", 10, FontStyle.Regular);
+            Font font3 = new("宋体", 10, FontStyle.Regular);
             Brush brushe1 = new SolidBrush(Color.Black);
             g.DrawString(title, font2, brushe1, width / 5, 30);
             g.DrawRectangle(new Pen(Color.Black), 0, 0, image.Width - 1, image.Height - 1);
 
-            Pen pen1 = new Pen(linecolor, 1);
-            Pen pen2 = new Pen(linecolor, 2);
+            Pen pen1 = new(linecolor, 1);
+            Pen pen2 = new(linecolor, 2);
             foreach (string xtitle in x_zhi)
             {
                 x += x_pitch;
-                StringFormat format = new StringFormat();
-                format.FormatFlags = StringFormatFlags.DirectionVertical;
+                StringFormat format = new()
+                {
+                    FormatFlags = StringFormatFlags.DirectionVertical
+                };
                 g.DrawString(xtitle, font3, brushe1, x, y2, format);
             }
             x = datax;
@@ -721,9 +729,9 @@ namespace SuperFramework
             int dataindex = 0;
             for (int i = 1; i < dt.Columns.Count; i++)
             {
-                Point p1 = new Point();
-                Point p2 = new Point();
-                Point p3 = new Point();
+                Point p1 = new();
+                Point p2 = new();
+                Point p3 = new();
                 int rowindex = 0;
                 x = datax + x_pitch;
                 foreach (DataRow row in dt.Rows)
@@ -780,15 +788,15 @@ namespace SuperFramework
             {
                 height = tempheight;
             }
-            Random ran = new Random();
-            List<Color> colors = new List<Color>();
-            List<string> capname = new List<string>();
+            Random ran = new();
+            List<Color> colors = new();
+            List<string> capname = new();
             foreach (DataRow row in dt.Rows)
             {
                 colors.Add(Color.FromArgb(200, ran.Next(0, 200), ran.Next(0, 200), ran.Next(0, 200)));
                 capname.Add(row[0].ToString());
             }
-            List<float> count = new List<float>();
+            List<float> count = new();
             for (int i = 1; i < dt.Columns.Count; i++)
             {
                 float sum = 0;
@@ -798,18 +806,18 @@ namespace SuperFramework
                 }
                 count.Add(sum);
             }
-            List<string> titlestr = new List<string>();
+            List<string> titlestr = new();
             for (int i = 1; i < dt.Columns.Count; i++)
             {
                 titlestr.Add(dt.Columns[i].ToString());
             }
-            Bitmap image = new Bitmap(width, height);
+            Bitmap image = new(width, height);
             Graphics g = Graphics.FromImage(image);
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.Clear(Color.White);
-            Font font1 = new Font("Arial", 10, FontStyle.Regular);
-            Font font2 = new Font("宋体", 10, FontStyle.Regular);
-            Font font3 = new Font("宋体", 10, FontStyle.Regular);
+            Font font1 = new("Arial", 10, FontStyle.Regular);
+            Font font2 = new("宋体", 10, FontStyle.Regular);
+            Font font3 = new("宋体", 10, FontStyle.Regular);
             Brush brushe1 = new SolidBrush(Color.Black);
             g.DrawString(title, font2, brushe1, width / 5, 30);
             g.DrawRectangle(new Pen(Color.Black), 0, 0, image.Width - 1, image.Height - 1);
@@ -881,15 +889,15 @@ namespace SuperFramework
             {
                 height = tempheight;
             }
-            Random ran = new Random();
-            List<Color> colors = new List<Color>();
-            List<string> capname = new List<string>();
+            Random ran = new();
+            List<Color> colors = new();
+            List<string> capname = new();
             foreach (DataRow row in dt.Rows)
             {
                 colors.Add(Color.FromArgb(200, ran.Next(0, 200), ran.Next(0, 200), ran.Next(0, 200)));
                 capname.Add(row[0].ToString());
             }
-            List<Color> colors1 = new List<Color>();
+            List<Color> colors1 = new();
             foreach (Color color in colors)
             {
                 int r = (int)color.R - 30;
@@ -903,7 +911,7 @@ namespace SuperFramework
                     b = 0;
                 colors1.Add(Color.FromArgb(r, g1, b));
             }
-            List<float> count = new List<float>();
+            List<float> count = new();
             for (int i = 1; i < dt.Columns.Count; i++)
             {
                 float sum = 0;
@@ -913,18 +921,18 @@ namespace SuperFramework
                 }
                 count.Add(sum);
             }
-            List<string> titlestr = new List<string>();
+            List<string> titlestr = new();
             for (int i = 1; i < dt.Columns.Count; i++)
             {
                 titlestr.Add(dt.Columns[i].ToString());
             }
-            Bitmap image = new Bitmap(width, height);
+            Bitmap image = new(width, height);
             Graphics g = Graphics.FromImage(image);
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.Clear(Color.White);
-            Font font1 = new Font("Arial", 10, FontStyle.Regular);
-            Font font2 = new Font("宋体", 10, FontStyle.Regular);
-            Font font3 = new Font("宋体", 10, FontStyle.Regular);
+            Font font1 = new("Arial", 10, FontStyle.Regular);
+            Font font2 = new("宋体", 10, FontStyle.Regular);
+            Font font3 = new("宋体", 10, FontStyle.Regular);
             Brush brushe1 = new SolidBrush(Color.Black);
             g.DrawString(title, font2, brushe1, width / 5, 30);
             g.DrawRectangle(new Pen(Color.Black), 0, 0, image.Width - 1, image.Height - 1);
@@ -951,8 +959,8 @@ namespace SuperFramework
                 g.DrawString(titlestr[capindex], new Font("黑体", 10), new SolidBrush(Color.Black), x, y - 30);
                 float r = 0.0f;
                 float JiaoDu = 0.0f;
-                List<float> L_r = new List<float>();
-                List<float> L_JiaoDu = new List<float>();
+                List<float> L_r = new();
+                List<float> L_JiaoDu = new();
                 float data;
                 foreach (DataRow row in dt.Rows)
                 {
@@ -1027,9 +1035,11 @@ namespace SuperFramework
         /// <returns></returns>
         public static Bitmap CreateColPerCent(DataTable dt, string title, Color linecolor, string x_name, string y_name, int T_width)
         {
-            StringFormat format = new StringFormat();
-            format.FormatFlags = StringFormatFlags.DirectionVertical | StringFormatFlags.DirectionRightToLeft;
-            List<float> count = new List<float>();
+            StringFormat format = new()
+            {
+                FormatFlags = StringFormatFlags.DirectionVertical | StringFormatFlags.DirectionRightToLeft
+            };
+            List<float> count = new();
             for (int i = 1; i < dt.Columns.Count; i++)
             {
                 float sum = 0;
@@ -1059,12 +1069,12 @@ namespace SuperFramework
             if ((maxValue % 10) != 0)
                 maxValue = 10 * ((int)maxValue / 10) + 10;
             maxValue /= 5;
-            List<float> y_value = new List<float>();
+            List<float> y_value = new();
             for (int i = 1; i <= 5; i++)
             {
                 y_value.Add(maxValue * i);
             }
-            List<string> x_zhi = new List<string>();
+            List<string> x_zhi = new();
             foreach (DataRow row in dt.Rows)
             {
                 x_zhi.Add(row[0].ToString());
@@ -1085,31 +1095,31 @@ namespace SuperFramework
             int y2 = height - 150;
             int datay2 = y2;
             int datax = x;
-            List<Color> colors = new List<Color>();
-            Random ran = new Random();
+            List<Color> colors = new();
+            Random ran = new();
             for (int i = 1; i < dt.Columns.Count; i++)
             {
                 colors.Add(Color.FromArgb(200, ran.Next(0, 200), ran.Next(0, 200), ran.Next(0, 200)));
             }
-            List<string> capname = new List<string>();
+            List<string> capname = new();
             for (int i = 1; i < dt.Columns.Count; i++)
             {
                 capname.Add(dt.Columns[i].ToString());
             }
 
-            Bitmap image = new Bitmap(width, height);
+            Bitmap image = new(width, height);
             Graphics g = Graphics.FromImage(image);
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.Clear(Color.White);
-            Font font1 = new Font("Arial", 10, FontStyle.Regular);
-            Font font2 = new Font("宋体", 10, FontStyle.Regular);
-            Font font3 = new Font("宋体", 10, FontStyle.Regular);
+            Font font1 = new("Arial", 10, FontStyle.Regular);
+            Font font2 = new("宋体", 10, FontStyle.Regular);
+            Font font3 = new("宋体", 10, FontStyle.Regular);
             Brush brushe1 = new SolidBrush(Color.Black);
             g.DrawString(title, font2, brushe1, width / 5, 30);
             g.DrawRectangle(new Pen(Color.Black), 0, 0, image.Width - 1, image.Height - 1);
 
-            Pen pen1 = new Pen(linecolor, 1);
-            Pen pen2 = new Pen(linecolor, 2);
+            Pen pen1 = new(linecolor, 1);
+            Pen pen2 = new(linecolor, 2);
             foreach (string xtitle in x_zhi)
             {
                 x += x_pitch;
@@ -1201,26 +1211,26 @@ namespace SuperFramework
             }
             int left = (maxlen + 1) * 14;
 
-            List<float> r_value = new List<float>();
+            List<float> r_value = new();
             float maxstep = maxValue / 5;
             for (int i = 0; i < 5; i++)
             {
                 r_value.Add(maxValue - maxstep * i);
             }
 
-            List<string> attr = new List<string>();
+            List<string> attr = new();
             foreach (DataRow row in values.Rows)
             {
                 attr.Add(row[0].ToString());
             }
 
-            Rectangle rect = new Rectangle(left, 100, 300, 300);
-            Bitmap image = new Bitmap(rect.Width + left * 2, rect.Height + 150);
+            Rectangle rect = new(left, 100, 300, 300);
+            Bitmap image = new(rect.Width + left * 2, rect.Height + 150);
             Graphics g = Graphics.FromImage(image);
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.Clear(Color.FromArgb(0, 255, 255, 255));
-            Font font1 = new Font("Arial", 10, FontStyle.Regular);
-            Font font2 = new Font("宋体", 10, FontStyle.Regular);
+            Font font1 = new("Arial", 10, FontStyle.Regular);
+            Font font2 = new("宋体", 10, FontStyle.Regular);
             Brush brushe1 = new SolidBrush(Color.FromArgb(82, 137, 247));
             g.DrawString(title, font2, brushe1, image.Width / 3, 30);
             //g.DrawRectangle(new Pen(Color.Black), 0, 0, image.Width - 1, image.Height - 1);
@@ -1229,16 +1239,18 @@ namespace SuperFramework
             //圆的半径
             float radius = diameter / 2;
             //圆心
-            PointF center = new PointF(rect.X + rect.Width / 2, rect.Y + rect.Height / 2);
+            PointF center = new(rect.X + rect.Width / 2, rect.Y + rect.Height / 2);
 
             //画5个同心圆
             int count = 5;
             float diameterstep = diameter / count;
             float radiustep = radius / count;
 
-            RectangleF rectf = new RectangleF();
-            rectf.X = center.X - radius;
-            rectf.Y = center.Y - radius;
+            RectangleF rectf = new()
+            {
+                X = center.X - radius,
+                Y = center.Y - radius
+            };
             rectf.Width = rectf.Height = diameter;
 
             //float r0 = radius;
@@ -1269,7 +1281,7 @@ namespace SuperFramework
                 for (int i = 0; i < linecount; i++)
                 {
                     //终点
-                    PointF endPoint = new PointF((float)(radius * Math.Cos(angle * Math.PI / 180) + center.X), (float)(radius * Math.Sin(angle * Math.PI / 180) + center.Y));
+                    PointF endPoint = new((float)(radius * Math.Cos(angle * Math.PI / 180) + center.X), (float)(radius * Math.Sin(angle * Math.PI / 180) + center.Y));
                     g.DrawLine(new Pen(Color.FromArgb(82, 137, 247)), center, endPoint);
                     // 画名字，属性
                     string anglestr = attr[i];
@@ -1352,7 +1364,7 @@ namespace SuperFramework
                 anglex += anglestepx;
                 anglex %= 360;
             }
-            GraphicsPath path = new GraphicsPath(points, bytes);
+            GraphicsPath path = new(points, bytes);
             g.DrawPath(new Pen(Color.Green), path);
             g.FillPath(new SolidBrush(Color.FromArgb(150, 18, 144, 23)), path);
             for (int pti = 0; pti < points.Length - 1; pti++)
@@ -1411,12 +1423,12 @@ namespace SuperFramework
             if ((maxValue % 10) != 0)
                 maxValue = 10 * ((int)maxValue / 10) + 10;
             maxValue /= 5;
-            List<float> x_value = new List<float>();
+            List<float> x_value = new();
             for (int i = 1; i <= 5; i++)
             {
                 x_value.Add(maxValue * i);
             }
-            List<string> y_zhi = new List<string>();
+            List<string> y_zhi = new();
             foreach (DataRow row in dt.Rows)
             {
                 y_zhi.Add(row[0].ToString());
@@ -1433,31 +1445,31 @@ namespace SuperFramework
             int y2 = T_place * 2 + y + y_pitch * dt.Rows.Count;
             int datay = y;
             int datax = x;
-            List<Color> colors = new List<Color>();
-            Random ran = new Random();
+            List<Color> colors = new();
+            Random ran = new();
             for (int i = 1; i < dt.Columns.Count; i++)
             {
                 colors.Add(Color.FromArgb(200, ran.Next(0, 200), ran.Next(0, 200), ran.Next(0, 200)));
             }
-            List<string> capname = new List<string>();
+            List<string> capname = new();
             for (int i = 1; i < dt.Columns.Count; i++)
             {
                 capname.Add(dt.Columns[i].ToString());
             }
 
-            Bitmap image = new Bitmap(width, height);
+            Bitmap image = new(width, height);
             Graphics g = Graphics.FromImage(image);
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.Clear(Color.White);
-            Font font1 = new Font("Arial", 10, FontStyle.Regular);
-            Font font2 = new Font("宋体", 10, FontStyle.Regular);
-            Font font3 = new Font("宋体", 10, FontStyle.Regular);
+            Font font1 = new("Arial", 10, FontStyle.Regular);
+            Font font2 = new("宋体", 10, FontStyle.Regular);
+            Font font3 = new("宋体", 10, FontStyle.Regular);
             Brush brushe1 = new SolidBrush(Color.Black);
             g.DrawString(title, font2, brushe1, width / 5, 30);
             g.DrawRectangle(new Pen(Color.Black), 0, 0, image.Width - 1, image.Height - 1);
 
-            Pen pen1 = new Pen(linecolor, 1);
-            Pen pen2 = new Pen(linecolor, 2);
+            Pen pen1 = new(linecolor, 1);
+            Pen pen2 = new(linecolor, 2);
 
             g.DrawLine(pen2, x, y, x2, y);
             g.DrawString(y_name, font3, brushe1, x - 40, y);
@@ -1550,23 +1562,23 @@ namespace SuperFramework
                 }
             }
             int left = (maxlen + 1) * 14;
-            List<float> r_value = new List<float>();
+            List<float> r_value = new();
             float maxstep = maxValue / 5;
             for (int i = 0; i < 5; i++)
             {
                 r_value.Add(maxValue - maxstep * i);
             }
-            List<string> capname = new List<string>();
+            List<string> capname = new();
             for (int i = 1; i < values.Columns.Count; i++)
             {
                 capname.Add(values.Columns[i].ToString());
             }
-            List<string> attr = new List<string>();
+            List<string> attr = new();
             foreach (DataRow row in values.Rows)
             {
                 attr.Add(row[0].ToString());
             }
-            List<Color> colors = new List<Color>();
+            List<Color> colors = new();
             colors.Add(Color.Green);
             colors.Add(Color.Red);
             colors.Add(Color.Blue);
@@ -1575,7 +1587,7 @@ namespace SuperFramework
             //{
             //    colors.Add(Color.FromArgb(ran.Next(0, 200), ran.Next(0, 200), ran.Next(0, 200)));
             //}
-            List<Color> colors1 = new List<Color>();
+            List<Color> colors1 = new();
             foreach (Color color in colors)
             {
                 int r1 = (int)color.R + 30;
@@ -1589,13 +1601,13 @@ namespace SuperFramework
                     b1 = 200;
                 colors1.Add(Color.FromArgb(150, r1, g1, b1));
             }
-            Rectangle rect = new Rectangle(left, 100, 300, 300);
-            Bitmap image = new Bitmap(rect.Width + left * 2, rect.Height + 200);
+            Rectangle rect = new(left, 100, 300, 300);
+            Bitmap image = new(rect.Width + left * 2, rect.Height + 200);
             Graphics g = Graphics.FromImage(image);
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.Clear(Color.FromArgb(0, 255, 255, 255));
-            Font font1 = new Font("Arial", 10, FontStyle.Regular);
-            Font font2 = new Font("宋体", 10, FontStyle.Regular);
+            Font font1 = new("Arial", 10, FontStyle.Regular);
+            Font font2 = new("宋体", 10, FontStyle.Regular);
             Brush brushe1 = new SolidBrush(Color.FromArgb(82, 137, 247));
             g.DrawString(title, font2, brushe1, image.Width / 3, 30);
             //g.DrawRectangle(new Pen(Color.Black), 0, 0, image.Width - 1, image.Height - 1);
@@ -1604,16 +1616,18 @@ namespace SuperFramework
             //圆的半径
             float radius = diameter / 2;
             //圆心
-            PointF center = new PointF(rect.X + rect.Width / 2, rect.Y + rect.Height / 2);
+            PointF center = new(rect.X + rect.Width / 2, rect.Y + rect.Height / 2);
 
             //画5个同心圆
             int count = 5;
             float diameterstep = diameter / count;
             float radiustep = radius / count;
 
-            RectangleF rectf = new RectangleF();
-            rectf.X = center.X - radius;
-            rectf.Y = center.Y - radius;
+            RectangleF rectf = new()
+            {
+                X = center.X - radius,
+                Y = center.Y - radius
+            };
             rectf.Width = rectf.Height = diameter;
 
             //float r0 = radius;
@@ -1639,7 +1653,7 @@ namespace SuperFramework
                 for (int i = 0; i < linecount; i++)
                 {
                     //终点
-                    PointF endPoint = new PointF((float)(radius * Math.Cos(angle * Math.PI / 180) + center.X), (float)(radius * Math.Sin(angle * Math.PI / 180) + center.Y));
+                    PointF endPoint = new((float)(radius * Math.Cos(angle * Math.PI / 180) + center.X), (float)(radius * Math.Sin(angle * Math.PI / 180) + center.Y));
                     g.DrawLine(new Pen(Color.FromArgb(82, 137, 247)), center, endPoint);
                     // 画名字，属性
                     string anglestr = attr[i];
@@ -1689,7 +1703,7 @@ namespace SuperFramework
                 }
             }
 
-            List<PointF[]> pointfs = new List<PointF[]>();
+            List<PointF[]> pointfs = new();
             for (int j = 1; j < values.Columns.Count; j++)
             {
                 PointF[] points = new PointF[values.Rows.Count + 1];
@@ -1739,7 +1753,7 @@ namespace SuperFramework
             int dataindex = 1;
             foreach (PointF[] ps in pointfs)
             {
-                GraphicsPath path = new GraphicsPath(ps, bytes);
+                GraphicsPath path = new(ps, bytes);
                 g.DrawPath(new Pen(colors[colsindex]), path);
                 g.FillPath(new SolidBrush(colors1[colsindex]), path);
                 for (int pti = 0; pti < ps.Length - 1; pti++)

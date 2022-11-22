@@ -23,9 +23,11 @@ namespace SuperFramework.SuperMouseHelper.MouseKeyboardActivityMonitor
 
         private static KeyPressEventArgsExt CreateNonChar()
         {
-            KeyPressEventArgsExt e = new KeyPressEventArgsExt((char)0x0);
-            e.IsNonChar = true;
-            e.Timestamp = Environment.TickCount;
+            KeyPressEventArgsExt e = new((char)0x0)
+            {
+                IsNonChar = true,
+                Timestamp = Environment.TickCount
+            };
             return e;
         }
 
@@ -120,8 +122,10 @@ namespace SuperFramework.SuperMouseHelper.MouseKeyboardActivityMonitor
                 return CreateNonChar();
             }
 
-            KeyPressEventArgsExt e = new KeyPressEventArgsExt(ch);
-            e.Timestamp = keyboardHookStruct.Time;		// Update the timestamp to use the actual one from KeyboardHookStruct
+            KeyPressEventArgsExt e = new(ch)
+            {
+                Timestamp = keyboardHookStruct.Time     // Update the timestamp to use the actual one from KeyboardHookStruct
+            };
 
             return e;
         }

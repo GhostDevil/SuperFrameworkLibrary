@@ -18,10 +18,10 @@ namespace SuperFramework.SuperAlgorithm
         /// <returns>返回分组后的泛型集合</returns>
         public static List<Group> GetGroup(string[] strs, int groupCount, bool isMerge = true)
         {
-            List<Group> list = new List<Group>();
+            List<Group> list = new();
             if (strs.Length < groupCount)
             {
-                Group gp = new Group() { GroupNo = "1" };
+                Group gp = new() { GroupNo = "1" };
                 for (int i = 0; i < strs.Length; i++)
                     gp.GroupStr += strs[i];
                 list.Add(gp);
@@ -34,7 +34,7 @@ namespace SuperFramework.SuperAlgorithm
                 int w = 0;
                 for (int i = 1; i <= groupCount; i++)
                 {
-                    Group g = new Group() { GroupNo = (i).ToString() };
+                    Group g = new() { GroupNo = (i).ToString() };
                     for (int j = 0; j < y; j++)
                     {
                         if (j > 0)
@@ -55,7 +55,7 @@ namespace SuperFramework.SuperAlgorithm
                     }
                     else
                     {
-                        Group gp = new Group() { GroupNo = (groupCount + 1).ToString() };
+                        Group gp = new() { GroupNo = (groupCount + 1).ToString() };
                         for (int i = x; i >= 1; i--)
                         {
                             if (i == x)

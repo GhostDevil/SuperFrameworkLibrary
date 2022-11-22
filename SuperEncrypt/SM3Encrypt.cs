@@ -20,9 +20,9 @@ namespace SuperFramework.SuperEncrypt
         {
             //byte[] msg1 = Encoding.Default.GetBytes(data);
             byte[] key1 = Encoding.Default.GetBytes(key);
-            KeyParameter keyParameter = new KeyParameter(key1);
-            SM3Digest sm3 = new SM3Digest();
-            HMac mac = new HMac(sm3);//带密钥的杂凑算法
+            KeyParameter keyParameter = new(key1);
+            SM3Digest sm3 = new();
+            HMac mac = new(sm3);//带密钥的杂凑算法
             mac.Init(keyParameter);
             mac.BlockUpdate(data, 0, data.Length);
             byte[] result = new byte[mac.GetMacSize()];
@@ -36,7 +36,7 @@ namespace SuperFramework.SuperEncrypt
         /// <returns></returns>
         public static string Encrypt(byte[] data)
         {           
-            SM3Digest sm3 = new SM3Digest();
+            SM3Digest sm3 = new();
             sm3.BlockUpdate(data, 0, data.Length);
             byte[] md = new byte[sm3.GetDigestSize()];//SM3算法产生的哈希值大小
             sm3.DoFinal(md, 0);

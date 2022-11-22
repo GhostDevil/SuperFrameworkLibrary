@@ -87,7 +87,7 @@ namespace SuperFramework.SuperBarCode
         {
             if (sleep) System.Threading.Thread.Sleep(3);
             string result = "";
-            Random random = new Random();
+            Random random = new();
             for (int i = 0; i < length; i++)
             {
                 result += random.Next(10).ToString();
@@ -110,7 +110,7 @@ namespace SuperFramework.SuperBarCode
             char[] Pattern = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
             string result = "";
             int n = Pattern.Length;
-            Random random = new Random(~unchecked((int)DateTime.Now.Ticks));
+            Random random = new(~unchecked((int)DateTime.Now.Ticks));
             for (int i = 0; i < length; i++)
             {
                 int rnd = random.Next(0, n);
@@ -131,7 +131,7 @@ namespace SuperFramework.SuperBarCode
             char[] Pattern = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
             string result = "";
             int n = Pattern.Length;
-            Random random = new Random(~unchecked((int)DateTime.Now.Ticks));
+            Random random = new(~unchecked((int)DateTime.Now.Ticks));
             for (int i = 0; i < length; i++)
             {
                 int rnd = random.Next(0, n);
@@ -148,7 +148,7 @@ namespace SuperFramework.SuperBarCode
         /// <returns></returns>
         public string GetStrWithChinese(int codeLen, int zhCharsCount)
         {
-            Random rnd = new Random(unchecked((int)DateTime.Now.Ticks));
+            Random rnd = new(unchecked((int)DateTime.Now.Ticks));
             string ChineseChars = "的一是在不了有和人这中大为上个国我以要他时来用们生到作地于出就分对成会可主发年动同工也能下过子说产种面而方后多定行学法所民得经十三之进着等部度家电力里如水化高自二理起小物现实加量都两体制机当使点从业本去把性好应开它合还因由其些然前外天政四日那社义事平形相全表间样与关各重新线内数正心反你明看原又么利比或但质气第向道命此变条只没结解问意建月公无系军很情者最立代想已通并提直题党程展五果料象员革位入常文总次品式活设及管特件长求老头基资边流路级少图山统接知较将组见计别她手角期根论运农指几九区强放决西被干做必战先回则任取据处队南给色光门即保治北造百规热领七海口东导器压志世金增争济阶油思术极交受联什认六共权收证改清己美再采转更单风切打白教速花带安场身车例真务具万每目至达走积示议声报斗完类八离华名确才科张信马节话米整空元况今集温传土许步群广石记需段研界拉林律叫且究观越织装影算低持音众书布复容儿须际商非验连断深难近矿千周委素技备半办青省列习响约支般史感劳便团往酸历市克何除消构府称太准精值号率族维划选标写存候毛亲快效斯院查江型眼王按格养易置派层片始却专状育厂京识适属圆包火住调满县局照参红细引听该铁价严";
             string EnglishOrNumChars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -181,7 +181,7 @@ namespace SuperFramework.SuperBarCode
         public void CreateImage(bool chaos = false)
         {
             int int_ImageWidth = text.Length * letterWidth;
-            Bitmap image = new Bitmap(int_ImageWidth, letterHeight);
+            Bitmap image = new(int_ImageWidth, letterHeight);
             using (Graphics g = Graphics.FromImage(image))
             {
                 g.Clear(System.Drawing.Color.White);
@@ -190,7 +190,7 @@ namespace SuperFramework.SuperBarCode
                 if (chaos)
                 {
                     //Pen pen = new Pen(Colors[rnd.Next(Colors.Length - 1)], 0);//噪点颜色：随机色，灰色噪点太简单。
-                    Pen pen = new Pen(Color.LightGray, 0);//噪点颜色：灰色
+                    Pen pen = new(Color.LightGray, 0);//噪点颜色：灰色
                     int c = text.Length * 10;
                     for (int i = 0; i < c; i++)
                     {
@@ -203,7 +203,7 @@ namespace SuperFramework.SuperBarCode
                     int y1 = Next(image.Height);
                     int x2 = Next(3 * image.Width / 4, image.Width);
                     int y2 = Next(image.Height);
-                    Pen pen1 = new Pen(Colors[Next(Colors.Length - 1)], 1);
+                    Pen pen1 = new(Colors[Next(Colors.Length - 1)], 1);
                     g.DrawLine(pen1, x1, y1, x2, y2);
 
                     for (int l = 0; l < 3; l++)
@@ -235,7 +235,7 @@ namespace SuperFramework.SuperBarCode
                     string str_char = text.Substring(int_index, 1);
                     str_char = Next(1) == 1 ? str_char.ToLower() : str_char.ToUpper();
                     Brush newBrush = new SolidBrush(GetRandomColor());
-                    Point thePos = new Point(_x, _y);
+                    Point thePos = new(_x, _y);
                     g.DrawString(str_char, fonts[Next(fonts.Length - 1)], newBrush, thePos);
                 }
                 for (int i = 0; i < 10; i++)
@@ -255,9 +255,9 @@ namespace SuperFramework.SuperBarCode
         /// </summary>
         public Color GetRandomColor()
         {
-            Random RandomNum_First = new Random((int)DateTime.Now.Ticks);
+            Random RandomNum_First = new((int)DateTime.Now.Ticks);
             System.Threading.Thread.Sleep(RandomNum_First.Next(50));
-            Random RandomNum_Sencond = new Random((int)DateTime.Now.Ticks);
+            Random RandomNum_Sencond = new((int)DateTime.Now.Ticks);
             int int_Red = RandomNum_First.Next(180);
             int int_Green = RandomNum_Sencond.Next(180);
             int int_Blue = (int_Red + int_Green > 300) ? 0 : 400 - int_Red - int_Green;
@@ -275,7 +275,7 @@ namespace SuperFramework.SuperBarCode
         public Bitmap TwistImage(Bitmap srcBmp, bool bXDir, double dMultValue, double dPhase)
         {
             double PI = 6.283185307179586476925286766559;
-            Bitmap destBmp = new Bitmap(srcBmp.Width, srcBmp.Height);
+            Bitmap destBmp = new(srcBmp.Width, srcBmp.Height);
             Graphics graph = Graphics.FromImage(destBmp);
             graph.FillRectangle(new SolidBrush(System.Drawing.Color.White), 0, 0, destBmp.Width, destBmp.Height);
             graph.Dispose();

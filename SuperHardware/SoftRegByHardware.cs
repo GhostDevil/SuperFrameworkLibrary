@@ -43,7 +43,7 @@ namespace SuperFramework.SuperHardware
         public static string GetDiskVolumeSerialNumber()
         {
             //ManagementClass mc = new ManagementClass("win32_NetworkAdapterConfiguration");
-            ManagementObject disk = new ManagementObject("win32_logicaldisk.deviceid=\"c:\"");
+            ManagementObject disk = new("win32_logicaldisk.deviceid=\"c:\"");
             disk.Get();
             return disk.GetPropertyValue("VolumeSerialNumber").ToString();
         }
@@ -54,7 +54,7 @@ namespace SuperFramework.SuperHardware
         public static string GetCpu()
         {
             string strCpu = null;
-            ManagementClass myCpu = new ManagementClass("win32_Processor");
+            ManagementClass myCpu = new("win32_Processor");
             ManagementObjectCollection myCpuCollection = myCpu.GetInstances();
             foreach (ManagementObject myObject in myCpuCollection)
             {

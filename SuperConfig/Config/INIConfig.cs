@@ -130,7 +130,7 @@ namespace SuperFramework.SuperConfig.Config
         /// <returns>返回键的值</returns>
         public static string Read(string section, string key,string path)
         {
-            StringBuilder temp = new StringBuilder(255);
+            StringBuilder temp = new(255);
             _ = GetPrivateProfileString(section, key, "", temp, 255, path);
             return temp.ToString();
         }
@@ -190,12 +190,12 @@ namespace SuperFramework.SuperConfig.Config
         /// <returns>返回节点下的键值对</returns>
         public static Dictionary<string, string> GetAllKeyValues(string section, string path)
         {
-            Dictionary<string, string> d = new Dictionary<string, string>();
+            Dictionary<string, string> d = new();
             byte[] b = new byte[65535];
             GetPrivateProfileSection(section, b, b.Length, path);
             string s = System.Text.Encoding.Default.GetString(b);
             string[] tmp = s.Split((char)0);
-            List<string> result = new List<string>();
+            List<string> result = new();
             foreach (string r in tmp)
             {
                 if (r != string.Empty)
@@ -250,7 +250,7 @@ namespace SuperFramework.SuperConfig.Config
                     throw new ArgumentException("必须指定节点名称", nameof(section));
                 if (string.IsNullOrWhiteSpace(key))
                     throw new ArgumentException("必须指定键名称", nameof(key));
-                StringBuilder sb = new StringBuilder(SIZE);                
+                StringBuilder sb = new(SIZE);                
                 uint bytesReturned = GetPrivateProfileString(section, key, defaultValue, sb, SIZE, filePath);
                 if (bytesReturned != 0)
                 {
@@ -274,7 +274,7 @@ namespace SuperFramework.SuperConfig.Config
                 throw new ArgumentException("必须指定INI文件全路径", nameof(filePath));
             //返回值形式为 key=value,例如 Color=Red   
             const uint MAX_BUFFER = 32767;    //默认为32767     
-            string[] items = new string[0];      //返回值     
+            string[] items = Array.Empty<string>();      //返回值     
             //分配内存  
             IntPtr pReturnedString = Marshal.AllocCoTaskMem((int)MAX_BUFFER * sizeof(char));
             uint bytesReturned = GetPrivateProfileSection(section, pReturnedString, MAX_BUFFER, filePath);
@@ -299,7 +299,7 @@ namespace SuperFramework.SuperConfig.Config
                 throw new ArgumentException("必须指定INI文件全路径", nameof(filePath));
             if (string.IsNullOrWhiteSpace(section))
                 throw new ArgumentException("必须指定节点名称", nameof(section));
-            string[] value = new string[0];
+            string[] value = Array.Empty<string>();
             const int SIZE = 1024 * 10;
             char[] chars = new char[SIZE];
             uint bytesReturned = GetPrivateProfileString(section, null, null, chars, SIZE, filePath);
@@ -319,7 +319,7 @@ namespace SuperFramework.SuperConfig.Config
             if (string.IsNullOrWhiteSpace(filePath))
                 throw new ArgumentException("必须指定INI文件全路径", nameof(filePath));
             const uint MAX_BUFFER = 32767;    //默认为32767    
-            string[] sections = new string[0];      //返回值      
+            string[] sections = Array.Empty<string>();      //返回值      
             //申请内存   
             IntPtr pReturnedString = Marshal.AllocCoTaskMem((int)MAX_BUFFER * sizeof(char));
             uint bytesReturned = GetPrivateProfileSectionNames(pReturnedString, MAX_BUFFER, filePath);

@@ -51,11 +51,11 @@ namespace SuperFramework.SuperEncrypt
             {
                 TripleDES mydes = TripleDES.Create();
                 byte[] bytIn = UTF8Encoding.UTF8.GetBytes(source);
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = new();
                 mydes.Key = GetTripleDESKey(key);
                 mydes.IV = IV;
                 ICryptoTransform encrypto = mydes.CreateEncryptor();
-                CryptoStream cs = new CryptoStream(ms, encrypto, CryptoStreamMode.Write);
+                CryptoStream cs = new(ms, encrypto, CryptoStreamMode.Write);
                 cs.Write(bytIn, 0, bytIn.Length);
                 cs.FlushFinalBlock();
                 ms.Close();
@@ -82,12 +82,12 @@ namespace SuperFramework.SuperEncrypt
             {
                 TripleDES mydes = TripleDES.Create();
                 byte[] bytIn = Convert.FromBase64String(source);
-                MemoryStream ms = new MemoryStream(bytIn, 0, bytIn.Length);
+                MemoryStream ms = new(bytIn, 0, bytIn.Length);
                 mydes.Key = GetTripleDESKey(key);
                 mydes.IV = IV;
                 ICryptoTransform encrypto = mydes.CreateDecryptor();
-                CryptoStream cs = new CryptoStream(ms, encrypto, CryptoStreamMode.Read);
-                StreamReader sr = new StreamReader(cs);
+                CryptoStream cs = new(ms, encrypto, CryptoStreamMode.Read);
+                StreamReader sr = new(cs);
                 return sr.ReadToEnd();
             }
             catch(Exception)
@@ -110,11 +110,11 @@ namespace SuperFramework.SuperEncrypt
             {
                 TripleDES mydes = TripleDES.Create();
                 byte[] bytIn = source;
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = new();
                 mydes.Key = GetTripleDESKey(key);
                 mydes.IV = IV;
                 ICryptoTransform encrypto = mydes.CreateEncryptor();
-                CryptoStream cs = new CryptoStream(ms, encrypto, CryptoStreamMode.Write);
+                CryptoStream cs = new(ms, encrypto, CryptoStreamMode.Write);
                 cs.Write(bytIn, 0, bytIn.Length);
                 cs.FlushFinalBlock();
                 ms.Close();
@@ -141,12 +141,12 @@ namespace SuperFramework.SuperEncrypt
             {
                 TripleDES mydes = TripleDES.Create();
                 byte[] bytIn = source;
-                MemoryStream ms = new MemoryStream(bytIn, 0, bytIn.Length);
+                MemoryStream ms = new(bytIn, 0, bytIn.Length);
                 mydes.Key = GetTripleDESKey(key);
                 mydes.IV = IV;
                 ICryptoTransform encrypto = mydes.CreateDecryptor();
-                CryptoStream cs = new CryptoStream(ms, encrypto, CryptoStreamMode.Read);
-                StreamReader sr = new StreamReader(cs);
+                CryptoStream cs = new(ms, encrypto, CryptoStreamMode.Read);
+                StreamReader sr = new(cs);
                 return UTF8Encoding.UTF8.GetBytes(sr.ReadToEnd());
             }
             catch(Exception)
@@ -171,8 +171,8 @@ namespace SuperFramework.SuperEncrypt
             try
             {
                 TripleDES mydes = TripleDES.Create();
-                FileStream fin = new FileStream(inFileName, FileMode.Open, FileAccess.Read);
-                FileStream fout = new FileStream(outFileName, FileMode.OpenOrCreate, FileAccess.Write);
+                FileStream fin = new(inFileName, FileMode.Open, FileAccess.Read);
+                FileStream fout = new(outFileName, FileMode.OpenOrCreate, FileAccess.Write);
                 fout.SetLength(0);
                 mydes.Key = GetTripleDESKey(key);
                 mydes.IV = IV;
@@ -181,7 +181,7 @@ namespace SuperFramework.SuperEncrypt
                 long totlen = fin.Length;
                 int len;
                 ICryptoTransform encrypto = mydes.CreateEncryptor();
-                CryptoStream cs = new CryptoStream(fout, encrypto, CryptoStreamMode.Write);
+                CryptoStream cs = new(fout, encrypto, CryptoStreamMode.Write);
                 while (rdlen < totlen)
                 {
                     len = fin.Read(bin, 0, 100);
@@ -215,8 +215,8 @@ namespace SuperFramework.SuperEncrypt
             try
             {
                 TripleDES mydes = TripleDES.Create();
-                FileStream fin = new FileStream(inFileName, FileMode.Open, FileAccess.Read);
-                FileStream fout = new FileStream(outFileName, FileMode.OpenOrCreate, FileAccess.Write);
+                FileStream fin = new(inFileName, FileMode.Open, FileAccess.Read);
+                FileStream fout = new(outFileName, FileMode.OpenOrCreate, FileAccess.Write);
                 fout.SetLength(0);
                 byte[] bin = new byte[100];
                 long rdlen = 0;
@@ -225,7 +225,7 @@ namespace SuperFramework.SuperEncrypt
                 mydes.Key = GetTripleDESKey(key);
                 mydes.IV = IV;
                 ICryptoTransform encrypto = mydes.CreateDecryptor();
-                CryptoStream cs = new CryptoStream(fout, encrypto, CryptoStreamMode.Write);
+                CryptoStream cs = new(fout, encrypto, CryptoStreamMode.Write);
                 while (rdlen < totlen)
                 {
                     len = fin.Read(bin, 0, 100);

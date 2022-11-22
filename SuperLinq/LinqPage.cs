@@ -82,36 +82,7 @@ namespace SuperFramework.SuperLinq
             /// 总行数
             /// </summary>
             public int TotalRows { get; set; }
-            ///// <summary>
-            ///// 排序方式
-            ///// </summary>
-            //public class Orders
-            //{
-            //    /// <summary>
-            //    /// 排序列
-            //    /// </summary>
-            //    public string Property { get; set; }
-            //    /// <summary>
-            //    /// 排序方式
-            //    /// </summary>
-            //    public OrderType Order { get; set; }
-
-            //    /// <summary>
-            //    /// 排序方式
-            //    /// </summary>
-            //    public enum OrderType
-            //    {
-            //        /// <summary>
-            //        /// 升序
-            //        /// </summary>
-            //        OrderBy,
-            //        /// <summary>
-            //        /// 降序
-            //        /// </summary>
-            //        OrderByDescending
-            //    }
-            //}
-
+          
         }
         #endregion
 

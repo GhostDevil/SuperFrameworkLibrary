@@ -23,10 +23,10 @@ namespace SuperFramework.SuperImage
         /// <returns>返回位图对象</returns>
         public static Bitmap TrapezoidTransformation(Bitmap src, double compressH, double compressW, bool isLeft, bool isCenter)
         {
-            Rectangle rect = new Rectangle(0, 0, src.Width, src.Height);
-            using (Bitmap resultH = new Bitmap(rect.Width, rect.Height))
+            Rectangle rect = new(0, 0, src.Width, src.Height);
+            using (Bitmap resultH = new(rect.Width, rect.Height))
             {
-                Bitmap resultW = new Bitmap(rect.Width, rect.Height);
+                Bitmap resultW = new(rect.Width, rect.Height);
 
                 #region 指针算法，高速
                 //LockBits将Bitmap锁定到内存中

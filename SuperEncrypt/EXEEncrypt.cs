@@ -30,7 +30,7 @@ namespace SuperFramework.SuperEncrypt
             string Annex = "";//附加的高级条件
             if (exePath == "")
                 return false;
-            FileInfo SFInfo = new FileInfo(exePath);
+            FileInfo SFInfo = new(exePath);
             if (SFInfo.Exists == false)
                 return false;
             if (SFInfo.Extension.ToUpper() != ".EXE")
@@ -58,7 +58,7 @@ namespace SuperFramework.SuperEncrypt
         {
             if (exePath == "")
                 return false;
-            FileInfo SFInfo = new FileInfo(exePath);
+            FileInfo SFInfo = new(exePath);
             if (SFInfo.Exists == false)
                 return false;
             if (SFInfo.Extension.ToUpper() != ".EXE")
@@ -120,7 +120,7 @@ namespace SuperFramework.SuperEncrypt
         {
             try
             {
-                ManagementClass mc = new ManagementClass("Win32_Processor");
+                ManagementClass mc = new("Win32_Processor");
                 ManagementObjectCollection moc = mc.GetInstances();
 
                 string strCpuID = null;
@@ -149,7 +149,7 @@ namespace SuperFramework.SuperEncrypt
         {
             try
             {
-                ManagementClass mc = new ManagementClass("Win32_NetworkAdapterConfiguration");
+                ManagementClass mc = new("Win32_NetworkAdapterConfiguration");
                 ManagementObjectCollection moc2 = mc.GetInstances();
                 string StrNetworkCard = null;
                 foreach (ManagementObject mo in moc2)
@@ -178,10 +178,10 @@ namespace SuperFramework.SuperEncrypt
         /// <remarks>返回本地硬盘盘符列表</remarks>
         private static List<string> GetHardDisk()
         {
-            List<string> names = new List<string>();
+            List<string> names = new();
             try
             {
-                ManagementClass mcHD = new ManagementClass("win32_logicaldisk");
+                ManagementClass mcHD = new("win32_logicaldisk");
                 ManagementObjectCollection mocHD = mcHD.GetInstances();
                 foreach (ManagementObject mo in mocHD) //遍历硬盘信息
                 {
@@ -205,7 +205,7 @@ namespace SuperFramework.SuperEncrypt
             {
                 string strHardDiskID = null;
                 string DiskStr = Disk.Substring(0, 1) + ":";
-                ManagementClass mcHD = new ManagementClass("win32_logicaldisk");
+                ManagementClass mcHD = new("win32_logicaldisk");
                 ManagementObjectCollection mocHD = mcHD.GetInstances();
                 foreach (ManagementObject mo in mocHD) //遍历硬盘信息
                 {
@@ -293,7 +293,7 @@ namespace SuperFramework.SuperEncrypt
         {
             ArrInt = 0;
             string PrassSum = null;
-            ArrayList List = new ArrayList();
+            ArrayList List = new();
 
             switch (Convert.ToInt32(type))
             {
@@ -375,7 +375,7 @@ namespace SuperFramework.SuperEncrypt
             try
             {
                 Prass = Prass.Trim();
-                FileStream aFile = new FileStream(StrDir, FileMode.Open);//实例化一个FileStream对象，用来操作data.txt文件，操作类型是
+                FileStream aFile = new(StrDir, FileMode.Open);//实例化一个FileStream对象，用来操作data.txt文件，操作类型是
                 charData = Prass.ToCharArray();//将字符串内的字符复制到字符组里
                 aFile.Seek(0, SeekOrigin.End);//将指针移到文件尾
                 Encoder el = Encoding.UTF8.GetEncoder();//解码器
@@ -473,7 +473,7 @@ namespace SuperFramework.SuperEncrypt
 
             try
             {
-                FileStream aFile = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read);//实例化一个FileStream对象，用来操作data.txt文件，操作类型是
+                FileStream aFile = new(path, FileMode.OpenOrCreate, FileAccess.Read);//实例化一个FileStream对象，用来操作data.txt文件，操作类型是
                 aFile.Seek(-100, SeekOrigin.End);//把文件指针指向文件尾，从文件开始位置向前100位字节所指的字节
                 aFile.Read(byData, 0, 100);//读取FileStream对象所指的文件到字节数组里
             }

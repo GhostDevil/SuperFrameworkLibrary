@@ -96,7 +96,7 @@ namespace SuperFramework.SuperConvert
         /// <returns>转换后的拼音字符串</returns>
         public static string ConvertCh(string Chstr)
         {
-            Regex reg = new Regex("^[\u4e00-\u9fa5]$");//验证是否输入汉字
+            Regex reg = new("^[\u4e00-\u9fa5]$");//验证是否输入汉字
             byte[] arr = new byte[2];
             string pystr = "";
             int M2;

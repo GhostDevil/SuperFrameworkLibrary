@@ -56,7 +56,7 @@ namespace SuperFramework.SuperGraphics
         /// <returns>GraphicsPath：一组相互连接的直线和曲线</returns>
         public static GraphicsPath CreateRoundedRect(Rectangle rect, int radius, RoundStyle type, bool shorten)
         {
-            GraphicsPath path = new GraphicsPath();
+            GraphicsPath path = new();
 
             if (shorten)
             {
@@ -67,14 +67,14 @@ namespace SuperFramework.SuperGraphics
             if (radius < 2)
                 type = RoundStyle.None;
 
-            Rectangle rectTopLeft = new Rectangle(rect.X, rect.Y, radius, radius);
-            Rectangle rectTopRight = new Rectangle(rect.Right - radius, rect.Y, radius, radius);
-            Rectangle rectBottomLeft = new Rectangle(rect.X, rect.Bottom - radius, radius, radius);
-            Rectangle rectBottomRight = new Rectangle(rect.Right - radius, rect.Bottom - radius, radius, radius);
-            Point p1 = new Point(rect.X, rect.Y);
-            Point p2 = new Point(rect.Right, rect.Y);
-            Point p3 = new Point(rect.Right, rect.Bottom);
-            Point p4 = new Point(rect.X, rect.Bottom);
+            Rectangle rectTopLeft = new(rect.X, rect.Y, radius, radius);
+            Rectangle rectTopRight = new(rect.Right - radius, rect.Y, radius, radius);
+            Rectangle rectBottomLeft = new(rect.X, rect.Bottom - radius, radius, radius);
+            Rectangle rectBottomRight = new(rect.Right - radius, rect.Bottom - radius, radius, radius);
+            Point p1 = new(rect.X, rect.Y);
+            Point p2 = new(rect.Right, rect.Y);
+            Point p3 = new(rect.Right, rect.Bottom);
+            Point p4 = new(rect.X, rect.Bottom);
 
             switch (type)
             {
@@ -120,13 +120,13 @@ namespace SuperFramework.SuperGraphics
         /// <returns></returns>
         public static GraphicsPath CreateMinimizeFlagPath(Rectangle rect)
         {
-            GraphicsPath path = new GraphicsPath();
+            GraphicsPath path = new();
             int x = rect.X + (rect.Width - 9) / 2;
             int y = rect.Y + (rect.Height - 7) / 2;
-            Point p1 = new Point(x + 1, y + 5);
-            Point p2 = new Point(x + 7, y + 5);
-            Point p3 = new Point(x + 1, y + 6);
-            Point p4 = new Point(x + 7, y + 6);
+            Point p1 = new(x + 1, y + 5);
+            Point p2 = new(x + 7, y + 5);
+            Point p3 = new(x + 1, y + 6);
+            Point p4 = new(x + 7, y + 6);
             path.AddLines(new Point[] { p1, p2, p3, p4 });            
             return path;
         }
@@ -137,11 +137,11 @@ namespace SuperFramework.SuperGraphics
         /// <returns></returns>
         public static GraphicsPath CreateMaximizeFlagPath(Rectangle rect)
         {
-            GraphicsPath path = new GraphicsPath();
+            GraphicsPath path = new();
             int x = rect.X + (rect.Width - 9) / 2;
             int y = rect.Y + (rect.Height - 7) / 2;
-            Point p1 = new Point(x + 1, y + 1);
-            Point p2 = new Point(x + 7, y + 1);
+            Point p1 = new(x + 1, y + 1);
+            Point p2 = new(x + 7, y + 1);
             path.AddRectangle(new Rectangle(new Point(x, y), new Size(8, 6)));
             path.CloseFigure();
             path.AddLine(p1, p2);
@@ -154,24 +154,24 @@ namespace SuperFramework.SuperGraphics
         /// <returns></returns>
         public static GraphicsPath CreateRestoreFlagPath(Rectangle rect)
         {
-            GraphicsPath path = new GraphicsPath();
+            GraphicsPath path = new();
             int x = rect.X + (rect.Width - 11) / 2;
             int y = rect.Y + (rect.Height - 9) / 2;
 
-            Point p1 = new Point(x, y + 3);
-            Point p2 = new Point(x + 6, y + 3);
-            Point p3 = new Point(x + 6, y + 4);
-            Point p4 = new Point(x + 6, y + 8);
-            Point p5 = new Point(x, y + 8);
-            Point p6 = new Point(x, y + 4);
+            Point p1 = new(x, y + 3);
+            Point p2 = new(x + 6, y + 3);
+            Point p3 = new(x + 6, y + 4);
+            Point p4 = new(x + 6, y + 8);
+            Point p5 = new(x, y + 8);
+            Point p6 = new(x, y + 4);
 
-            Point p7 = new Point(x + 7, y + 5);
-            Point p8 = new Point(x + 9, y + 5);
-            Point p9 = new Point(x + 9, y + 1);
-            Point p10 = new Point(x + 3, y + 1);
-            Point p11 = new Point(x + 3, y + 2);
-            Point p12 = new Point(x + 3, y);
-            Point p13 = new Point(x + 9, y);
+            Point p7 = new(x + 7, y + 5);
+            Point p8 = new(x + 9, y + 5);
+            Point p9 = new(x + 9, y + 1);
+            Point p10 = new(x + 3, y + 1);
+            Point p11 = new(x + 3, y + 2);
+            Point p12 = new(x + 3, y);
+            Point p13 = new(x + 9, y);
 
             path.AddLines(new Point[] { p1, p2, p4, p5, p6, p3, p2, p1 });
             path.CloseFigure();
@@ -186,20 +186,20 @@ namespace SuperFramework.SuperGraphics
         /// <returns></returns>
         public static GraphicsPath CreateCloseFlagPath(Rectangle rect)
         {
-            GraphicsPath path = new GraphicsPath();
+            GraphicsPath path = new();
 
             int x = rect.X + (rect.Width - 9) / 2;
             int y = rect.Y + (rect.Height - 7) / 2;
 
-            Point p1 = new Point(x + 1-1, y-1);
-            Point p2 = new Point(x + 7, y + 6);
-            Point p3 = new Point(x + 8, y + 6);
-            Point p4 = new Point(x + 2-1, y-1);
+            Point p1 = new(x + 1-1, y-1);
+            Point p2 = new(x + 7, y + 6);
+            Point p3 = new(x + 8, y + 6);
+            Point p4 = new(x + 2-1, y-1);
 
-            Point p5 = new Point(x + 6+1, y-1);
-            Point p6 = new Point(x, y + 6);
-            Point p7 = new Point(x + 1, y + 6);
-            Point p8 = new Point(x + 7+1, y-1);
+            Point p5 = new(x + 6+1, y-1);
+            Point p6 = new(x, y + 6);
+            Point p7 = new(x + 1, y + 6);
+            Point p8 = new(x + 7+1, y-1);
 
             path.AddLine(p1, p2);
             path.AddLine(p3, p4);
@@ -216,27 +216,27 @@ namespace SuperFramework.SuperGraphics
         /// <returns></returns>
         public static GraphicsPath CreateTopRoundedPathForFormRegion(Rectangle rect)
         {
-            GraphicsPath path = new GraphicsPath();
+            GraphicsPath path = new();
 
-            Point pBL = new Point(rect.X, rect.Bottom); // bottom left
-            Point pBR = new Point(rect.Right, rect.Bottom); // bottom right
+            Point pBL = new(rect.X, rect.Bottom); // bottom left
+            Point pBR = new(rect.Right, rect.Bottom); // bottom right
 
             int x = rect.X, y = rect.Y, r = rect.Right;
-            Point p1 = new Point(x, y + 4);
-            Point p2 = new Point(x + 1, y + 4);
-            Point p3 = new Point(x + 1, y + 2);
-            Point p4 = new Point(x + 2, y + 2);
-            Point p5 = new Point(x + 2, y + 1);
-            Point p6 = new Point(x + 4, y + 1);
-            Point p7 = new Point(x + 4, y);
+            Point p1 = new(x, y + 4);
+            Point p2 = new(x + 1, y + 4);
+            Point p3 = new(x + 1, y + 2);
+            Point p4 = new(x + 2, y + 2);
+            Point p5 = new(x + 2, y + 1);
+            Point p6 = new(x + 4, y + 1);
+            Point p7 = new(x + 4, y);
 
-            Point p8 = new Point(r - 4, y);
-            Point p9 = new Point(r - 4, y + 1);
-            Point p10 = new Point(r - 2, y + 1);
-            Point p11 = new Point(r - 2, y + 2);
-            Point p12 = new Point(r - 1, y + 2);
-            Point p13 = new Point(r - 1, y + 4);
-            Point p14 = new Point(r, y + 4);
+            Point p8 = new(r - 4, y);
+            Point p9 = new(r - 4, y + 1);
+            Point p10 = new(r - 2, y + 1);
+            Point p11 = new(r - 2, y + 2);
+            Point p12 = new(r - 1, y + 2);
+            Point p13 = new(r - 1, y + 4);
+            Point p14 = new(r, y + 4);
 
             path.AddLines(new Point[] { p1, p2, p3, p4, p5, p6, p7 });
             path.AddLines(new Point[] { p8, p9, p10, p11, p12, p13, p14 });
@@ -252,15 +252,15 @@ namespace SuperFramework.SuperGraphics
         /// <returns></returns>
         public static GraphicsPath CreateSingleLineCloseFlag(Rectangle rect, int width)
         {
-            GraphicsPath path = new GraphicsPath();
+            GraphicsPath path = new();
 
             int x = rect.X + (rect.Width - width) / 2;
             int y = rect.Y + (rect.Height - width) / 2;
 
-            Point p1 = new Point(x, y);
-            Point p2 = new Point(x + width, y);
-            Point p3 = new Point(x + width, y + width);
-            Point p4 = new Point(x, y + width);
+            Point p1 = new(x, y);
+            Point p2 = new(x + width, y);
+            Point p3 = new(x + width, y + width);
+            Point p4 = new(x, y + width);
 
             path.AddLine(p1, p3);
             path.CloseFigure();
@@ -285,7 +285,7 @@ namespace SuperFramework.SuperGraphics
         /// <returns></returns>
         public static GraphicsPath CreatePlusFlag(Rectangle rect, int width)
         {
-            GraphicsPath path = new GraphicsPath();
+            GraphicsPath path = new();
 
             if (width % 2 == 1)
                 width++;
@@ -293,15 +293,15 @@ namespace SuperFramework.SuperGraphics
             int x = rect.X + (rect.Width - width) / 2;
             int y = rect.Y + (rect.Height - width) / 2;
 
-            Point p1 = new Point(x + width / 2 - 1, y);
-            Point p2 = new Point(x + width / 2 - 1, y + width - 1);
-            Point p3 = new Point(x + width / 2, y + width - 1);
-            Point p4 = new Point(x + width / 2, y);
+            Point p1 = new(x + width / 2 - 1, y);
+            Point p2 = new(x + width / 2 - 1, y + width - 1);
+            Point p3 = new(x + width / 2, y + width - 1);
+            Point p4 = new(x + width / 2, y);
 
-            Point p5 = new Point(x, y + width / 2 - 1);
-            Point p6 = new Point(x + width - 1, y + width / 2 - 1);
-            Point p7 = new Point(x + width - 1, y + width / 2);
-            Point p8 = new Point(x, y + width / 2);
+            Point p5 = new(x, y + width / 2 - 1);
+            Point p6 = new(x + width - 1, y + width / 2 - 1);
+            Point p7 = new(x + width - 1, y + width / 2);
+            Point p8 = new(x, y + width / 2);
 
             path.AddLines(new Point[] { p1, p2, p3, p4 });
             path.CloseFigure();
@@ -325,7 +325,7 @@ namespace SuperFramework.SuperGraphics
         /// <returns></returns>
         public static GraphicsPath CreateDownTriangleFlag(Rectangle rect)
         {
-            GraphicsPath path = new GraphicsPath();
+            GraphicsPath path = new();
 
             int x = rect.X + (rect.Width - 10) / 2;
             int y = rect.Y + (rect.Height - 9) / 2;
@@ -333,10 +333,10 @@ namespace SuperFramework.SuperGraphics
             if (rect.Height % 2 == 0)
                 y++;
 
-            Point p1 = new Point(x, y);
-            Point p2 = new Point(x + 9, y);
-            Point p3 = new Point(x + 9, y + 1);
-            Point p4 = new Point(x, y + 1);
+            Point p1 = new(x, y);
+            Point p2 = new(x + 9, y);
+            Point p3 = new(x + 9, y + 1);
+            Point p4 = new(x, y + 1);
 
             path.AddLines(new Point[] { p1, p2, p3, p4 });
             path.CloseFigure();
@@ -369,7 +369,7 @@ namespace SuperFramework.SuperGraphics
 
         private static GraphicsPath CreateWxHDownTriangleFlag(Rectangle rect, int w, int h)
         {
-            GraphicsPath path = new GraphicsPath();
+            GraphicsPath path = new();
 
             int x = rect.X + (rect.Width - w) / 2;
             int y = rect.Y + (rect.Height - h) / 2;
@@ -392,7 +392,7 @@ namespace SuperFramework.SuperGraphics
 
         public static GraphicsPath Create7x4In7x7DownTriangleFlag(Rectangle rect)
         {
-            GraphicsPath path = new GraphicsPath();
+            GraphicsPath path = new();
 
             int x = rect.X + (rect.Width - 7) / 2;
             int y = rect.Y + (rect.Height - 7) / 2 + 2;
@@ -415,7 +415,7 @@ namespace SuperFramework.SuperGraphics
 
         public static GraphicsPath Create15x15RecycleBin(Rectangle rect)
         {
-            GraphicsPath path = new GraphicsPath();
+            GraphicsPath path = new();
 
             int x = rect.Left + (rect.Width - 15) / 2;
             int y = rect.Top + (rect.Height - 15) / 2;
@@ -436,8 +436,8 @@ namespace SuperFramework.SuperGraphics
             path.AddLine(new Point(x, y + 2), new Point(x + 14, y + 2));
             path.CloseFigure();
 
-            Point p11 = new Point(x + 1, y + 5);
-            Point p12 = new Point(x + 1, y + 11);
+            Point p11 = new(x + 1, y + 5);
+            Point p12 = new(x + 1, y + 11);
 
             for (int i = 0; i < 3; i++)
             {

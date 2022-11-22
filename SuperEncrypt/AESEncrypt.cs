@@ -51,11 +51,11 @@ namespace SuperFramework.SuperEncrypt
             {
                 Aes myRijndael = Aes.Create();
                 byte[] bytIn = UTF8Encoding.UTF8.GetBytes(source);
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = new();
                 myRijndael.Key = GetRijndaelKey(key);
                 myRijndael.IV = IV;
                 ICryptoTransform encrypto = myRijndael.CreateEncryptor();
-                CryptoStream cs = new CryptoStream(ms, encrypto, CryptoStreamMode.Write);
+                CryptoStream cs = new(ms, encrypto, CryptoStreamMode.Write);
                 cs.Write(bytIn, 0, bytIn.Length);
                 cs.FlushFinalBlock();
                 ms.Close();
@@ -83,12 +83,12 @@ namespace SuperFramework.SuperEncrypt
             {
                 Aes myRijndael = Aes.Create();
                 byte[] bytIn = Convert.FromBase64String(source);
-                MemoryStream ms = new MemoryStream(bytIn, 0, bytIn.Length);
+                MemoryStream ms = new(bytIn, 0, bytIn.Length);
                 myRijndael.Key = GetRijndaelKey(key);
                 myRijndael.IV = IV;
                 ICryptoTransform encrypto = myRijndael.CreateDecryptor();
-                CryptoStream cs = new CryptoStream(ms, encrypto, CryptoStreamMode.Read);
-                StreamReader sr = new StreamReader(cs);
+                CryptoStream cs = new(ms, encrypto, CryptoStreamMode.Read);
+                StreamReader sr = new(cs);
                 return sr.ReadToEnd();
             }
             catch
@@ -111,11 +111,11 @@ namespace SuperFramework.SuperEncrypt
             {
                 Aes myRijndael = Aes.Create();
                 byte[] bytIn = source;
-                MemoryStream ms = new MemoryStream();
+                MemoryStream ms = new();
                 myRijndael.Key = GetRijndaelKey(key);
                 myRijndael.IV = IV;
                 ICryptoTransform encrypto = myRijndael.CreateEncryptor();
-                CryptoStream cs = new CryptoStream(ms, encrypto, CryptoStreamMode.Write);
+                CryptoStream cs = new(ms, encrypto, CryptoStreamMode.Write);
                 cs.Write(bytIn, 0, bytIn.Length);
                 cs.FlushFinalBlock();
                 ms.Close();
@@ -142,12 +142,12 @@ namespace SuperFramework.SuperEncrypt
             {
                 Aes myRijndael = Aes.Create();
                 byte[] bytIn = source;
-                MemoryStream ms = new MemoryStream(bytIn, 0, bytIn.Length);
+                MemoryStream ms = new(bytIn, 0, bytIn.Length);
                 myRijndael.Key = GetRijndaelKey(key);
                 myRijndael.IV = IV;
                 ICryptoTransform encrypto = myRijndael.CreateDecryptor();
-                CryptoStream cs = new CryptoStream(ms, encrypto, CryptoStreamMode.Read);
-                StreamReader sr = new StreamReader(cs);
+                CryptoStream cs = new(ms, encrypto, CryptoStreamMode.Read);
+                StreamReader sr = new(cs);
                 return UTF8Encoding.UTF8.GetBytes(sr.ReadToEnd());
             }
             catch
@@ -172,8 +172,8 @@ namespace SuperFramework.SuperEncrypt
             try
             {
                 Aes myRijndael = Aes.Create();
-                FileStream fin = new FileStream(inFileName, FileMode.Open, FileAccess.Read);
-                FileStream fout = new FileStream(outFileName, FileMode.OpenOrCreate, FileAccess.Write);
+                FileStream fin = new(inFileName, FileMode.Open, FileAccess.Read);
+                FileStream fout = new(outFileName, FileMode.OpenOrCreate, FileAccess.Write);
                 fout.SetLength(0);
                 myRijndael.Key = GetRijndaelKey(key);
                 myRijndael.IV = IV;
@@ -182,7 +182,7 @@ namespace SuperFramework.SuperEncrypt
                 long totlen = fin.Length;
                 int len;
                 ICryptoTransform encrypto = myRijndael.CreateEncryptor();
-                CryptoStream cs = new CryptoStream(fout, encrypto, CryptoStreamMode.Write);
+                CryptoStream cs = new(fout, encrypto, CryptoStreamMode.Write);
                 while (rdlen < totlen)
                 {
                     len = fin.Read(bin, 0, 100);
@@ -216,8 +216,8 @@ namespace SuperFramework.SuperEncrypt
             try
             {
                 Aes myRijndael = Aes.Create();
-                FileStream fin = new FileStream(inFileName, FileMode.Open, FileAccess.Read);
-                FileStream fout = new FileStream(outFileName, FileMode.OpenOrCreate, FileAccess.Write);
+                FileStream fin = new(inFileName, FileMode.Open, FileAccess.Read);
+                FileStream fout = new(outFileName, FileMode.OpenOrCreate, FileAccess.Write);
                 fout.SetLength(0);
                 byte[] bin = new byte[100];
                 long rdlen = 0;
@@ -226,7 +226,7 @@ namespace SuperFramework.SuperEncrypt
                 myRijndael.Key = GetRijndaelKey(key);
                 myRijndael.IV = IV;
                 ICryptoTransform encrypto = myRijndael.CreateDecryptor();
-                CryptoStream cs = new CryptoStream(fout, encrypto, CryptoStreamMode.Write);
+                CryptoStream cs = new(fout, encrypto, CryptoStreamMode.Write);
                 while (rdlen < totlen)
                 {
                     len = fin.Read(bin, 0, 100);

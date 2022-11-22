@@ -45,15 +45,15 @@ namespace SuperFramework.SuperHardware
         /// <summary>
         /// 
         /// </summary>
-        public StatisticsInfo statisticsInfo = new StatisticsInfo();
+        public StatisticsInfo statisticsInfo = new();
         /// <summary>
         /// ipV4
         /// </summary>
-        public StatisticsInfo statisticsInfoV4 = new StatisticsInfo();
+        public StatisticsInfo statisticsInfoV4 = new();
         /// <summary>
         /// ipV6
         /// </summary>
-        public StatisticsInfo statisticsInfoV6 = new StatisticsInfo();
+        public StatisticsInfo statisticsInfoV6 = new();
 
         private string NetCardDescription { get; set; }
         //建立连接时上传下载临时的数据量
@@ -71,11 +71,11 @@ namespace SuperFramework.SuperHardware
        /// <summary>
        /// 网络接口统计对象
        /// </summary>
-        private List<NetworkInterface> networkInterface = new List<NetworkInterface>();
+        private List<NetworkInterface> networkInterface = new();
         /// <summary>
         /// 计时器
         /// </summary>
-        private Timer timer = new Timer() { Interval = 1000 };
+        private Timer timer = new() { Interval = 1000 };
         /// <summary>
         /// 关闭监视
         /// </summary>

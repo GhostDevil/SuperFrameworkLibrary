@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace SuperFramework.SuperWindows
@@ -10,6 +11,29 @@ namespace SuperFramework.SuperWindows
     /// </summary>
     public static class ElementHelper
     {
+        /// <summary>
+        /// 执行鼠标滚轮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <param name="element">接受的UI</param>
+        public static void ActionMouseWheel(object sender, MouseWheelEventArgs e, UIElement element)
+        {
+            if (!e.Handled)
+            {
+                // ListView拦截鼠标滚轮事件
+                e.Handled = true;
+
+                // 激发一个鼠标滚轮事件，冒泡给外层element接收到
+                var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta)
+                {
+                    RoutedEvent = UIElement.MouseWheelEvent,
+                    Source = sender
+                };
+                //var parent = ((Control)((Control)sender).Parent).Parent as UIElement;
+                element?.RaiseEvent(eventArg);
+            }
+        }
         /// <summary>
         /// 获取控件矩形信息
         /// </summary>
@@ -185,7 +209,7 @@ namespace SuperFramework.SuperWindows
         /// </summary>
         public static List<T> FindChildrenByName<T>(this DependencyObject obj, string elementName) where T : FrameworkElement
         {
-            List<T> childList = new List<T>();
+            List<T> childList = new();
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(obj, i);
@@ -210,7 +234,7 @@ namespace SuperFramework.SuperWindows
         {
             try
             {
-                List<T> TList = new List<T> { };
+                List<T> TList = new() { };
                 for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
                 {
                     DependencyObject child = VisualTreeHelper.GetChild(obj, i);

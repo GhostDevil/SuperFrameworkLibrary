@@ -287,7 +287,7 @@ namespace SuperFramework.SuperImage
         public static void GetFrames(string pPath, string pSavedPath)
         {
             Image gif = Image.FromFile(pPath);
-            FrameDimension fd = new FrameDimension(gif.FrameDimensionsList[0]);
+            FrameDimension fd = new(gif.FrameDimensionsList[0]);
             int count = gif.GetFrameCount(fd); //获取帧数(gif图片可能包含多帧，其它格式图片一般仅一帧)
             for (int i = 0; i < count; i++)    //以Jpeg格式保存各帧
             {
@@ -346,7 +346,7 @@ namespace SuperFramework.SuperImage
         /// <returns>文件尺寸，Point.X存储图像宽度，Point.Y存储图像高度</returns>
         public static Point GetJpegSize(byte[] h)
         {
-            Point size = new Point(0, 0);
+            Point size = new(0, 0);
             for (byte j = 0xC0; j <= 0xCF; j++)
             {
                 for (int i = 0; i < h.Length - 8; i++)
@@ -371,7 +371,7 @@ namespace SuperFramework.SuperImage
         /// <returns>文件尺寸，Point.X存储图像宽度，Point.Y存储图像高度</returns>
         public static Point GetBmpSize(byte[] h)
         {
-            Point size = new Point(0, 0); if (h.Length > 25)
+            Point size = new(0, 0); if (h.Length > 25)
                 if (h.Length > 25)
                 {
                     size.X = Bytes2Int(h[18], h[19], h[20], h[21], true); size.Y = Bytes2Int(h[22], h[23], h[24], h[25], true);
@@ -388,7 +388,7 @@ namespace SuperFramework.SuperImage
         /// <returns>文件尺寸，Point.X存储图像宽度，Point.Y存储图像高度</returns>
         public static Point GetPngSize(byte[] h)
         {
-            Point size = new Point(0, 0);
+            Point size = new(0, 0);
             for (int i = 0; i < h.Length - 11; i++)
             {
                 if (h[i] == 0x49 && h[i + 1] == 0x48 && h[i + 2] == 0x44 && h[i + 3] == 0x52)
@@ -410,7 +410,7 @@ namespace SuperFramework.SuperImage
         /// <returns>文件尺寸，Point.X存储图像宽度，Point.Y存储图像高度</returns>
         public static Point GetGifSize(byte[] h)
         {
-            Point size = new Point(0, 0);
+            Point size = new(0, 0);
             if (h.Length > 9)
             {
                 size.X = Bytes2Int(h[6], h[7], true);   //width 
@@ -428,7 +428,7 @@ namespace SuperFramework.SuperImage
         /// <returns>返回的字节流</returns> 
         public static byte[] GetImageByte(string imagePath)
         {
-            FileStream files = new FileStream(imagePath, FileMode.Open);
+            FileStream files = new(imagePath, FileMode.Open);
             byte[] imgByte = new byte[files.Length];
             files.Read(imgByte, 0, imgByte.Length);
             files.Close();
@@ -444,7 +444,7 @@ namespace SuperFramework.SuperImage
         /// <returns>转换后返回的字节流</returns> 
         public static byte[] ImgToByte(Image img, ImageFormat type)
         {
-            MemoryStream ms = new MemoryStream();
+            MemoryStream ms = new();
             img.Save(ms, type);
             byte[] imagedata = ms.GetBuffer();
             return imagedata;
@@ -459,7 +459,7 @@ namespace SuperFramework.SuperImage
         /// <returns>转换得到的Image对象</returns> 
         public static Image ByteToImg(byte[] byt)
         {
-            MemoryStream ms = new MemoryStream(byt);
+            MemoryStream ms = new(byt);
             Image img = Image.FromStream(ms);
             return img;
         }
@@ -511,10 +511,10 @@ namespace SuperFramework.SuperImage
         /// <returns></returns>
         private static Image CutImage(Image orignal, int start, int width, int height)
         {
-            Bitmap partImage = new Bitmap(width, height);
+            Bitmap partImage = new(width, height);
             Graphics g = Graphics.FromImage(partImage);//获取画板 
-            Rectangle srcRect = new Rectangle(start, 0, width, height);//源位置开始 
-            Rectangle destRect = new Rectangle(0, 0, width, height);//目标位置 
+            Rectangle srcRect = new(start, 0, width, height);//源位置开始 
+            Rectangle destRect = new(0, 0, width, height);//目标位置 
             //复制图片 
             g.DrawImage(orignal, destRect, srcRect, GraphicsUnit.Pixel);
             partImage.MakeTransparent(Color.FromArgb(255, 0, 255));
@@ -559,7 +559,7 @@ namespace SuperFramework.SuperImage
         {
             IntX = -1;
             IntY = -1;
-            Bitmap P_bmp = new Bitmap(P_DataPath);
+            Bitmap P_bmp = new(P_DataPath);
             Bitmap S_bmp = CopyScreen(left, top, width, height);
             int S_Width = S_bmp.Width;
             int S_Height = S_bmp.Height;
@@ -567,7 +567,7 @@ namespace SuperFramework.SuperImage
             int P_Height = P_bmp.Height;
             BitmapData S_Data = S_bmp.LockBits(new Rectangle(0, 0, S_Width, S_Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
             BitmapData P_Data = P_bmp.LockBits(new Rectangle(0, 0, P_Width, P_Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-            List<Point> List = new List<Point>();
+            List<Point> List = new();
             int S_stride = S_Data.Stride;
             int P_stride = P_Data.Stride;
             IntPtr S_Iptr = S_Data.Scan0;
@@ -627,7 +627,7 @@ namespace SuperFramework.SuperImage
         /// <returns>找到 返回所有坐标集合</returns>
         public unsafe static List<Point> FindPicExAll(int left, int top, int width, int height, string P_DataPath, int similar)
         {
-            Bitmap P_bmp = new Bitmap(P_DataPath);
+            Bitmap P_bmp = new(P_DataPath);
             Bitmap S_bmp = CopyScreen(left, top, width, height);
             int S_Width = S_bmp.Width;
             int S_Height = S_bmp.Height;
@@ -635,7 +635,7 @@ namespace SuperFramework.SuperImage
             int P_Height = P_bmp.Height;
             BitmapData S_Data = S_bmp.LockBits(new Rectangle(0, 0, S_Width, S_Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
             BitmapData P_Data = P_bmp.LockBits(new Rectangle(0, 0, P_Width, P_Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-            List<Point> List = new List<Point>();
+            List<Point> List = new();
             int S_stride = S_Data.Stride;
             int P_stride = P_Data.Stride;
             IntPtr S_Iptr = S_Data.Scan0;
@@ -698,9 +698,9 @@ namespace SuperFramework.SuperImage
         {
             OtX = -1;
             OtY = -1;
-            Bitmap P_bmp = new Bitmap(SP_bmp);
+            Bitmap P_bmp = new(SP_bmp);
             //
-            Rectangle rect = new Rectangle(Rtx, Rty, Rtz, Rtw);
+            Rectangle rect = new(Rtx, Rty, Rtz, Rtw);
             //S_bmp为待对比的图片，这里是先将屏幕指定位置截图，再进行判断
             Bitmap S_bmp = CopyScreen(Rtx, Rty, Rtz, Rtw);
             //
@@ -722,7 +722,7 @@ namespace SuperFramework.SuperImage
             }
             BitmapData S_Data = S_bmp.LockBits(new Rectangle(0, 0, S_Width, S_Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
             BitmapData P_Data = P_bmp.LockBits(new Rectangle(0, 0, P_Width, P_Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-            List<Point> List = new List<Point>();
+            List<Point> List = new();
             int S_stride = S_Data.Stride;
             int P_stride = P_Data.Stride;
             int P_offset = P_stride - P_Data.Width * 3;
@@ -795,9 +795,9 @@ namespace SuperFramework.SuperImage
         /// <returns></returns>
         public unsafe static List<Point> FindPic_All(string SP_bmp, int Rtx, int Rty, int Rtz, int Rtw)
         {
-            Bitmap P_bmp = new Bitmap(SP_bmp);
+            Bitmap P_bmp = new(SP_bmp);
             //
-            Rectangle rect = new Rectangle(Rtx, Rty, Rtz, Rtw);
+            Rectangle rect = new(Rtx, Rty, Rtz, Rtw);
             //S_bmp为待对比的图片，这里是先将屏幕指定位置截图，再进行判断
             Bitmap S_bmp = CopyScreen(Rtx, Rty, Rtz, Rtw);
             //
@@ -819,7 +819,7 @@ namespace SuperFramework.SuperImage
             }
             BitmapData S_Data = S_bmp.LockBits(new Rectangle(0, 0, S_Width, S_Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
             BitmapData P_Data = P_bmp.LockBits(new Rectangle(0, 0, P_Width, P_Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-            List<Point> List = new List<Point>();
+            List<Point> List = new();
             int S_stride = S_Data.Stride;
             int P_stride = P_Data.Stride;
             int P_offset = P_stride - P_Data.Width * 3;
@@ -884,7 +884,7 @@ namespace SuperFramework.SuperImage
         /// <returns>返回 Bitmap 对象</returns>
         public static Bitmap CopyScreen(int x, int y, int width, int height)
         {
-            Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format24bppRgb);
+            Bitmap bitmap = new(width, height, PixelFormat.Format24bppRgb);
             using (Graphics g = Graphics.FromImage(bitmap))
             {
                 g.CopyFromScreen(x, y, 0, 0, new Size(width, height));
@@ -908,7 +908,7 @@ namespace SuperFramework.SuperImage
         public static Image CaptureWindow(IntPtr handle)
         {
             IntPtr hdcSrc = User32API.GetWindowDC(handle);
-            APIStruct.RECT windowRect = new APIStruct.RECT();
+            APIStruct.RECT windowRect = new();
             User32API.GetWindowRect(handle, ref windowRect);
             int width = windowRect.right - windowRect.left;
             int height = windowRect.bottom - windowRect.top;
@@ -958,7 +958,7 @@ namespace SuperFramework.SuperImage
         {
             int iwidth = bmOld.Width;
             int iHeight = bmOld.Height;
-            Bitmap bmNew = new Bitmap(iwidth, iHeight, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            Bitmap bmNew = new(iwidth, iHeight, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
             Graphics g = Graphics.FromImage(bmNew);
             g.DrawImage(bmOld, new Point(0, 0));
             g.Dispose();
@@ -971,7 +971,7 @@ namespace SuperFramework.SuperImage
 
         private static string GetHtml(string URL, Encoding en) // 获取HTML 源代码      设定编码
         {
-            Uri uri = new Uri(URL);
+            Uri uri = new(URL);
            
             WebRequest request = WebRequest.Create(uri);
             string html;
@@ -980,7 +980,7 @@ namespace SuperFramework.SuperImage
                 // err = false;
                 WebResponse response = request.GetResponse();
                 Stream W_stream = response.GetResponseStream();
-                StreamReader read = new StreamReader(W_stream, en);
+                StreamReader read = new(W_stream, en);
                 html = read.ReadToEnd();
                 read.Close();
                 W_stream.Close();
@@ -1005,7 +1005,7 @@ namespace SuperFramework.SuperImage
                 html = html.Substring(html.IndexOf("http://s.cn.bing.net/az/hprichbg"));
                 html = html.Substring(0, html.IndexOf(".jpg") + 4);
 
-                PictureBox p1 = new PictureBox();
+                PictureBox p1 = new();
                 p1.Load(html);
                 return p1.Image;
             }
@@ -1064,11 +1064,11 @@ namespace SuperFramework.SuperImage
         /// <returns></returns>
         public static System.Windows.Media.Imaging.BitmapImage BitmapToBitmapImage(Bitmap bitmap)
         {
-            using (MemoryStream stream = new MemoryStream())
+            using (MemoryStream stream = new())
             {
                 bitmap.Save(stream, ImageFormat.Bmp);
                 stream.Position = 0;
-                System.Windows.Media.Imaging.BitmapImage result = new System.Windows.Media.Imaging.BitmapImage();
+                System.Windows.Media.Imaging.BitmapImage result = new();
                 result.BeginInit();
                 result.CacheOption = System.Windows.Media.Imaging.BitmapCacheOption.OnLoad;
                 result.StreamSource = stream;
@@ -1086,7 +1086,7 @@ namespace SuperFramework.SuperImage
         {
             System.Windows.Media.Imaging.BitmapSource m = (System.Windows.Media.Imaging.BitmapSource)imageSource;
 
-            Bitmap bmp = new Bitmap(m.PixelWidth, m.PixelHeight, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            Bitmap bmp = new(m.PixelWidth, m.PixelHeight, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
 
             BitmapData data = bmp.LockBits(
             new Rectangle(System.Drawing.Point.Empty, bmp.Size), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
@@ -1104,7 +1104,7 @@ namespace SuperFramework.SuperImage
         {
             try
             {
-                System.Windows.Media.Imaging.BitmapImage bitmap = new System.Windows.Media.Imaging.BitmapImage();
+                System.Windows.Media.Imaging.BitmapImage bitmap = new();
                 if (File.Exists(imagePath))
                 {
                     bitmap.BeginInit();

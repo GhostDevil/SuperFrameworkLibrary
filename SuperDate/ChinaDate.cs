@@ -212,8 +212,8 @@ namespace SuperFramework.SuperDate
             long[] nongDate = new long[7];
             int leap;
             int temp = 0;
-            DateTime baseDate = new DateTime(1900 + 1900, 2, 31);
-            DateTime objDate = new DateTime(y + 1900, m + 1, 1);
+            DateTime baseDate = new(1900 + 1900, 2, 31);
+            DateTime objDate = new(y + 1900, m + 1, 1);
             TimeSpan ts = objDate - baseDate;
             long offset = (long)ts.TotalDays;
             if (y < 2000)
@@ -296,9 +296,9 @@ namespace SuperFramework.SuperDate
             long[] nongDate = new long[7];
             int temp = 0;
 
-            DateTime baseDate = new DateTime(1900, 1, 31);
+            DateTime baseDate = new(1900, 1, 31);
 
-            DateTime objDate = new DateTime(y, m, d);
+            DateTime objDate = new(y, m, d);
             TimeSpan ts = objDate - baseDate;
 
             long offset = (long)ts.TotalDays;
@@ -425,7 +425,7 @@ namespace SuperFramework.SuperDate
         {
             double ms = 31556925974.7 * (y - 1900);
             double ms1 = sTermInfo[n];
-            DateTime offDate = new DateTime(1900, 1, 6, 2, 5, 0);
+            DateTime offDate = new(1900, 1, 6, 2, 5, 0);
             offDate = offDate.AddMilliseconds(ms);
             offDate = offDate.AddMinutes(ms1);
             return offDate;
@@ -473,7 +473,7 @@ namespace SuperFramework.SuperDate
         /// </summary>
         public static CNDate getChinaDate(DateTime dt)
         {
-            CNDate cd = new CNDate();
+            CNDate cd = new();
             int year = dt.Year;
             int month = dt.Month;
             int date = dt.Day;

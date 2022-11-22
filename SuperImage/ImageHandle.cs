@@ -23,7 +23,7 @@ namespace SuperFramework.SuperImage
         /// <param name="val">增加或减少的光暗值</param>
         public static Bitmap LDPic(Bitmap mybm, int width, int height, int val)
         {
-            Bitmap bm = new Bitmap(width, height);//初始化一个记录经过处理后的图片对象
+            Bitmap bm = new(width, height);//初始化一个记录经过处理后的图片对象
             int x, y, resultR, resultG, resultB;//x、y是循环次数，后面三个是记录红绿蓝三个值的
             Color pixel;
             for (x = 0; x < width; x++)
@@ -50,7 +50,7 @@ namespace SuperFramework.SuperImage
         /// <param name="height">原始图片的高度</param>
         public Bitmap RePic(Bitmap mybm, int width, int height)
         {
-            Bitmap bm = new Bitmap(width, height);//初始化一个记录处理后的图片的对象
+            Bitmap bm = new(width, height);//初始化一个记录处理后的图片的对象
             int x, y, resultR, resultG, resultB;
             Color pixel;
             for (x = 0; x < width; x++)
@@ -77,7 +77,7 @@ namespace SuperFramework.SuperImage
         /// <param name="Height">原始图片的高度</param>
         public Bitmap FDPic(Bitmap oldBitmap, int Width, int Height)
         {
-            Bitmap newBitmap = new Bitmap(Width, Height);
+            Bitmap newBitmap = new(Width, Height);
             Color color1, color2;
             for (int x = 0; x < Width - 1; x++)
             {
@@ -112,7 +112,7 @@ namespace SuperFramework.SuperImage
         {
             try
             {
-                Bitmap bap = new Bitmap(newW, newH);
+                Bitmap bap = new(newW, newH);
                 Graphics g = Graphics.FromImage(bap);
                 g.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 g.DrawImage(bap, new Rectangle(0, 0, newW, newH), new Rectangle(0, 0, bap.Width, bap.Height), GraphicsUnit.Pixel);
@@ -135,7 +135,7 @@ namespace SuperFramework.SuperImage
         /// <param name="height">原始图片的高度</param>
         public Bitmap FilPic(Bitmap mybm, int width, int height)
         {
-            Bitmap bm = new Bitmap(width, height);//初始化一个记录滤色效果的图片对象
+            Bitmap bm = new(width, height);//初始化一个记录滤色效果的图片对象
             int x, y;
             Color pixel;
 
@@ -160,7 +160,7 @@ namespace SuperFramework.SuperImage
         /// <param name="height">原始图片的高度</param>
         public Bitmap RevPicLR(Bitmap mybm, int width, int height)
         {
-            Bitmap bm = new Bitmap(width, height);
+            Bitmap bm = new(width, height);
             int x, y, z; //x,y是循环次数,z是用来记录像素点的x坐标的变化的
             Color pixel;
             for (y = height - 1; y >= 0; y--)
@@ -184,7 +184,7 @@ namespace SuperFramework.SuperImage
         /// <param name="height">原始图片的高度</param>
         public Bitmap RevPicUD(Bitmap mybm, int width, int height)
         {
-            Bitmap bm = new Bitmap(width, height);
+            Bitmap bm = new(width, height);
             int x, y, z;
             Color pixel;
             for (x = 0; x < width; x++)
@@ -213,18 +213,18 @@ namespace SuperFramework.SuperImage
             {
                 Image img = Image.FromFile(oldfile);
                 //ImageFormat thisFormat = img.RawFormat;
-                Size newSize = new Size(width, height);
-                Bitmap outBmp = new Bitmap(newSize.Width, newSize.Height);
+                Size newSize = new(width, height);
+                Bitmap outBmp = new(newSize.Width, newSize.Height);
                 Graphics g = Graphics.FromImage(outBmp);
                 g.CompositingQuality = CompositingQuality.HighQuality;
                 g.SmoothingMode = SmoothingMode.HighQuality;
                 g.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 g.DrawImage(img, new Rectangle(0, 0, newSize.Width, newSize.Height), 0, 0, img.Width, img.Height, GraphicsUnit.Pixel);
                 g.Dispose();
-                EncoderParameters encoderParams = new EncoderParameters();
+                EncoderParameters encoderParams = new();
                 long[] quality = new long[1];
                 quality[0] = 100;
-                EncoderParameter encoderParam = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality);
+                EncoderParameter encoderParam = new(System.Drawing.Imaging.Encoder.Quality, quality);
                 encoderParams.Param[0] = encoderParam;
                 ImageCodecInfo[] arrayICI = ImageCodecInfo.GetImageEncoders();
                 ImageCodecInfo jpegICI = null;
@@ -338,7 +338,7 @@ namespace SuperFramework.SuperImage
         /// <param name="height">图片的高度</param>
         public static Bitmap BWPic(Bitmap mybm, int width, int height)
         {
-            Bitmap bm = new Bitmap(width, height);
+            Bitmap bm = new(width, height);
             int x, y, result; //x,y是循环次数，result是记录处理后的像素值
             Color pixel;
             for (x = 0; x < width; x++)
@@ -364,18 +364,18 @@ namespace SuperFramework.SuperImage
         /// <returns>返回位图对象</returns>
         public static Bitmap BothAlpha(Bitmap p_Bitmap, bool p_CentralTransparent, bool p_Crossdirection)
         {
-            Bitmap _SetBitmap = new Bitmap(p_Bitmap.Width, p_Bitmap.Height);
+            Bitmap _SetBitmap = new(p_Bitmap.Width, p_Bitmap.Height);
             Graphics _GraphisSetBitmap = Graphics.FromImage(_SetBitmap);
             _GraphisSetBitmap.DrawImage(p_Bitmap, new Rectangle(0, 0, p_Bitmap.Width, p_Bitmap.Height));
             _GraphisSetBitmap.Dispose();
 
-            Bitmap _Bitmap = new Bitmap(_SetBitmap.Width, _SetBitmap.Height);
+            Bitmap _Bitmap = new(_SetBitmap.Width, _SetBitmap.Height);
             Graphics _Graphcis = Graphics.FromImage(_Bitmap);
 
-            Point _Left1 = new Point(0, 0);
-            Point _Left2 = new Point(_Bitmap.Width, 0);
-            Point _Left3 = new Point(_Bitmap.Width, _Bitmap.Height / 2);
-            Point _Left4 = new Point(0, _Bitmap.Height / 2);
+            Point _Left1 = new(0, 0);
+            Point _Left2 = new(_Bitmap.Width, 0);
+            Point _Left3 = new(_Bitmap.Width, _Bitmap.Height / 2);
+            Point _Left4 = new(0, _Bitmap.Height / 2);
 
             if (p_Crossdirection)
             {
@@ -386,7 +386,7 @@ namespace SuperFramework.SuperImage
             }
 
             Point[] _Point = new Point[] { _Left1, _Left2, _Left3, _Left4 };
-            PathGradientBrush _SetBruhs = new PathGradientBrush(_Point, WrapMode.TileFlipY) { CenterPoint = new PointF(0, 0), FocusScales = new PointF(_Bitmap.Width / 2, 0), CenterColor = Color.FromArgb(0, 255, 255, 255), SurroundColors = new Color[] { Color.FromArgb(255, 255, 255, 255) } };
+            PathGradientBrush _SetBruhs = new(_Point, WrapMode.TileFlipY) { CenterPoint = new PointF(0, 0), FocusScales = new PointF(_Bitmap.Width / 2, 0), CenterColor = Color.FromArgb(0, 255, 255, 255), SurroundColors = new Color[] { Color.FromArgb(255, 255, 255, 255) } };
             if (p_Crossdirection)
             {
                 _SetBruhs.FocusScales = new PointF(0, _Bitmap.Height);
@@ -458,7 +458,7 @@ namespace SuperFramework.SuperImage
             }
             try
             {
-                Bitmap bmpOut = new Bitmap(iWidth, iHeight, PixelFormat.Format24bppRgb);
+                Bitmap bmpOut = new(iWidth, iHeight, PixelFormat.Format24bppRgb);
                 Graphics g = Graphics.FromImage(bmpOut);
                 g.DrawImage(b, new Rectangle(0, 0, iWidth, iHeight), new Rectangle(StartX, StartY, iWidth, iHeight), GraphicsUnit.Pixel);
                 g.Dispose();

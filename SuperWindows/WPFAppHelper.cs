@@ -26,7 +26,7 @@ namespace SuperFramework.SuperWindows
 
             win.Dispatcher.BeginInvoke(new Action(() =>
             {
-                WindowInteropHelper helper = new WindowInteropHelper(win);
+                WindowInteropHelper helper = new(win);
                 //int pup = Convert.ToInt32(NativeConst.WS_POPUPWINDOW);
                 //SetWindowLong(helper.Handle, GWL_EXSTYLE, GetWindowLong(helper.Handle, GWL_EXSTYLE) | WS_EX_NOACTIVATE | pup);
                 var style = User32API.GetWindowLong(helper.Handle, NativeConst.GWL_EXSTYLE);
@@ -65,7 +65,7 @@ namespace SuperFramework.SuperWindows
             {
                 return null;
             }
-            Uri iconUri = new Uri(icon.ToString());
+            Uri iconUri = new(icon.ToString());
             return new System.Drawing.Icon(System.Windows.Application.GetResourceStream(iconUri).Stream);
         }
         #endregion
@@ -89,7 +89,7 @@ namespace SuperFramework.SuperWindows
              */
             //获得当前登录的Windows用户标示
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
-            WindowsPrincipal principal = new WindowsPrincipal(identity);
+            WindowsPrincipal principal = new(identity);
             bool createdNew; //返回是否赋予了使用线程的互斥体初始所属权 
             /*
             在运行终端服务的服务器上，已命名的系统 mutex 可以具有两级可见性。
@@ -118,7 +118,7 @@ namespace SuperFramework.SuperWindows
                     try
                     {
                         //创建启动对象
-                        ProcessStartInfo startInfo = new ProcessStartInfo() { /*设置运行文件*/FileName = AppHelper.AppFullPath, /*设置启动参数*/Arguments = string.Join(" ", Args), /*设置启动动作,确保以管理员身份运行*/Verb = "runas" };
+                        ProcessStartInfo startInfo = new() { /*设置运行文件*/FileName = AppHelper.AppFullPath, /*设置启动参数*/Arguments = string.Join(" ", Args), /*设置启动动作,确保以管理员身份运行*/Verb = "runas" };
                         //如果不是管理员，则启动UAC
                         Process.Start(startInfo);
                     }
@@ -214,7 +214,7 @@ namespace SuperFramework.SuperWindows
             }
             if (foor > 0)
             {
-                System.Drawing.Rectangle r = new System.Drawing.Rectangle();
+                System.Drawing.Rectangle r = new();
                 GetWindowRect(foor, ref r);
                 //从任务栏左上角从左到右 MOUSEMOVE一遍，所有图标状态会被更新
                 for (int x = 0; x < (r.Right - r.Left) - r.X; x++)

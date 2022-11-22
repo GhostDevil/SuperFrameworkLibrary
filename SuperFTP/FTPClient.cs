@@ -14,7 +14,7 @@ namespace SuperFramework.SuperFTP
     /// </summary>
     public class FTPClient
     {
-        public static object obj = new object();
+        public static object obj = new();
 
         #region  构造函数 
         /// <summary>
@@ -180,7 +180,7 @@ namespace SuperFramework.SuperFTP
             lock (obj)
             {
                 socketControl = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                IPEndPoint ep = new IPEndPoint(IPAddress.Parse(RemoteHost), strRemotePort);
+                IPEndPoint ep = new(IPAddress.Parse(RemoteHost), strRemotePort);
                 try
                 {
                     socketControl.Connect(ep);
@@ -326,7 +326,7 @@ namespace SuperFramework.SuperFTP
             {
                 throw new IOException(strReply.Substring(4));
             }
-            FileStream input = new FileStream(strGuid, FileMode.Open);
+            FileStream input = new(strGuid, FileMode.Open);
             input.Flush();
             int iBytes;
             while ((iBytes = input.Read(buffer, 0, buffer.Length)) > 0)
@@ -392,7 +392,7 @@ namespace SuperFramework.SuperFTP
                 throw new IOException(strReply.Substring(4));
             }
             byte[] b = new byte[512];
-            MemoryStream ms = new MemoryStream();
+            MemoryStream ms = new();
 
             while (true)
             {
@@ -499,7 +499,7 @@ namespace SuperFramework.SuperFTP
                 {
                     throw new IOException(strReply.Substring(4));
                 }
-                FileStream output = new FileStream(strFolder + "\\" + strLocalFileName, FileMode.Create);
+                FileStream output = new(strFolder + "\\" + strLocalFileName, FileMode.Create);
                 while (true)
                 {
                     int iBytes = socketData.Receive(buffer, buffer.Length, 0);
@@ -555,7 +555,7 @@ namespace SuperFramework.SuperFTP
             {
                 throw new IOException(strReply.Substring(4));
             }
-            FileStream output = new FileStream(strFolder + "\\" + strLocalFileName, FileMode.Create);
+            FileStream output = new(strFolder + "\\" + strLocalFileName, FileMode.Create);
             while (true)
             {
                 int iBytes = socketData.Receive(buffer, buffer.Length, 0);
@@ -615,7 +615,7 @@ namespace SuperFramework.SuperFTP
                 throw new IOException(strReply.Substring(4));
             }
 
-            FileStream input = new FileStream(strFileName, FileMode.Open);
+            FileStream input = new(strFileName, FileMode.Open);
             int iBytes;
             while ((iBytes = input.Read(buffer, 0, buffer.Length)) > 0)
             {
@@ -659,7 +659,7 @@ namespace SuperFramework.SuperFTP
             {
                 throw new IOException(strReply.Substring(4));
             }
-            FileStream input = new FileStream(strNewFileName, FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read);
+            FileStream input = new(strNewFileName, FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read);
             int iBytes;
             while ((iBytes = input.Read(buffer, 0, buffer.Length)) > 0)
             {
@@ -793,8 +793,8 @@ namespace SuperFramework.SuperFTP
             }
             string ipAddress = parts[0] + "." + parts[1] + "." + parts[2] + "." + parts[3];
             int port = (parts[4] << 8) + parts[5];
-            Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPEndPoint ep = new IPEndPoint(IPAddress.Parse(ipAddress), port);
+            Socket s = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            IPEndPoint ep = new(IPAddress.Parse(ipAddress), port);
             try
             {
                 s.Connect(ep);

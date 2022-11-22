@@ -93,7 +93,7 @@ namespace SuperFramework.SuperWindows.WPFEffect
         /// <returns></returns>
         public static PathGeometry GetControlClip(double width, double height, double radiusX, double radiusY, double x = 0, double y = 0)
         {
-            RectangleGeometry rg = new RectangleGeometry
+            RectangleGeometry rg = new()
             {
                 //设置矩形区域大小
                 Rect = new Rect(x, y, width, height),
@@ -101,7 +101,7 @@ namespace SuperFramework.SuperWindows.WPFEffect
                 RadiusY = radiusY
             };
             //合并几何图形
-            PathGeometry pg = new PathGeometry();
+            PathGeometry pg = new();
             pg = Geometry.Combine(pg, rg, GeometryCombineMode.Union, null);
             return pg;
         }

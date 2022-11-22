@@ -28,7 +28,7 @@ namespace SuperFramework.SuperNLogger.Asynchronous
         /// <summary>
         /// 文件写入 线程列表 一个文件一个线程写入
         /// </summary>
-        private static List<LogWriteThreadByFile> lstLogFileThread = new List<LogWriteThreadByFile>();
+        private static List<LogWriteThreadByFile> lstLogFileThread = new();
 
         /// <summary>
         /// 循环追加日志
@@ -52,7 +52,7 @@ namespace SuperFramework.SuperNLogger.Asynchronous
                         //日志文件路径+文件名+扩展名
                         string filename_full = file_dir_name + logFileSuffix + log_extension;
 
-                        FileInfo fi = new FileInfo(filename_full);
+                        FileInfo fi = new(filename_full);
                         if (!fi.Directory.Exists)
                         {
                             fi.Directory.Create();//fi.DirectoryName :: fi.Name
@@ -77,7 +77,7 @@ namespace SuperFramework.SuperNLogger.Asynchronous
                         }
                         if (!isFind)
                         {
-                            LogWriteThreadByFile lwt = new LogWriteThreadByFile(filename_full);
+                            LogWriteThreadByFile lwt = new(filename_full);
                             lwt.QUEUE_CONTENTS.Enqueue(entity);
                             lstLogFileThread.Add(lwt);
                         }

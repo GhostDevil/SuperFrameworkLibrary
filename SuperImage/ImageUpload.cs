@@ -201,7 +201,7 @@ namespace SuperFramework.SuperImage
             Image img = Image.FromFile(filename);
             ImageFormat thisFormat = img.RawFormat;
             Size CutSize = CutRegion(nWidth, nHeight, img);
-            Bitmap outBmp = new Bitmap(nWidth, nHeight);
+            Bitmap outBmp = new(nWidth, nHeight);
             Graphics g = Graphics.FromImage(outBmp);
             // 设置画布的描绘质量
             g.CompositingQuality = CompositingQuality.HighQuality;
@@ -221,10 +221,10 @@ namespace SuperFramework.SuperImage
             //    Response.ContentType = "image/jpeg";
             //}
             // 以下代码为保存图片时，设置压缩质量
-            EncoderParameters encoderParams = new EncoderParameters();
+            EncoderParameters encoderParams = new();
             long[] quality = new long[1];
             quality[0] = 100;
-            EncoderParameter encoderParam = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality);
+            EncoderParameter encoderParam = new(System.Drawing.Imaging.Encoder.Quality, quality);
             encoderParams.Param[0] = encoderParam;
             //获得包含有关内置图像编码解码器的信息的ImageCodecInfo 对象。
             ImageCodecInfo[] arrayICI = ImageCodecInfo.GetImageEncoders();
@@ -284,7 +284,7 @@ namespace SuperFramework.SuperImage
             Image img = Image.FromFile(filename);
             ImageFormat thisFormat = img.RawFormat;
             Size CutSize = CutRegion(nWidth, nHeight, img);
-            Bitmap outBmp = new Bitmap(nWidth, nHeight);
+            Bitmap outBmp = new(nWidth, nHeight);
             Graphics g = Graphics.FromImage(outBmp);
             g.Clear(Color.White);
             // 设置画布的描绘质量
@@ -297,10 +297,10 @@ namespace SuperFramework.SuperImage
                 nStartX, nStartY, CutSize.Width, CutSize.Height, GraphicsUnit.Pixel);
             g.Dispose();
             // 以下代码为保存图片时，设置压缩质量
-            EncoderParameters encoderParams = new EncoderParameters();
+            EncoderParameters encoderParams = new();
             long[] quality = new long[1];
             quality[0] = 100;
-            EncoderParameter encoderParam = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality);
+            EncoderParameter encoderParam = new(System.Drawing.Imaging.Encoder.Quality, quality);
             encoderParams.Param[0] = encoderParam;
             //获得包含有关内置图像编码解码器的信息的ImageCodecInfo 对象。
             ImageCodecInfo[] arrayICI = ImageCodecInfo.GetImageEncoders();
@@ -376,10 +376,10 @@ namespace SuperFramework.SuperImage
             nWidth = towidth;
             nHeight = toheight;
             ImageFormat thisFormat = img.RawFormat;
-            Size CutSize = new Size(nWidth, nHeight);
+            Size CutSize = new(nWidth, nHeight);
             if (cMode != CutMode.CutNo)
                 CutSize = CutRegion(nWidth, nHeight, img);
-            Bitmap outBmp = new Bitmap(CutSize.Width, CutSize.Height);
+            Bitmap outBmp = new(CutSize.Width, CutSize.Height);
             Graphics g = Graphics.FromImage(outBmp);
             g.Clear(Color.White);
             // 设置画布的描绘质量
@@ -398,10 +398,10 @@ namespace SuperFramework.SuperImage
                 0, 0, img.Width, img.Height, GraphicsUnit.Pixel);
             g.Dispose();
             // 以下代码为保存图片时，设置压缩质量
-            EncoderParameters encoderParams = new EncoderParameters();
+            EncoderParameters encoderParams = new();
             long[] quality = new long[1];
             quality[0] = 100;
-            EncoderParameter encoderParam = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality);
+            EncoderParameter encoderParam = new(System.Drawing.Imaging.Encoder.Quality, quality);
             encoderParams.Param[0] = encoderParam;
             //获得包含有关内置图像编码解码器的信息的ImageCodecInfo 对象。
             ImageCodecInfo[] arrayICI = ImageCodecInfo.GetImageEncoders();
@@ -444,14 +444,14 @@ namespace SuperFramework.SuperImage
                 return;
             if (!System.IO.File.Exists(file))
                 return;
-            System.IO.FileInfo oFile = new System.IO.FileInfo(file);
+            System.IO.FileInfo oFile = new(file);
             string strTempFile = System.IO.Path.Combine(oFile.DirectoryName, Guid.NewGuid().ToString() + oFile.Extension);
             oFile.CopyTo(strTempFile);
             Image img = Image.FromFile(strTempFile);
             ImageFormat thisFormat = img.RawFormat;
             int nHeight = img.Height;
             int nWidth = img.Width;
-            Bitmap outBmp = new Bitmap(nWidth, nHeight);
+            Bitmap outBmp = new(nWidth, nHeight);
             Graphics g = Graphics.FromImage(outBmp);
             g.Clear(Color.White);
             // 设置画布的描绘质量
@@ -462,7 +462,7 @@ namespace SuperFramework.SuperImage
                 0, 0, nWidth, nHeight, GraphicsUnit.Pixel);
             int[] sizes = new int[] { 16, 14, 12, 10, 8, 6, 4 };
             Font crFont = null;
-            SizeF crSize = new SizeF();
+            SizeF crSize = new();
             //通过循环这个数组，来选用不同的字体大小
             //如果它的大小小于图像的宽度，就选用这个大小的字体
             for (int i = 0; i < 7; i++)
@@ -482,10 +482,12 @@ namespace SuperFramework.SuperImage
             //计算x坐标
             float xCenterOfImg = (nWidth / 2);
             //把文本布局设置为居中
-            StringFormat StrFormat = new StringFormat();
-            StrFormat.Alignment = StringAlignment.Center;
+            StringFormat StrFormat = new()
+            {
+                Alignment = StringAlignment.Center
+            };
             //通过Brush来设置黑色半透明
-            SolidBrush semiTransBrush2 = new SolidBrush(Color.FromArgb(153, 0, 0, 0));
+            SolidBrush semiTransBrush2 = new(Color.FromArgb(153, 0, 0, 0));
             //绘制版权字符串
             g.DrawString(text,                 //版权字符串文本
                 crFont,                                   //字体
@@ -493,7 +495,7 @@ namespace SuperFramework.SuperImage
                 new PointF(xCenterOfImg + 1, yPosFromBottom + 1),  //位置
                 StrFormat);
             //设置成白色半透明
-            SolidBrush semiTransBrush = new SolidBrush(Color.FromArgb(153, 255, 255, 255));
+            SolidBrush semiTransBrush = new(Color.FromArgb(153, 255, 255, 255));
             //第二次绘制版权字符串来创建阴影效果
             //记住移动文本的位置1像素
             g.DrawString(text,                 //版权文本
@@ -503,10 +505,10 @@ namespace SuperFramework.SuperImage
                 StrFormat);
             g.Dispose();
             // 以下代码为保存图片时，设置压缩质量
-            EncoderParameters encoderParams = new EncoderParameters();
+            EncoderParameters encoderParams = new();
             long[] quality = new long[1];
             quality[0] = 100;
-            EncoderParameter encoderParam = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality);
+            EncoderParameter encoderParam = new(System.Drawing.Imaging.Encoder.Quality, quality);
             encoderParams.Param[0] = encoderParam;
             //获得包含有关内置图像编码解码器的信息的ImageCodecInfo 对象。
             ImageCodecInfo[] arrayICI = ImageCodecInfo.GetImageEncoders();
@@ -547,14 +549,14 @@ namespace SuperFramework.SuperImage
                 return;
             if (!System.IO.File.Exists(file))
                 return;
-            System.IO.FileInfo oFile = new System.IO.FileInfo(file);
+            System.IO.FileInfo oFile = new(file);
             string strTempFile = System.IO.Path.Combine(oFile.DirectoryName, Guid.NewGuid().ToString() + oFile.Extension);
             oFile.CopyTo(strTempFile);
             Image img = Image.FromFile(strTempFile);
             ImageFormat thisFormat = img.RawFormat;
             int nHeight = img.Height;
             int nWidth = img.Width;
-            Bitmap outBmp = new Bitmap(nWidth, nHeight);
+            Bitmap outBmp = new(nWidth, nHeight);
             Graphics g = Graphics.FromImage(outBmp);
             // 设置画布的描绘质量
             g.CompositingQuality = CompositingQuality.HighQuality;
@@ -601,10 +603,10 @@ namespace SuperFramework.SuperImage
                 0, 0, img.Width, img.Height, GraphicsUnit.Pixel);
             g.Dispose();
             // 以下代码为保存图片时，设置压缩质量
-            EncoderParameters encoderParams = new EncoderParameters();
+            EncoderParameters encoderParams = new();
             long[] quality = new long[1];
             quality[0] = 100;
-            EncoderParameter encoderParam = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality);
+            EncoderParameter encoderParam = new(System.Drawing.Imaging.Encoder.Quality, quality);
             encoderParams.Param[0] = encoderParam;
             //获得包含有关内置图像编码解码器的信息的ImageCodecInfo 对象。
             ImageCodecInfo[] arrayICI = ImageCodecInfo.GetImageEncoders();
@@ -656,7 +658,7 @@ namespace SuperFramework.SuperImage
         /// <returns></returns>
         public bool KiSaveAsJPEG(string SourceFile, string FileName, int Qty)
         {
-            Bitmap bmp = new Bitmap(SourceFile);
+            Bitmap bmp = new(SourceFile);
             try
             {
                 EncoderParameter p;
@@ -686,7 +688,7 @@ namespace SuperFramework.SuperImage
             if (!System.IO.File.Exists(FileName))
                 return;
             int nCount = 0;
-            System.IO.FileInfo oFile = new System.IO.FileInfo(FileName);
+            System.IO.FileInfo oFile = new(FileName);
             long nLen = oFile.Length;
             while (nLen > size * 1024 && nCount < 10)
             {

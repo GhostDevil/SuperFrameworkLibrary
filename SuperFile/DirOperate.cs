@@ -207,9 +207,9 @@ namespace SuperFramework.SuperFile
                 string path = (NewFolder.LastIndexOf("\\") == NewFolder.Length - 1) ? NewFolder : NewFolder + "\\";
                 string parent = Path.GetDirectoryName(orignFolder);
                 Directory.CreateDirectory(path + Path.GetFileName(orignFolder));
-                DirectoryInfo dir = new DirectoryInfo((orignFolder.LastIndexOf("\\") == orignFolder.Length - 1) ? orignFolder : orignFolder + "\\");
+                DirectoryInfo dir = new((orignFolder.LastIndexOf("\\") == orignFolder.Length - 1) ? orignFolder : orignFolder + "\\");
                 FileSystemInfo[] fileArr = dir.GetFileSystemInfos();
-                Queue<FileSystemInfo> Folders = new Queue<FileSystemInfo>(dir.GetFileSystemInfos());
+                Queue<FileSystemInfo> Folders = new(dir.GetFileSystemInfos());
                 while (Folders.Count > 0)
                 {
                     FileSystemInfo tmp = Folders.Dequeue();
@@ -254,9 +254,9 @@ namespace SuperFramework.SuperFile
             string path = (newFolder.LastIndexOf("\\") == newFolder.Length - 1) ? newFolder : newFolder + "\\";
             string parent = Path.GetDirectoryName(orignFolder);
             Directory.CreateDirectory(path + Path.GetFileName(orignFolder));
-            DirectoryInfo dir = new DirectoryInfo((orignFolder.LastIndexOf("\\") == orignFolder.Length - 1) ? orignFolder : orignFolder + "\\");
+            DirectoryInfo dir = new((orignFolder.LastIndexOf("\\") == orignFolder.Length - 1) ? orignFolder : orignFolder + "\\");
             FileSystemInfo[] fileArr = dir.GetFileSystemInfos();
-            Queue<FileSystemInfo> Folders = new Queue<FileSystemInfo>(dir.GetFileSystemInfos());
+            Queue<FileSystemInfo> Folders = new(dir.GetFileSystemInfos());
             while (Folders.Count > 0)
             {
                 FileSystemInfo tmp = Folders.Dequeue();
@@ -304,9 +304,9 @@ namespace SuperFramework.SuperFile
             {
                 string parent = Path.GetDirectoryName(orignFolder);
                 Directory.CreateDirectory(path + Path.GetFileName(orignFolder));
-                DirectoryInfo dir = new DirectoryInfo((orignFolder.LastIndexOf("\\") == orignFolder.Length - 1) ? orignFolder : orignFolder + "\\");
+                DirectoryInfo dir = new((orignFolder.LastIndexOf("\\") == orignFolder.Length - 1) ? orignFolder : orignFolder + "\\");
                 FileSystemInfo[] fileArr = dir.GetFileSystemInfos();
-                Queue<FileSystemInfo> Folders = new Queue<FileSystemInfo>(dir.GetFileSystemInfos());
+                Queue<FileSystemInfo> Folders = new(dir.GetFileSystemInfos());
                 while (Folders.Count > 0)
                 {
                     FileSystemInfo tmp = Folders.Dequeue();
@@ -314,7 +314,7 @@ namespace SuperFramework.SuperFile
                     if (f == null)
                     {
                         DirectoryInfo d = tmp as DirectoryInfo;
-                        DirectoryInfo dpath = new DirectoryInfo(d.FullName.Replace((parent.LastIndexOf("\\") == parent.Length - 1) ? parent : parent + "\\", path));
+                        DirectoryInfo dpath = new(d.FullName.Replace((parent.LastIndexOf("\\") == parent.Length - 1) ? parent : parent + "\\", path));
                         dpath.Create();
                         foreach (FileSystemInfo fi in d.GetFileSystemInfos())
                         {
@@ -514,7 +514,7 @@ namespace SuperFramework.SuperFile
                     }
                 }
                 //获得源文件下所有文件
-                List<string> files = new List<string>(Directory.GetFiles(sourcePath));
+                List<string> files = new(Directory.GetFiles(sourcePath));
                 files.ForEach(c =>
                 {
                     string destFile = Path.Combine(new string[] { destPath, Path.GetFileName(c) });
@@ -526,7 +526,7 @@ namespace SuperFramework.SuperFile
                     File.Move(c, destFile);
                 });
                 //获得源文件下所有目录文件
-                List<string> folders = new List<string>(Directory.GetDirectories(sourcePath));
+                List<string> folders = new(Directory.GetDirectories(sourcePath));
 
                 folders.ForEach(c =>
                 {
@@ -571,14 +571,14 @@ namespace SuperFramework.SuperFile
                     }
                 }
                 //获得源文件下所有文件
-                List<string> files = new List<string>(Directory.GetFiles(sourcePath));
+                List<string> files = new(Directory.GetFiles(sourcePath));
                 files.ForEach(c =>
                 {
                     string destFile = Path.Combine(new string[] { destPath, Path.GetFileName(c) });
                     File.Copy(c, destFile, isCover);//覆盖模式
                 });
                 //获得源文件下所有目录文件
-                List<string> folders = new List<string>(Directory.GetDirectories(sourcePath));
+                List<string> folders = new(Directory.GetDirectories(sourcePath));
                 folders.ForEach(c =>
                 {
                     string destDir = Path.Combine(new string[] { destPath, Path.GetFileName(c) });

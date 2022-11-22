@@ -250,7 +250,7 @@ namespace SuperFramework.SuperHook
                 //Marshall the data from callback.
                 MouseHookStruct MyMouseHookStruct =
                     (MouseHookStruct)Marshal.PtrToStructure(lParam, typeof(MouseHookStruct));
-                MouseEventArgs e = new MouseEventArgs(
+                MouseEventArgs e = new(
                     button,
                     clickCount,
                     MyMouseHookStruct.pt.x,
@@ -290,7 +290,7 @@ namespace SuperFramework.SuperHook
                 if (KeyDown != null && (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN))
                 {
                     Keys keyData = (Keys)MyKeyboardHookStruct.vkCode;
-                    KeyEventArgs e = new KeyEventArgs(keyData);
+                    KeyEventArgs e = new(keyData);
                     KeyDown(this, e);
                 }
                 // raise KeyPress
@@ -305,7 +305,7 @@ namespace SuperFramework.SuperHook
                         inBuffer,
                         MyKeyboardHookStruct.flags) == 1)
                     {
-                        KeyPressEventArgs e = new KeyPressEventArgs((char)inBuffer[0]);
+                        KeyPressEventArgs e = new((char)inBuffer[0]);
                         KeyPress(this, e);
                     }
                 }
@@ -313,7 +313,7 @@ namespace SuperFramework.SuperHook
                 if (KeyUp != null && (wParam == WM_KEYUP || wParam == WM_SYSKEYUP))
                 {
                     Keys keyData = (Keys)MyKeyboardHookStruct.vkCode;
-                    KeyEventArgs e = new KeyEventArgs(keyData);
+                    KeyEventArgs e = new(keyData);
                     KeyUp(this, e);
                 }
             }

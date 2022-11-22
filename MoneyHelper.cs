@@ -165,7 +165,7 @@ namespace SuperFramework
 
         private static string DecimalConvert(string data)
         {
-            StringBuilder sbResult = new StringBuilder();
+            StringBuilder sbResult = new();
             if (data[0] != '0')
             {
                 sbResult.Append(charNumeric[CharToInt(data[0])]);

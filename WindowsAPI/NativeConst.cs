@@ -302,11 +302,11 @@ namespace SuperFramework.WindowsAPI
         /// <summary>
         /// 窗体置顶
         /// </summary>
-        public static IntPtr HWND_TOPMOST = new IntPtr(-1);
+        public static IntPtr HWND_TOPMOST = new(-1);
         /// <summary>
         /// 取消窗体置顶
         /// </summary>
-        public static IntPtr HWND_NOTOPMOST = new IntPtr(-2);
+        public static IntPtr HWND_NOTOPMOST = new(-2);
         /// <summary>
         /// 不调整窗体位置
         /// </summary>

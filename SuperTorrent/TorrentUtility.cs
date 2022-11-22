@@ -31,7 +31,7 @@ namespace SuperFramework.SuperTorrent
 
         static public string[] OrdinalSortStringArray(string[] fileName)
         {
-            List<string> fileNameList = new List<string>(fileName);
+            List<string> fileNameList = new(fileName);
             fileNameList.Sort(UTF8StringComparison);
             return fileNameList.ToArray();
         }
@@ -44,7 +44,7 @@ namespace SuperFramework.SuperTorrent
         static public long GetFileLength(string fileName)
         {
             using (FileStream fileStream =
-                new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                new(fileName, FileMode.Open, FileAccess.Read))
             {
                 return fileStream.Length;
             }

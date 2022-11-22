@@ -29,10 +29,10 @@ namespace SuperFramework
         {
             hasError = false;
             CompilerResults results = null;
-            using (CSharpCodeProvider provider = new CSharpCodeProvider())
+            using (CSharpCodeProvider provider = new())
             {
-                CompilerParameters options = new CompilerParameters() { GenerateInMemory = true };
-                StringBuilder sb = new StringBuilder();
+                CompilerParameters options = new() { GenerateInMemory = true };
+                StringBuilder sb = new();
                 sb.Append(prefix);
                 sb.Append(input);
                 sb.Append(postfix);
@@ -42,7 +42,7 @@ namespace SuperFramework
             if (results.Errors.HasErrors)
             {
                 hasError = true;
-                StringBuilder errorMessage = new StringBuilder();
+                StringBuilder errorMessage = new();
                 foreach (CompilerError error in results.Errors)
                 {
                     errorMessage.AppendFormat("{0} {1}/n", error.Line, error.ErrorText);
@@ -52,7 +52,7 @@ namespace SuperFramework
             else
             {
                 TextWriter temp = Console.Out;
-                StringWriter writer = new StringWriter();
+                StringWriter writer = new();
                 Console.SetOut(writer);
                 Type driverType = results.CompiledAssembly.GetType("Driver");
                 driverType.InvokeMember("Run", BindingFlags.InvokeMethod | BindingFlags.Static | BindingFlags.Public, null, null, null);

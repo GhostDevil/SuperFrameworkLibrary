@@ -97,7 +97,7 @@ namespace SuperFramework.SuperAlgorithm
             {
                 return null;
             }
-            List<T[]> list = new List<T[]>();
+            List<T[]> list = new();
             GetPermutation(ref list, t, startIndex, endIndex);
             return list;
         }
@@ -124,11 +124,11 @@ namespace SuperFramework.SuperAlgorithm
             {
                 return null;
             }
-            List<T[]> list = new List<T[]>();
+            List<T[]> list = new();
             List<T[]> c = GetCombination(t, n);
             for (int i = 0; i < c.Count; i++)
             {
-                List<T[]> l = new List<T[]>();
+                List<T[]> l = new();
                 GetPermutation(ref l, c[i], 0, n - 1);
                 list.AddRange(l);
             }
@@ -149,7 +149,7 @@ namespace SuperFramework.SuperAlgorithm
                 return null;
             }
             int[] temp = new int[n];
-            List<T[]> list = new List<T[]>();
+            List<T[]> list = new();
             GetCombination(ref list, t, t.Length, n, temp, n);
             return list;
         }
@@ -162,7 +162,7 @@ namespace SuperFramework.SuperAlgorithm
         public static bool GetCopyArray(ArrayList CheckArrary, ref ArrayList NewArrary)
         {
             bool GetCopy = false;
-            ArrayList arrCopy = new ArrayList();//定义一个arr的副本
+            ArrayList arrCopy = new();//定义一个arr的副本
             arrCopy = CheckArrary;
             for (int i = 0; i < arrCopy.Count; i++)//从头开始，选择一个arr[i]与后边的进行比较
             {

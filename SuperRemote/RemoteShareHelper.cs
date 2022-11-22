@@ -65,7 +65,7 @@ namespace SuperFramework.SuperRemote
         public static bool ConnectRemote(string remoteHost, string shareName, string userName, string passWord)
         {
             bool Flag = false;
-            Process proc = new Process();
+            Process proc = new();
             try
             {
                 proc.StartInfo.FileName = "cmd.exe";
@@ -114,7 +114,7 @@ namespace SuperFramework.SuperRemote
         public static bool ConnectShare(string ipPath, string userName, string passWord)
         {
             bool Flag = false;
-            Process proc = new Process();
+            Process proc = new();
             try
             {
                 proc.StartInfo.FileName = "cmd.exe";
@@ -163,8 +163,8 @@ namespace SuperFramework.SuperRemote
         public static List<string> GetShareAllPath()
         {
             // 需要手动添加引用 System.Management
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("select  *  from  win32_share");
-            List<string> ps = new List<string>();
+            ManagementObjectSearcher searcher = new("select  *  from  win32_share");
+            List<string> ps = new();
             foreach (ManagementObject share in searcher.Get())
             {
                 try

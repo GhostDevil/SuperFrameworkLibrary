@@ -210,7 +210,7 @@ namespace SuperFramework.WindowsAPI
         /// <returns></returns>
         internal static HDiskInfo GetHardDiskInfo(IdSector phdinfo)
         {
-            HDiskInfo hdd = new HDiskInfo() { ModuleNumber = Encoding.ASCII.GetString(phdinfo.sModelNumber).Trim(), Firmware = Encoding.ASCII.GetString(phdinfo.sFirmwareRev).Trim(), SerialNumber = Encoding.ASCII.GetString(phdinfo.sSerialNumber).Trim(), Capacity = phdinfo.ulTotalAddressableSectors / 2 / 1024, BufferSize = phdinfo.wBufferSize / 1024 };
+            HDiskInfo hdd = new() { ModuleNumber = Encoding.ASCII.GetString(phdinfo.sModelNumber).Trim(), Firmware = Encoding.ASCII.GetString(phdinfo.sFirmwareRev).Trim(), SerialNumber = Encoding.ASCII.GetString(phdinfo.sSerialNumber).Trim(), Capacity = phdinfo.ulTotalAddressableSectors / 2 / 1024, BufferSize = phdinfo.wBufferSize / 1024 };
             return hdd;
         }
 
@@ -221,9 +221,9 @@ namespace SuperFramework.WindowsAPI
         /// <returns></returns>
         internal static HDiskInfo GetHddInfoNT(byte driveIndex)
         {
-            GetVersionOutParams vers = new GetVersionOutParams();
-            SendCmdInParams inParam = new SendCmdInParams();
-            SendCmdOutParams outParam = new SendCmdOutParams();
+            GetVersionOutParams vers = new();
+            SendCmdInParams inParam = new();
+            SendCmdOutParams outParam = new();
             uint bytesReturned = 0;
 
             // 使用 Win2000 或 Xp下的方法获取硬件信息
@@ -296,9 +296,9 @@ namespace SuperFramework.WindowsAPI
         /// <returns></returns>
         internal static HDiskInfo GetHddInfo9X(byte driveIndex)
         {
-            GetVersionOutParams vers = new GetVersionOutParams();
-            SendCmdInParams inParam = new SendCmdInParams();
-            SendCmdOutParams outParam = new SendCmdOutParams();
+            GetVersionOutParams vers = new();
+            SendCmdInParams inParam = new();
+            SendCmdOutParams outParam = new();
             uint bytesReturned = 0;
             IntPtr hDevice = CreateFile(@"\\.\Smartvsd", 0, 0, IntPtr.Zero, CREATE_NEW, 0, IntPtr.Zero);
             if(hDevice == IntPtr.Zero)

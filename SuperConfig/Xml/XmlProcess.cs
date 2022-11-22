@@ -31,7 +31,7 @@ namespace SuperFramework.SuperConfig.Xml
         private XmlDocument XMLLoad()
         {
             string XMLFile = XMLPath;
-            XmlDocument xmldoc = new XmlDocument();
+            XmlDocument xmldoc = new();
             try
             {
                 string filename = AppDomain.CurrentDomain.BaseDirectory.ToString() + XMLFile;
@@ -48,7 +48,7 @@ namespace SuperFramework.SuperConfig.Xml
         /// <param name="XMLPath">XML文件路径</param>
         private static XmlDocument XMLLoad(string strPath)
         {
-            XmlDocument xmldoc = new XmlDocument();
+            XmlDocument xmldoc = new();
             try
             {
                 string filename = AppDomain.CurrentDomain.BaseDirectory.ToString() + strPath;
@@ -134,7 +134,7 @@ namespace SuperFramework.SuperConfig.Xml
         public string[] ReadAllChildAllValue(string node)
         {
             int i = 0;
-            string[] str = { };
+            string[] str = Array.Empty<string>();
             XmlDocument doc = XMLLoad();
             XmlNode xn = doc.SelectSingleNode(node);
             XmlNodeList nodelist = xn.ChildNodes;  //得到该节点的子节点
@@ -173,9 +173,9 @@ namespace SuperFramework.SuperConfig.Xml
             {
                 string XMLFile = XMLPath;
                 string filename = AppDomain.CurrentDomain.BaseDirectory.ToString() + XMLFile;
-                DataSet ds = new DataSet();
+                DataSet ds = new();
                 ds.ReadXml(filename);
-                DataView dv = new DataView(ds.Tables[0]); //创建DataView来完成排序或筛选操作	
+                DataView dv = new(ds.Tables[0]); //创建DataView来完成排序或筛选操作	
                 if (strSort != null)
                 {
                     dv.Sort = strSort; //对DataView中的记录进行排序
@@ -200,7 +200,7 @@ namespace SuperFramework.SuperConfig.Xml
         {
             try
             {
-                DataSet ds = new DataSet();
+                DataSet ds = new();
                 ds.ReadXml(strXmlPath);
                 if (ds.Tables.Count > 0)
                 {
@@ -232,7 +232,7 @@ namespace SuperFramework.SuperConfig.Xml
         {
             try
             {
-                XmlDocument doc = new XmlDocument();
+                XmlDocument doc = new();
                 doc.Load(AppDomain.CurrentDomain.BaseDirectory.ToString() + path);
                 XmlNode xn = doc.SelectSingleNode(node);
                 if (element.Equals(""))
@@ -268,7 +268,7 @@ namespace SuperFramework.SuperConfig.Xml
         {
             try
             {
-                XmlDocument doc = new XmlDocument();
+                XmlDocument doc = new();
                 doc.Load(AppDomain.CurrentDomain.BaseDirectory.ToString() + path);
                 XmlNode xn = doc.SelectSingleNode(node);
                 XmlElement xe = doc.CreateElement(element);
@@ -307,7 +307,7 @@ namespace SuperFramework.SuperConfig.Xml
             {
                 //根据传入的XML路径得到.XSD的路径，两个文件放在同一个目录下
                 string strXsdPath = strXmlPath.Substring(0, strXmlPath.IndexOf(".")) + ".xsd";
-                DataSet ds = new DataSet();
+                DataSet ds = new();
                 ds.ReadXmlSchema(strXsdPath); //读XML架构，关系到列的数据类型
                 ds.ReadXml(strXmlPath);
                 DataTable dt = ds.Tables[0];
@@ -407,7 +407,7 @@ namespace SuperFramework.SuperConfig.Xml
             try
             {
                 string strXsdPath = strXmlPath.Substring(0, strXmlPath.IndexOf(".")) + ".xsd";
-                DataSet ds = new DataSet();
+                DataSet ds = new();
                 ds.ReadXmlSchema(strXsdPath);//读XML架构，关系到列的数据类型
                 ds.ReadXml(strXmlPath);
 
@@ -497,7 +497,7 @@ namespace SuperFramework.SuperConfig.Xml
         {
             try
             {
-                DataSet ds = new DataSet();
+                DataSet ds = new();
                 ds.ReadXml(strXmlPath);
                 if (ds.Tables[0].Rows.Count > 0)
                 {
@@ -520,7 +520,7 @@ namespace SuperFramework.SuperConfig.Xml
         {
             try
             {
-                DataSet ds = new DataSet();
+                DataSet ds = new();
                 ds.ReadXml(strXmlPath);
                 if (ds.Tables[0].Rows.Count > 0)
                 {
@@ -545,7 +545,7 @@ namespace SuperFramework.SuperConfig.Xml
         {
             try
             {
-                DataSet ds = new DataSet();
+                DataSet ds = new();
                 ds.ReadXml(strXmlPath);
                 if (ds.Tables[0].Rows.Count > 0)
                 {

@@ -21,7 +21,7 @@ namespace SuperFramework.SuperAlgorithm
         public static void GetRandomArray<T>(T[] arr)
         {
             //为随机数对象赋值
-            Random rdm = new Random();
+            Random rdm = new();
             //对数组进行随机排序的算法:随机选择两个位置，将两个位置上的值交换
             //交换的次数,这里使用数组的长度作为交换次数
             int count = arr.Length;
@@ -54,11 +54,11 @@ namespace SuperFramework.SuperAlgorithm
             int colCount = array.GetLength(1), rowCount = array.GetLength(0);
             if (sortCol >= colCount || sortCol < 0)
                 throw new ArgumentOutOfRangeException(nameof(sortCol), "列为必须包含在数组边界中的列。");
-            DataTable dt = new DataTable();
+            DataTable dt = new();
             // 以“0”、“1”、“”等方式命名列
             for (int col = 0; col < colCount; col++)
             {
-                DataColumn dc = new DataColumn(col.ToString(), typeof(T));
+                DataColumn dc = new(col.ToString(), typeof(T));
                 dt.Columns.Add(dc);
             }
             // 将数据导入数据表

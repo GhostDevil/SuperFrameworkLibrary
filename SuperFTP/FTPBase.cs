@@ -68,7 +68,7 @@ namespace SuperFramework.SuperFTP
                 int[] phiconLarge = new int[1];
                 int[] phiconSmall = new int[1];
                 uint count = FTPWinAPI.ExtractIconEx(fileIcon[0], int.Parse(fileIcon[1]),phiconLarge,phiconSmall,1);
-                IntPtr IconHnd = new IntPtr(isLarge?phiconLarge[0]:phiconSmall[0]);
+                IntPtr IconHnd = new(isLarge?phiconLarge[0]:phiconSmall[0]);
                 resultIcon = Icon.FromHandle(IconHnd);
             }
 
@@ -79,7 +79,7 @@ namespace SuperFramework.SuperFTP
                 int[] phiconLarge = new int[1];
                 int[] phiconSmall = new int[1];
                 uint count = FTPWinAPI.ExtractIconEx(fileIcon[0], int.Parse(fileIcon[1]),phiconLarge,phiconSmall,1);
-                IntPtr IconHnd = new IntPtr(isLarge?phiconLarge[0]:phiconSmall[0]);
+                IntPtr IconHnd = new(isLarge?phiconLarge[0]:phiconSmall[0]);
                 resultIcon = Icon.FromHandle(IconHnd);
             }
             return resultIcon;
@@ -94,7 +94,7 @@ namespace SuperFramework.SuperFTP
         /// <param Sdir="string">要复制的原路径</param>
         public void FilesCopy(string Ddir, string Sdir)
         {
-            DirectoryInfo dir = new DirectoryInfo(Sdir);
+            DirectoryInfo dir = new(Sdir);
             try
             {
                 if (!dir.Exists)//判断所指的文件或文件夹是否存在
@@ -120,7 +120,7 @@ namespace SuperFramework.SuperFTP
                     FileInfo file = FSys as FileInfo;
                     if (file != null)//如果是文件的话，进行文件的复制操作
                     {
-                        FileInfo SFInfo = new FileInfo(string.Format("{0}\\{1}", file.DirectoryName, file.Name));//获取文件所在的原始路径
+                        FileInfo SFInfo = new(string.Format("{0}\\{1}", file.DirectoryName, file.Name));//获取文件所在的原始路径
                         SFInfo.CopyTo(string.Format("{0}\\{1}", SbuDir, file.Name), true);//将文件复制到指定的路径中
                     }
                     else
@@ -188,7 +188,7 @@ namespace SuperFramework.SuperFTP
                         }
                         il.Images.Add(GetIconByFileType(filetype, true));
                         string[] info = new string[4];
-                        FileInfo fi = new FileInfo(filename);
+                        FileInfo fi = new(filename);
                         info[0] = fi.Name;
                         info[1] = GetFileSize(filename, ftpip, user, pwd, path).ToString();
                         if (a[i].IndexOf("DIR") != -1)
@@ -201,7 +201,7 @@ namespace SuperFramework.SuperFTP
                             info[2] = GetFileSize(filename, ftpip, user, pwd, path).ToString();
                             info[1] = fi.Extension.ToString();
                         }
-                        ListViewItem item = new ListViewItem(info, i);
+                        ListViewItem item = new(info, i);
                         lv.Items.Add(item);
                     }
                 }
@@ -279,7 +279,7 @@ namespace SuperFramework.SuperFTP
         public void GetListViewItem(string path, ImageList imglist, ListView lv)//获取指定路径下所有文件及其图标
         {
             lv.Items.Clear();
-            SHFILEINFO shfi = new SHFILEINFO();
+            SHFILEINFO shfi = new();
             try
             {
                 string[] dirs = Directory.GetDirectories(path);
@@ -287,7 +287,7 @@ namespace SuperFramework.SuperFTP
                 for (int i = 0; i < dirs.Length; i++)
                 {
                     string[] info = new string[4];
-                    DirectoryInfo dir = new DirectoryInfo(dirs[i]);
+                    DirectoryInfo dir = new(dirs[i]);
                     if (dir.Name == "RECYCLER" || dir.Name == "RECYCLED" || dir.Name == "Recycled" || dir.Name == "System Volume Information")
                     { }
                     else
@@ -304,7 +304,7 @@ namespace SuperFramework.SuperFTP
                         info[1] = "";
                         info[2] = "文件夹";
                         info[3] = dir.LastWriteTime.ToString();
-                        ListViewItem item = new ListViewItem(info, dir.Name);
+                        ListViewItem item = new(info, dir.Name);
                         lv.Items.Add(item);
                         //销毁图标
                         FTPWinAPI.DestroyIcon(shfi.hIcon);
@@ -313,7 +313,7 @@ namespace SuperFramework.SuperFTP
                 for (int i = 0; i < files.Length; i++)
                 {
                     string[] info = new string[4];
-                    FileInfo fi = new FileInfo(files[i]);
+                    FileInfo fi = new(files[i]);
                     string Filetype = fi.Name.Substring(fi.Name.LastIndexOf(".") + 1, fi.Name.Length - fi.Name.LastIndexOf(".") - 1);
                     string newtype = Filetype.ToLower();
                     if (newtype == "sys" || newtype == "ini" || newtype == "bin" || newtype == "log" || newtype == "com" || newtype == "bat" || newtype == "db")
@@ -334,7 +334,7 @@ namespace SuperFramework.SuperFTP
                         info[1] = fi.Length.ToString();
                         info[2] = fi.Extension.ToString();
                         info[3] = fi.LastWriteTime.ToString();
-                        ListViewItem item = new ListViewItem(info, fi.Name);
+                        ListViewItem item = new(info, fi.Name);
                         lv.Items.Add(item);
                         //销毁图标
                         FTPWinAPI.DestroyIcon(shfi.hIcon);
@@ -384,7 +384,7 @@ namespace SuperFramework.SuperFTP
         {
             try
             {
-                FileInfo fi = new FileInfo(filename);
+                FileInfo fi = new(filename);
                 string uri;
                 if(path.Length==0)
                     uri = "ftp://" + ftpserver + "/" + fi.Name;
@@ -413,7 +413,7 @@ namespace SuperFramework.SuperFTP
         public string[] GetFileList(string ftpServerIP, string ftpUserID, string ftpPassword)
         {
             string[] downloadFiles;
-            StringBuilder result = new StringBuilder();
+            StringBuilder result = new();
             FtpWebRequest reqFTP;
             try
             {
@@ -422,7 +422,7 @@ namespace SuperFramework.SuperFTP
                 reqFTP.Credentials = new NetworkCredential(ftpUserID, ftpPassword);
                 reqFTP.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
                 WebResponse response = reqFTP.GetResponse();
-                StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding("GB2312"));
+                StreamReader reader = new(response.GetResponseStream(), Encoding.GetEncoding("GB2312"));
                 string line = reader.ReadLine();
                 while (line != null)
                 {
@@ -458,7 +458,7 @@ namespace SuperFramework.SuperFTP
             if (path.Length == 0)
             {
                 string[] downloadFiles;
-                StringBuilder result = new StringBuilder();
+                StringBuilder result = new();
                 FtpWebRequest reqFTP;
                 try
                 {
@@ -467,7 +467,7 @@ namespace SuperFramework.SuperFTP
                     reqFTP.Credentials = new NetworkCredential(ftpUserID, ftpPassword);
                     reqFTP.Method = WebRequestMethods.Ftp.ListDirectory;
                     WebResponse response = reqFTP.GetResponse();
-                    StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding("GB2312"));
+                    StreamReader reader = new(response.GetResponseStream(), Encoding.GetEncoding("GB2312"));
 
                     string line = reader.ReadLine();
                     while (line != null)
@@ -490,7 +490,7 @@ namespace SuperFramework.SuperFTP
             else
             {
                 string[] downloadFiles;
-                StringBuilder result = new StringBuilder();
+                StringBuilder result = new();
                 FtpWebRequest reqFTP;
                 try
                 {
@@ -499,7 +499,7 @@ namespace SuperFramework.SuperFTP
                     reqFTP.Credentials = new NetworkCredential(ftpUserID, ftpPassword);
                     reqFTP.Method = WebRequestMethods.Ftp.ListDirectory;
                     WebResponse response = reqFTP.GetResponse();
-                    StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding("GB2312"));
+                    StreamReader reader = new(response.GetResponseStream(), Encoding.GetEncoding("GB2312"));
 
                     string line = reader.ReadLine();
                     while (line != null)
@@ -553,7 +553,7 @@ namespace SuperFramework.SuperFTP
             if (path == null)
                 path = "";
             bool success = true;
-            FileInfo fileInf = new FileInfo(filename);
+            FileInfo fileInf = new(filename);
             int allbye = (int)fileInf.Length;
             int startbye = 0;
             pb.Maximum = allbye;
@@ -691,7 +691,7 @@ namespace SuperFramework.SuperFTP
                 uri = string.Format("ftp://{0}/{1}{2}", ftpServerIP, path, fileName);
             try
             {
-                FileStream outputStream = new FileStream(string.Format("{0}\\{1}", filePath, fileName), FileMode.Create);
+                FileStream outputStream = new(string.Format("{0}\\{1}", filePath, fileName), FileMode.Create);
                 reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
                 reqFTP.Method = WebRequestMethods.Ftp.DownloadFile;
                 reqFTP.UseBinary = true;
@@ -774,7 +774,7 @@ namespace SuperFramework.SuperFTP
             if (path == null)
             path = "";
             string[] downloadFiles;
-            StringBuilder result = new StringBuilder();
+            StringBuilder result = new();
             FtpWebRequest reqFTP;
             try
             {
@@ -783,7 +783,7 @@ namespace SuperFramework.SuperFTP
                 reqFTP.Credentials = new NetworkCredential(ftpUserID, ftpPassword);
                 reqFTP.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
                 WebResponse response = reqFTP.GetResponse();
-                StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding("GB2312"));
+                StreamReader reader = new(response.GetResponseStream(), Encoding.GetEncoding("GB2312"));
 
                 string line = reader.ReadLine();
                 while (line != null)

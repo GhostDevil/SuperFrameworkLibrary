@@ -1,7 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
-namespace System.Collections.Generic
+namespace SuperFramework.SuperExtension
 {
     public class ObservableCollectionStrong<T> : ObservableCollection<T>
     {

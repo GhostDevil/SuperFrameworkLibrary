@@ -13,7 +13,7 @@ namespace SuperFramework.SuperHost
         private readonly IntPtr _handle = IntPtr.Zero;
         private readonly Delegate _method;
         private DynamicEventHandler _handler;
-        private static readonly List<DynamicEvent> _bindEvents = new List<DynamicEvent>();
+        private static readonly List<DynamicEvent> _bindEvents = new();
 
         public DynamicEvent(object target, EventInfo e)
         {

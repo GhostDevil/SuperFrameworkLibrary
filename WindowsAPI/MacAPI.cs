@@ -110,7 +110,7 @@ namespace SuperFramework.WindowsAPI
             string addr = "";
             int cb;
             ASTAT adapter;
-            NCB Ncb = new NCB();
+            NCB Ncb = new();
             char uRetCode;
             LANA_ENUM lenum;
 

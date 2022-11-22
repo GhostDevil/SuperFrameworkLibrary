@@ -24,7 +24,7 @@ namespace SuperFramework.SuperDate
         {
 
             DateTime dt;
-            HttpClient httpClient = new HttpClient();
+            HttpClient httpClient = new();
             try
             {
                 HttpResponseMessage wrt = await httpClient.GetAsync("https://www.beijing-time.org/");
@@ -159,7 +159,7 @@ namespace SuperFramework.SuperDate
                 string hostName;
                 byte[] bytes = new byte[1024];
                 int bytesRead = 0;
-                System.Net.Sockets.TcpClient client = new System.Net.Sockets.TcpClient();
+                System.Net.Sockets.TcpClient client = new();
                 for (int i = 0; i < 13; i++)
                 {
                     hostName = 时间服务器[搜索顺序[i], 1];

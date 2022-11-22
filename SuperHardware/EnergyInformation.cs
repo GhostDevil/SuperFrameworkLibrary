@@ -42,7 +42,7 @@ namespace SuperFramework.SuperHardware
         /// <returns>获取当前计算机所连接的AC电源适配器的状态。</returns>
         public static EAcPowerStatus GetAcPowerStatus()
         {
-            SPowerStatus ps = new SPowerStatus();
+            SPowerStatus ps = new();
             bool b = GetSystemPowerStatus(ps);
             EAcPowerStatus stat = EAcPowerStatus.Unknown;
             switch (ps.AcLineStatus)
@@ -65,7 +65,7 @@ namespace SuperFramework.SuperHardware
         /// <returns>获取当前计算机所配备的电池的状态信息。</returns>
         public static EBatteryStatus GetBatteryStatus()
         {
-            SPowerStatus ps = new SPowerStatus();
+            SPowerStatus ps = new();
             bool b = GetSystemPowerStatus(ps);
             EBatteryStatus stat = EBatteryStatus.Charging;
             if (Convert.ToBoolean(ps.BatteryFlag) & Convert.ToBoolean(1)) stat = EBatteryStatus.High;
@@ -81,7 +81,7 @@ namespace SuperFramework.SuperHardware
         /// <returns>获取当前计算机所配备的电池的可用电量，该操作执行后会返回一个整型数据，100表示电量已满，0表示电量归零，255则表示电池电量未知。</returns>
         public static int GetQuantityOfBattery()
         {
-            SPowerStatus ps = new SPowerStatus();
+            SPowerStatus ps = new();
             bool b = GetSystemPowerStatus(ps);
             if (ps.BatteryLifePercent == 255) throw new UnknownQuantityOfBatteryException("电池电量未知！");
             return ps.BatteryLifePercent;
@@ -92,7 +92,7 @@ namespace SuperFramework.SuperHardware
         /// <returns>获取当前计算机在未连接或者未充电的情况下的电池的电量的可用时间，单位为second。</returns>
         public static int GetBatteryLifeTime()
         {
-            SPowerStatus ps = new SPowerStatus();
+            SPowerStatus ps = new();
             bool b = GetSystemPowerStatus(ps);
             if (ps.BatteryLifeTime == -1) throw new UnknownBatteryUseTimeSpanException("电池剩余电量的使用时间暂时无法测定！");
             if (GetBatteryStatus() == EBatteryStatus.Charging) throw new UnknownBatteryUseTimeSpanException("无法查看充电状态下的电池电量使用时间！");

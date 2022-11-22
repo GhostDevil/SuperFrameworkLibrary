@@ -86,7 +86,7 @@ namespace SuperFramework.SuperEncrypt
             if (string.IsNullOrEmpty(source)) return null;
             var encoding = Encoding.UTF8;
             byte[] keyStr = encoding.GetBytes(keyVal);
-            HMACSHA1 hmacSha1 = new HMACSHA1(keyStr);
+            HMACSHA1 hmacSha1 = new(keyStr);
             return HashAlgorithmBase(hmacSha1, source, encoding);
         }
 
@@ -98,7 +98,7 @@ namespace SuperFramework.SuperEncrypt
             if (string.IsNullOrEmpty(source)) return null;
             var encoding = Encoding.UTF8;
             byte[] keyStr = encoding.GetBytes(keyVal);
-            HMACSHA256 hmacSha256 = new HMACSHA256(keyStr);
+            HMACSHA256 hmacSha256 = new(keyStr);
             return HashAlgorithmBase(hmacSha256, source, encoding);
         }
 
@@ -110,7 +110,7 @@ namespace SuperFramework.SuperEncrypt
             if (string.IsNullOrEmpty(source)) return null;
             var encoding = Encoding.UTF8;
             byte[] keyStr = encoding.GetBytes(keyVal);
-            HMACSHA384 hmacSha384 = new HMACSHA384(keyStr);
+            HMACSHA384 hmacSha384 = new(keyStr);
             return HashAlgorithmBase(hmacSha384, source, encoding);
         }
 
@@ -122,7 +122,7 @@ namespace SuperFramework.SuperEncrypt
             if (string.IsNullOrEmpty(source)) return null;
             var encoding = Encoding.UTF8;
             byte[] keyStr = encoding.GetBytes(keyVal);
-            HMACSHA512 hmacSha512 = new HMACSHA512(keyStr);
+            HMACSHA512 hmacSha512 = new(keyStr);
             return HashAlgorithmBase(hmacSha512, source, encoding);
         }
 
@@ -134,7 +134,7 @@ namespace SuperFramework.SuperEncrypt
             if (string.IsNullOrEmpty(source)) return null;
             var encoding = Encoding.UTF8;
             byte[] keyStr = encoding.GetBytes(keyVal);
-            HMACMD5 hmacMd5 = new HMACMD5(keyStr);
+            HMACMD5 hmacMd5 = new(keyStr);
             return HashAlgorithmBase(hmacMd5, source, encoding);
         }
 #if NET40_OR_GREATER
@@ -170,9 +170,9 @@ namespace SuperFramework.SuperEncrypt
             byte[] byteArray = encoding.GetBytes(source);
             string encrypt;
             Aes aes = Aes.Create();
-            using (MemoryStream mStream = new MemoryStream())
+            using (MemoryStream mStream = new())
             {
-                using (CryptoStream cStream = new CryptoStream(mStream, aes.CreateEncryptor(btKey, btIv), CryptoStreamMode.Write))
+                using (CryptoStream cStream = new(mStream, aes.CreateEncryptor(btKey, btIv), CryptoStreamMode.Write))
                 {
                     cStream.Write(byteArray, 0, byteArray.Length);
                     cStream.FlushFinalBlock();
@@ -198,9 +198,9 @@ namespace SuperFramework.SuperEncrypt
             byte[] byteArray = Convert.FromBase64String(source);
             string decrypt;
             Aes aes = Aes.Create();
-            using (MemoryStream mStream = new MemoryStream())
+            using (MemoryStream mStream = new())
             {
-                using (CryptoStream cStream = new CryptoStream(mStream, aes.CreateDecryptor(btKey, btIv), CryptoStreamMode.Write))
+                using (CryptoStream cStream = new(mStream, aes.CreateDecryptor(btKey, btIv), CryptoStreamMode.Write))
                 {
                     cStream.Write(byteArray, 0, byteArray.Length);
                     cStream.FlushFinalBlock();
@@ -228,9 +228,9 @@ namespace SuperFramework.SuperEncrypt
             Aes aes = Aes.Create();
             try
             {
-                using (MemoryStream mStream = new MemoryStream())
+                using (MemoryStream mStream = new())
                 {
-                    using (CryptoStream cStream = new CryptoStream(mStream, aes.CreateEncryptor(bKey, bVector), CryptoStreamMode.Write))
+                    using (CryptoStream cStream = new(mStream, aes.CreateEncryptor(bKey, bVector), CryptoStreamMode.Write))
                     {
                         cStream.Write(data, 0, data.Length);
                         cStream.FlushFinalBlock();
@@ -262,11 +262,11 @@ namespace SuperFramework.SuperEncrypt
             Aes aes = Aes.Create();
             try
             {
-                using (MemoryStream mStream = new MemoryStream(data))
+                using (MemoryStream mStream = new(data))
                 {
-                    using (CryptoStream cStream = new CryptoStream(mStream, aes.CreateDecryptor(bKey, bVector), CryptoStreamMode.Read))
+                    using (CryptoStream cStream = new(mStream, aes.CreateDecryptor(bKey, bVector), CryptoStreamMode.Read))
                     {
-                        using (MemoryStream originalMemory = new MemoryStream())
+                        using (MemoryStream originalMemory = new())
                         {
                             byte[] buffer = new byte[1024];
                             int readBytes;
@@ -300,7 +300,7 @@ namespace SuperFramework.SuperEncrypt
         /// </summary>
         public static string Rsa(string source)
         {
-            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
+            RSACryptoServiceProvider rsa = new();
             rsa.FromXmlString(PublicRsaKey);
             var cipherbytes = rsa.Encrypt(Encoding.UTF8.GetBytes(source), true);
             return Convert.ToBase64String(cipherbytes);
@@ -311,7 +311,7 @@ namespace SuperFramework.SuperEncrypt
         /// </summary>
         public static string UnRsa(string source)
         {
-            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
+            RSACryptoServiceProvider rsa = new();
             rsa.FromXmlString(PrivateRsaKey);
             var cipherbytes = rsa.Decrypt(Convert.FromBase64String(source), true);
             return Encoding.UTF8.GetString(cipherbytes);
@@ -384,12 +384,12 @@ namespace SuperFramework.SuperEncrypt
                 des.Mode = CipherMode.ECB;
                 des.Padding = PaddingMode.PKCS7;
 
-                using (MemoryStream ms = new MemoryStream())
+                using (MemoryStream ms = new())
                 {
                     byte[] btArray = Encoding.UTF8.GetBytes(source);
                     try
                     {
-                        using (CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(), CryptoStreamMode.Write))
+                        using (CryptoStream cs = new(ms, des.CreateEncryptor(), CryptoStreamMode.Write))
                         {
                             cs.Write(btArray, 0, btArray.Length);
                             cs.FlushFinalBlock();
@@ -419,9 +419,9 @@ namespace SuperFramework.SuperEncrypt
                 des.Mode = CipherMode.ECB;
                 des.Padding = PaddingMode.PKCS7;
 
-                using (MemoryStream ms = new MemoryStream())
+                using (MemoryStream ms = new())
                 {
-                    using (CryptoStream cs = new CryptoStream(ms, des.CreateDecryptor(), CryptoStreamMode.Write))
+                    using (CryptoStream cs = new(ms, des.CreateDecryptor(), CryptoStreamMode.Write))
                     {
                         cs.Write(byArray, 0, byArray.Length);
                         cs.FlushFinalBlock();
@@ -483,7 +483,7 @@ namespace SuperFramework.SuperEncrypt
         /// </summary>
         private static string Bytes2Str(this IEnumerable<byte> source, string formatStr = "{0:X2}")
         {
-            StringBuilder pwd = new StringBuilder();
+            StringBuilder pwd = new();
             foreach (byte btStr in source) { pwd.AppendFormat(formatStr, btStr); }
             return pwd.ToString();
         }

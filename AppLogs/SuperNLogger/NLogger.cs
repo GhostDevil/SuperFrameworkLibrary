@@ -143,7 +143,7 @@ namespace SuperFramework.SuperNLogger
         /// <summary>
         /// 多线程 锁对象
         /// </summary>
-        private static readonly object _syncRoot = new object();
+        private static readonly object _syncRoot = new();
 
         /// <summary>
         /// 日志文件的最大长度（单位：字节）（不得小于1024字节，即1K）
@@ -182,8 +182,10 @@ namespace SuperFramework.SuperNLogger
             }
             if (_log_file_save_time > 0)
             {
-                Thread logFileStorageThread = new Thread(MonitorLogFileStorage);
-                logFileStorageThread.IsBackground = THREAD_IS_BACKGROUD;
+                Thread logFileStorageThread = new(MonitorLogFileStorage)
+                {
+                    IsBackground = THREAD_IS_BACKGROUD
+                };
                 logFileStorageThread.Start();
             }
         }
@@ -193,7 +195,7 @@ namespace SuperFramework.SuperNLogger
         /// <param name="strEnvConfig">指定Properties配置文件</param>
         private void InitByPropertiesCfgFile(string strEnvConfig)
         {
-            LogProperties hashPro = new LogProperties();
+            LogProperties hashPro = new();
             hashPro.Load(strEnvConfig);
 
             _cur_log_level = LogLevelHelper.StrToLogLevel(hashPro.GetProperty(_LOG_LEVEL_));
@@ -602,7 +604,7 @@ namespace SuperFramework.SuperNLogger
         /// <returns>日志前缀</returns>
         private string LogInfoPrefix(LogLevel level)
         {
-            StackTrace st = new StackTrace(true);
+            StackTrace st = new(true);
             StackFrame sf = null; // st.GetFrame(2);
             //st.FrameCount
             for (int i = 1; i <= 3; i++)
@@ -638,7 +640,7 @@ namespace SuperFramework.SuperNLogger
         {
             string ns = "";// CommonHelp.GetLogNamespace(3);
 
-            StackTrace st = new StackTrace();
+            StackTrace st = new();
             //st.FrameCount
             for (int i = 1; i <= 3; i++)
             {
@@ -713,7 +715,7 @@ namespace SuperFramework.SuperNLogger
         {
             while (true)
             {
-                FileInfo fi = new FileInfo(_cur_log_file_);
+                FileInfo fi = new(_cur_log_file_);
                 if (!fi.Directory.Exists) fi.Directory.Create();
                 FileInfo[] arrFiles = fi.Directory.GetFiles();
                 foreach (FileInfo file in arrFiles)

@@ -42,7 +42,7 @@ namespace SuperFramework
             }
             if (foor > 0)
             {
-                System.Drawing.Rectangle r = new System.Drawing.Rectangle();
+                System.Drawing.Rectangle r = new();
                 GetWindowRect(foor, ref r);
                 //从任务栏左上角从左到右 MOUSEMOVE一遍，所有图标状态会被更新
                 for (int x = 0; x < (r.Right - r.Left) - r.X; x++)

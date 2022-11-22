@@ -551,7 +551,7 @@ namespace SuperFramework.SuperRegistry
         /// <returns>返回信息列表</returns>
         public static List<AppInfo> GetInstallAppsInfo()
         {
-            List<AppInfo> ObservableObj = new List<AppInfo>();
+            List<AppInfo> ObservableObj = new();
             RegistryKey pregkey = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall");//获取指定路径下的键
             try
             {

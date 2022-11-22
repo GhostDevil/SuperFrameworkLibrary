@@ -179,7 +179,7 @@ namespace SuperFramework.SuperDate
                 if (string.IsNullOrEmpty(m_LunarYearText))
                 {
                     m_LunarYearText = Animals.Substring(calendar.GetSexagenaryYear(new DateTime(m_LunarYear, 1, 1)) % 12 - 1, 1);
-                    StringBuilder sb = new StringBuilder();
+                    StringBuilder sb = new();
                     int year = LunarYear;
                     int d;
                     do
@@ -291,7 +291,7 @@ namespace SuperFramework.SuperDate
         /// <param name="year">指定的年份</param>
         private static DateTime GetLunarNewYearDate(int year)
         {
-            DateTime dt = new DateTime(year, 1, 1);
+            DateTime dt = new(year, 1, 1);
             int cnYear = calendar.GetYear(dt);
             int cnMonth = calendar.GetMonth(dt);
 
@@ -383,7 +383,7 @@ namespace SuperFramework.SuperDate
         /// <param name="IsLeapMonth">是否闰月</param>
         public static ChineseCalendarInfo FromLunarDate(string date, bool IsLeapMonth)
         {
-            Regex rg = new Regex(@"^\d{7}(\d)$");
+            Regex rg = new(@"^\d{7}(\d)$");
             Match mc = rg.Match(date);
             if (!mc.Success)
             {
@@ -396,7 +396,7 @@ namespace SuperFramework.SuperDate
 
         #endregion
 
-        private static ChineseLunisolarCalendar calendar = new ChineseLunisolarCalendar();
+        private static ChineseLunisolarCalendar calendar = new();
         public const string ChineseNumber = "〇一二三四五六七八九";
         public const string CelestialStem = "甲乙丙丁戊己庚辛壬癸";
         public const string TerrestrialBranch = "子丑寅卯辰巳午未申酉戌亥";

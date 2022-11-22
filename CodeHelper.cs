@@ -17,7 +17,7 @@ namespace SuperFramework
         /// <returns>返回执行代码行号</returns>
         public static string GetLineNum(int skipFrame=1,int frameIndex=0)
         {
-            StackTrace st = new StackTrace(skipFrame, true);
+            StackTrace st = new(skipFrame, true);
             return st.GetFrame(frameIndex).GetFileLineNumber().ToString();
         }
         /// <summary>
@@ -28,7 +28,7 @@ namespace SuperFramework
         /// <returns>返回执行代码行号</returns>
         public static string GetColumnNumber(int skipFrame = 1, int frameIndex = 0)
         {
-            StackTrace st = new StackTrace(skipFrame, true);
+            StackTrace st = new(skipFrame, true);
             return st.GetFrame(frameIndex).GetFileColumnNumber().ToString();
         }
         /// <summary>
@@ -37,7 +37,7 @@ namespace SuperFramework
         /// <returns>返回文件路径以及名称</returns>
         public static string GetCurSourceFileName()
         {
-            StackTrace st = new StackTrace(1, true);
+            StackTrace st = new(1, true);
             return st.GetFrame(0).GetFileName();
         }
         /// <summary>
@@ -73,7 +73,7 @@ namespace SuperFramework
         {
             try
             {
-                StackTrace st = new StackTrace();
+                StackTrace st = new();
                 string methodName = st.GetFrame(depth).GetMethod().ToString();
                 string className = st.GetFrame(depth).GetMethod().DeclaringType.ToString();
                 return className + "：" + methodName;
@@ -89,7 +89,7 @@ namespace SuperFramework
         /// <returns>返回当前类名</returns>
         public static string GetClassName()
         {
-            StackTrace trace = new StackTrace();
+            StackTrace trace = new();
             StackFrame frame = trace.GetFrame(1);//1代表上级，2代表上上级，以此类推  
             MethodBase method = frame.GetMethod();
             return method.DeclaringType.ToString();

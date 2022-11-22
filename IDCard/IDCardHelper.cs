@@ -46,7 +46,7 @@ namespace SuperFramework.IDCard
                 return "身份证明号码必须是15或者18位！";
             }
 
-            Regex rg = new Regex(@"^\d{17}(\d|X)$");
+            Regex rg = new(@"^\d{17}(\d|X)$");
             if (!rg.Match(idcard).Success)
             {
                 return "身份证号码必须为数字或者X！";

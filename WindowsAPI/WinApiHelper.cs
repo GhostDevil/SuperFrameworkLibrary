@@ -50,7 +50,7 @@ namespace SuperFramework.WindowsAPI
 
             if (isLock) 
             {
-               APIStruct.TagRECT rect = new APIStruct.TagRECT() { left = 0, top = 0, right = 1, bottom = 1 };
+               APIStruct.TagRECT rect = new() { left = 0, top = 0, right = 1, bottom = 1 };
                 var p = Marshal.AllocHGlobal(Marshal.SizeOf(rect));
                 Marshal.StructureToPtr(rect, p, false);
                 User32API.ClipCursor(p);//锁定            
@@ -60,7 +60,7 @@ namespace SuperFramework.WindowsAPI
         }
         private const int OF_READWRITE = 2;
         private const int OF_SHARE_DENY_NONE = 0x40;
-        private static readonly IntPtr HFILE_ERROR = new IntPtr(-1);
+        private static readonly IntPtr HFILE_ERROR = new(-1);
         /// <summary>
         /// 以二进制模式打开指定的文件,查看文件是否被占用
         /// </summary>
@@ -83,7 +83,7 @@ namespace SuperFramework.WindowsAPI
 
         public static List<IntPtr> FindWindows(string lpszClass, string lpszWindow)
         {
-            List<IntPtr> lip = new List<IntPtr>();
+            List<IntPtr> lip = new();
             IntPtr ip = IntPtr.Zero;
             ip = SuperFramework.WindowsAPI.User32API.FindWindow("CabinetWClass", null);
             while (ip != IntPtr.Zero)
@@ -103,7 +103,7 @@ namespace SuperFramework.WindowsAPI
         /// <param name="Y"></param>
         public static void LeftMouseClickOffice(int X, int Y, int width, int height)
         {
-            System.Drawing.Point pos = new System.Drawing.Point(X, Y);
+            System.Drawing.Point pos = new(X, Y);
             uint x = (uint)(pos.X * 65535 / width);
             uint y = (uint)(pos.Y * 65535 / height);
             User32API.Mouse_event(NativeConst.MOUSEEVENTF_ABSOLUTE | NativeConst.MOUSEEVENTF_MOVE, x, y, 0, 0);
