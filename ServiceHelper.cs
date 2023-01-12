@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Runtime.Versioning;
 using System.ServiceProcess;
 using System.Text.RegularExpressions;
+using System.Linq;
+
 namespace SuperFramework
 {
     /// <summary>
@@ -398,16 +400,10 @@ namespace SuperFramework
         /// 获取系统所有服务对象
         /// </summary>
         /// <returns></returns>
-        public static ArrayList GetAllSystemServices()
+        public static ServiceController[] GetAllSystemServices()
         {
-            ArrayList arryServices = new();
             ServiceController[] services = ServiceController.GetServices();
-            foreach (ServiceController a in services)
-            {
-                arryServices.Add(a);
-            }
-
-            return arryServices;
+            return services;
         }
         /// <summary>
         /// 获取所有服务名
@@ -417,10 +413,7 @@ namespace SuperFramework
         {
             List<string> listNames = new();
             ServiceController[] services = ServiceController.GetServices();
-            foreach (ServiceController a in services)
-            {
-                listNames.Add(a.DisplayName);
-            }
+            listNames.AddRange(services.Select(a => a.DisplayName));
             return listNames;
         }
         /// <summary>
