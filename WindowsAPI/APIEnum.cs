@@ -443,7 +443,7 @@ namespace SuperFramework.WindowsAPI
         }
         public static int MAKEPARAM(int l, int h)
         {
-            return ((l & 0xffff) | (h << 0x10));
+            return (l & 0xffff) | (h << 0x10);
         }
 
         public enum WindowStyles : uint
@@ -506,8 +506,8 @@ namespace SuperFramework.WindowsAPI
             WS_EX_STATICEDGE = 0x00020000,
             WS_EX_APPWINDOW = 0x00040000,
 
-            WS_EX_OVERLAPPEDWINDOW = (WS_EX_WINDOWEDGE | WS_EX_CLIENTEDGE),
-            WS_EX_PALETTEWINDOW = (WS_EX_WINDOWEDGE | WS_EX_TOOLWINDOW | WS_EX_TOPMOST),
+            WS_EX_OVERLAPPEDWINDOW = WS_EX_WINDOWEDGE | WS_EX_CLIENTEDGE,
+            WS_EX_PALETTEWINDOW = WS_EX_WINDOWEDGE | WS_EX_TOOLWINDOW | WS_EX_TOPMOST,
 
             //#endif /* WINVER >= 0x0400 */
 

@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
+using System.Runtime.Versioning;
 
 namespace SuperFramework.SuperImage
 {
@@ -8,6 +9,7 @@ namespace SuperFramework.SuperImage
     /// 作 者:不良帥
     /// 描 述:图片效果代理类
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public static class ImageHandleOperate
     {
         #region 灰化图片
@@ -30,8 +32,8 @@ namespace SuperFramework.SuperImage
                 unsafe
                 {
                     int x = 0, y = 0;
-                    byte* pin = (byte*)(oldData.Scan0.ToPointer());
-                    byte* pout = (byte*)(newData.Scan0.ToPointer());
+                    byte* pin = (byte*)oldData.Scan0.ToPointer();
+                    byte* pout = (byte*)newData.Scan0.ToPointer();
                     for (y = 0; y < oldData.Height; y++)
                     {
                         for (x = 0; x < oldData.Width; x++)
@@ -76,8 +78,8 @@ namespace SuperFramework.SuperImage
                 BitmapData newData = bitmap.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppRgb);
                 unsafe
                 {
-                    byte* pin = (byte*)(oldData.Scan0.ToPointer());
-                    byte* pout = (byte*)(newData.Scan0.ToPointer());
+                    byte* pin = (byte*)oldData.Scan0.ToPointer();
+                    byte* pout = (byte*)newData.Scan0.ToPointer();
                     //高斯模板
                     int[] Gauss = { 1, 2, 1, 2, 4, 2, 1, 2, 1 };
                     for (int i = 1; i < Width - 1; i++)
@@ -91,7 +93,7 @@ namespace SuperFramework.SuperImage
                             {
                                 for (int row = -1; row <= 1; row++)
                                 {
-                                    int off = ((j + row) * (Width) + (i + col)) * 4;
+                                    int off = ((j + row) * Width + i + col) * 4;
                                     r += pin[off + 0] * Gauss[Index];
                                     g += pin[off + 1] * Gauss[Index];
                                     b += pin[off + 2] * Gauss[Index];
@@ -147,8 +149,8 @@ namespace SuperFramework.SuperImage
                 BitmapData newData = bitmap.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppRgb);
                 unsafe
                 {
-                    byte* pin = (byte*)(oldData.Scan0.ToPointer());
-                    byte* pout = (byte*)(newData.Scan0.ToPointer());
+                    byte* pin = (byte*)oldData.Scan0.ToPointer();
+                    byte* pout = (byte*)newData.Scan0.ToPointer();
                     //拉普拉斯模板
                     int[] Laplacian = { -1, -1, -1, -1, 9, -1, -1, -1, -1 };
                     for (int i = 1; i < Width - 1; i++)
@@ -162,7 +164,7 @@ namespace SuperFramework.SuperImage
                             {
                                 for (int row = -1; row <= 1; row++)
                                 {
-                                    int off = ((j + row) * (Width) + (i + col)) * 4;
+                                    int off = ((j + row) * Width + i + col) * 4;
                                     r += pin[off + 0] * Laplacian[Index];
                                     g += pin[off + 1] * Laplacian[Index];
                                     b += pin[off + 2] * Laplacian[Index];
@@ -211,9 +213,9 @@ namespace SuperFramework.SuperImage
                 BitmapData newData = bitmap.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
                 unsafe
                 {
-                    byte* pin_1 = (byte*)(oldData.Scan0.ToPointer());
-                    byte* pin_2 = pin_1 + (oldData.Stride);
-                    byte* pout = (byte*)(newData.Scan0.ToPointer());
+                    byte* pin_1 = (byte*)oldData.Scan0.ToPointer();
+                    byte* pin_2 = pin_1 + oldData.Stride;
+                    byte* pout = (byte*)newData.Scan0.ToPointer();
                     for (int y = 0; y < oldData.Height - 1; y++)
                     {
                         for (int x = 0; x < oldData.Width; x++)
@@ -228,9 +230,9 @@ namespace SuperFramework.SuperImage
                             if (g > 255) g = 255;
                             if (b < 0) b = 0;
                             if (b > 255) b = 255;
-                            pout[0] = (byte)(b);
-                            pout[1] = (byte)(g);
-                            pout[2] = (byte)(r);
+                            pout[0] = (byte)b;
+                            pout[1] = (byte)g;
+                            pout[2] = (byte)r;
                             pin_1 += 3;
                             pin_2 += 3;
                             pout += 3;
@@ -267,8 +269,8 @@ namespace SuperFramework.SuperImage
                 BitmapData newData = bitmap.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
                 unsafe
                 {
-                    byte* pin = (byte*)(oldData.Scan0.ToPointer());
-                    byte* pout = (byte*)(newData.Scan0.ToPointer());
+                    byte* pin = (byte*)oldData.Scan0.ToPointer();
+                    byte* pout = (byte*)newData.Scan0.ToPointer();
                     for (int y = 0; y < oldData.Height; y++)
                     {
                         for (int x = 0; x < oldData.Width; x++)
@@ -309,8 +311,8 @@ namespace SuperFramework.SuperImage
                 BitmapData newData = bitmap.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
                 unsafe
                 {
-                    byte* pin = (byte*)(oldData.Scan0.ToPointer());
-                    byte* pout = (byte*)(newData.Scan0.ToPointer());
+                    byte* pin = (byte*)oldData.Scan0.ToPointer();
+                    byte* pout = (byte*)newData.Scan0.ToPointer();
                     for (int y = 0; y < oldData.Height; y++)
                     {
                         for (int x = 0; x < oldData.Width; x++)
@@ -364,9 +366,9 @@ namespace SuperFramework.SuperImage
                 unsafe
                 {
                     //首先第一段代码是提取边缘，边缘置为黑色，其他部分置为白色
-                    byte* pin_1 = (byte*)(oldData.Scan0.ToPointer());
-                    byte* pin_2 = pin_1 + (oldData.Stride);
-                    byte* pout = (byte*)(newData.Scan0.ToPointer());
+                    byte* pin_1 = (byte*)oldData.Scan0.ToPointer();
+                    byte* pin_2 = pin_1 + oldData.Stride;
+                    byte* pout = (byte*)newData.Scan0.ToPointer();
                     for (int y = 0; y < oldData.Height - 1; y++)
                     {
                         for (int x = 0; x < oldData.Width; x++)
@@ -389,9 +391,9 @@ namespace SuperFramework.SuperImage
                                 g = 255;
                                 r = 255;
                             }
-                            pout[0] = (byte)(b);
-                            pout[1] = (byte)(g);
-                            pout[2] = (byte)(r);
+                            pout[0] = (byte)b;
+                            pout[1] = (byte)g;
+                            pout[2] = (byte)r;
                             pin_1 += 3;
                             pin_2 += 3;
                             pout += 3;
@@ -403,7 +405,7 @@ namespace SuperFramework.SuperImage
                     }
 
                     //这里博主加粗了一下线条- -，不喜欢的同学可以删了这段代码
-                    byte* pin_5 = (byte*)(newData.Scan0.ToPointer());
+                    byte* pin_5 = (byte*)newData.Scan0.ToPointer();
                     for (int y = 0; y < oldData.Height - 1; y++)
                     {
                         for (int x = 3; x < oldData.Width; x++)
@@ -421,8 +423,8 @@ namespace SuperFramework.SuperImage
                     }
 
                     //这段代码是把原图和边缘图重合
-                    byte* pin_3 = (byte*)(oldData.Scan0.ToPointer());
-                    byte* pin_4 = (byte*)(newData.Scan0.ToPointer());
+                    byte* pin_3 = (byte*)oldData.Scan0.ToPointer();
+                    byte* pin_4 = (byte*)newData.Scan0.ToPointer();
                     for (int y = 0; y < oldData.Height - 1; y++)
                     {
                         for (int x = 0; x < oldData.Width; x++)

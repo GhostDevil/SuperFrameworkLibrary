@@ -45,8 +45,7 @@ namespace SuperFramework.SuperRemote
             }
             finally
             {
-                if (pProcess != null)
-                    pProcess.Dispose(); pProcess.Close();
+                pProcess?.Dispose(); pProcess.Close();
             }
             return true;
         }

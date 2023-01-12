@@ -122,7 +122,7 @@ namespace SuperFramework.WindowsAPI
                 cdata.dwData = (IntPtr)100;
                 cdata.lpData = strSent;
                 cdata.cData = len + 1;
-                User32API.SendMessage(WINDOW_HANDLE, NativeConst.WM_CLOSE, 0, ref cdata);
+                User32API.SendMessage(WINDOW_HANDLE, NativeConst.WM_CLOSE, (IntPtr)0, ref cdata);
             }
         }
 
@@ -160,7 +160,7 @@ namespace SuperFramework.WindowsAPI
                 cdata.lpData = strSent;
                 cdata.cData = len + 1;
 
-                User32API.SendMessage(WINDOW_HANDLE, NativeConst.WM_COPYDATA, 0, ref cdata);
+                User32API.SendMessage(WINDOW_HANDLE, NativeConst.WM_COPYDATA, (IntPtr)0, ref cdata);
             }
         }
         /// <summary>

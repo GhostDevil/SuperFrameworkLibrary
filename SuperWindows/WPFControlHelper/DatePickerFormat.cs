@@ -99,7 +99,7 @@ namespace SuperFramework.SuperWindows.WPFControlHelper
 
             public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
             {
-                var tupleParam = ((Tuple<DatePicker, string>)parameter);
+                var tupleParam = (Tuple<DatePicker, string>)parameter;
                 var dateStr = (string)value;
                 return StringToDateTime(tupleParam.Item1, tupleParam.Item2, dateStr);
             }

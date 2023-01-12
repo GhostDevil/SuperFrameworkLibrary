@@ -3,58 +3,55 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Runtime.Versioning;
 
 namespace SuperFramework.SuperRegistry
 {
     /// <summary>
-    /// 日 期:2015-04-24
+    /// 日 期:2023-01-04
     /// 作 者:不良帥
     /// 描 述:注册表操作辅助方法类
     /// </summary>
-    public static class RegistHelper
+    [SupportedOSPlatform("windows")]
+    public static class RegistryHelper
     {
-        #region  读取注册表HKEY_LOCAL_MACHINE/SOFTWARE目录下的XXX目录中名称为name的注册表值 
         /// <summary>
         /// 读取注册表HKEY_LOCAL_MACHINE/SOFTWARE目录下的XXX目录中名称为name的注册表值
         /// </summary>
         /// <param name="name">注册表名称</param>
         /// <returns>返回注册表值</returns>
 
-        public static string GetRegistData(string name)
+        public static string GetSoftWareValue(string name)
         {
             string registData;
-            RegistryKey aimdir = Registry.LocalMachine.OpenSubKey("SOFTWARE", true);
+            using RegistryKey aimdir = Registry.LocalMachine.OpenSubKey("SOFTWARE", true);
             registData = aimdir.GetValue(name).ToString();
             aimdir.Close();
             return registData;
         }
-        #endregion
 
-        #region  向注册表中HKEY_LOCAL_MACHINE/SOFTWARE目录下新建XXX目录并在此目录下创建名称为name值为tovalue的注册表项 
         /// <summary>
         /// 向注册表中HKEY_LOCAL_MACHINE/SOFTWARE目录下新建XXX目录并在此目录下创建名称为name值为tovalue的注册表项
         /// </summary>
         /// <param name="name">注册表名称</param>
         /// <param name="tovalue">值</param>
 
-        public static void WTRegedit(string name, string tovalue)
+        public static void CreateSoftWare(string name, string tovalue)
         {
-            RegistryKey aimdir = Registry.LocalMachine.OpenSubKey("SOFTWARE", true);
+            using RegistryKey aimdir = Registry.LocalMachine.OpenSubKey("SOFTWARE", true);
             aimdir.SetValue(name, tovalue);
             aimdir.Close();
         }
-        #endregion
 
-        #region  删除注册表HKEY_LOCAL_MACHINE/SOFTWARE目录下名称为name注册表项 
         /// <summary>
         /// 删除注册表HKEY_LOCAL_MACHINE/SOFTWARE目录下名称为name注册表项
         /// </summary>
         /// <param name="name">注册表名称</param>
 
-        public static void DeleteRegist(string name)
+        public static void DeleteSoftWare(string name)
         {
             string[] aimnames;
-            RegistryKey aimdir = Registry.LocalMachine.OpenSubKey("SOFTWARE", true);
+            using RegistryKey aimdir = Registry.LocalMachine.OpenSubKey("SOFTWARE", true);
             aimnames = aimdir.GetSubKeyNames();
             foreach (string aimKey in aimnames)
             {
@@ -63,19 +60,18 @@ namespace SuperFramework.SuperRegistry
             }
             aimdir.Close();
         }
-        #endregion
 
-        #region  判断HKEY_LOCAL_MACHINE/SOFTWARE目录下名称为name注册表项是否存在 
+
         /// <summary>
         /// 判断HKEY_LOCAL_MACHINE/SOFTWARE目录下名称为name注册表项是否存在
         /// </summary>
         /// <param name="name">注册表名称</param>
         /// <returns>true：存在，false：不存在</returns>
-        public static bool IsRegeditExit(string name)
+        public static bool Exists(string name)
         {
             bool _exit = false;
             string[] subkeyNames;
-            RegistryKey aimdir = Registry.LocalMachine.OpenSubKey("SOFTWARE", true);
+            using RegistryKey aimdir = Registry.LocalMachine.OpenSubKey("SOFTWARE", true);
             subkeyNames = aimdir.GetSubKeyNames();
             foreach (string keyName in subkeyNames)
             {
@@ -88,7 +84,6 @@ namespace SuperFramework.SuperRegistry
             aimdir.Close();
             return _exit;
         }
-        #endregion
 
         #region  设置应用程序开机是否自动运行 
 
@@ -106,27 +101,25 @@ namespace SuperFramework.SuperRegistry
             {
                 string s = Path.GetFileNameWithoutExtension(filePath);
                 string s2 = Path.GetDirectoryName(filePath);
-                string file = s2 +"\\" +s+".exe";//filePath.Substring(0,filePath.IndexOf(".exe")+4);
+                string file = s2 + "\\" + s + ".exe";//filePath.Substring(0,filePath.IndexOf(".exe")+4);
                 if (!System.IO.File.Exists(file))
                     throw new Exception("该程序不存在!");
-                string name = filePath.Substring(filePath.LastIndexOf(@"\") + 1);
+                string name = filePath[(filePath.LastIndexOf(@"\") + 1)..];
                 reg = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
-                if (reg == null)
-                    reg = Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run");
+                reg ??= Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run");
                 if (isAutoRun)
                     reg.SetValue(name, filePath);
                 else
                     reg.SetValue(name, false);
-              
+
             }
-            catch(Exception ex)
+            catch (Exception)
             {
                 throw;
             }
             finally
             {
-                if (reg != null)
-                    reg.Close();
+                reg?.Close();
             }
         }
         /// <summary>
@@ -139,10 +132,7 @@ namespace SuperFramework.SuperRegistry
         public static bool SetAutoRun(bool started, string exeName, string path)
         {
             RegistryKey key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);//打开注册表子项
-            if (key == null)//如果该项不存在的话，则创建该子项
-            {
-                key = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run");
-            }
+            key ??= Registry.LocalMachine.CreateSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run");
             if (started == true)
             {
                 try
@@ -169,9 +159,7 @@ namespace SuperFramework.SuperRegistry
             }
             return true;
         }
-        #endregion
 
-        #region 程序是否自动运行
         /// <summary>
         /// 程序是否自动运行
         /// </summary>
@@ -183,11 +171,11 @@ namespace SuperFramework.SuperRegistry
             RegistryKey reg = null;
             try
             {
-               
+
                 string name = filePath.Substring(filePath.LastIndexOf(@"\") + 1);
                 reg = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
                 if (reg == null)
-                   return false;
+                    return false;
                 object obj = reg.GetValue(name);
                 if (obj == null)
                     return false;
@@ -205,8 +193,7 @@ namespace SuperFramework.SuperRegistry
             }
             finally
             {
-                if (reg != null)
-                    reg.Close();
+                reg?.Close();
             }
         }
         #endregion
@@ -258,9 +245,6 @@ namespace SuperFramework.SuperRegistry
             /// </summary>
             NoNetworkConnections
 
-
-
-
         }
         /// <summary>
         /// 是否屏蔽开始菜单中的功能（重启起作用）
@@ -268,23 +252,23 @@ namespace SuperFramework.SuperRegistry
         /// <param name="m">开始菜单功能</param>
         /// <param name="isShield">是否屏蔽</param>
         /// <returns>true：成功，false：失败</returns>
-        public static bool ShieldStartMenu(StartMenu m, bool isShield = true)
+        public static bool EnableStartMenu(StartMenu m, bool isShield = true)
         {
             try
             {
-                RegistryKey software = Registry.CurrentUser.OpenSubKey("SOFTWARE", true);
-                RegistryKey pcdesk = software.CreateSubKey("Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer");
-                if (isShield)
-                    pcdesk.SetValue(m.ToString(), 1);
-                else
-                    pcdesk.SetValue(m.ToString(), 0);
+                using (RegistryKey software = Registry.CurrentUser.OpenSubKey("SOFTWARE", true))
+                {
+                    using RegistryKey pcdesk = software.CreateSubKey("Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer");
+                    pcdesk.SetValue(m.ToString(), isShield ? 1 : 0);
+                }
+
                 return true;
             }
             catch { return false; }
         }
         #endregion
 
-        #region  创建快捷启动 
+        #region  快捷启动 
         /// <summary>   
         /// 创建快捷启动   
         /// </summary>   
@@ -292,15 +276,12 @@ namespace SuperFramework.SuperRegistry
         /// <param name="filePath">文件路径</param>   
         public static void CreateFastStart(string name, string filePath)
         {
-            RegistryKey reg = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths", true);
+            using RegistryKey reg = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths", true);
             RegistryKey key = reg.CreateSubKey(name);
             key.SetValue("", filePath, RegistryValueKind.String);
             string path = filePath.Substring(0, filePath.LastIndexOf(@"\") + 1);
             key.SetValue("Path", path, RegistryValueKind.String);
         }
-        #endregion
-
-        #region  检查快捷启动是否存在 
 
         /// <summary>   
         /// 检查快捷启动是否存在   
@@ -309,107 +290,70 @@ namespace SuperFramework.SuperRegistry
         /// <returns>true：成功，false：失败</returns>   
         public static bool ExistFastStart(string name)
         {
-            RegistryKey reg = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths");
-            string[] subKeys = reg.GetSubKeyNames();
-            foreach (string str in subKeys)
+            using (RegistryKey reg = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths"))
             {
-                if (str.ToLower().Equals(name.ToLower()))
-                    return true;
+                string[] subKeys = reg.GetSubKeyNames();
+                foreach (string str in subKeys)
+                {
+                    if (str.ToLower().Equals(name.ToLower()))
+                        return true;
+                }
             }
+
             return false;
         }
         #endregion
 
-        #region  解禁注册表 
-        /// <summary>
-        /// 解禁注册表
-        /// </summary>
-        /// <returns>true：成功，false：失败</returns>
-
-        public static bool EnableRegedit()
-        {
-            RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\policies\\system", true);//打开注册表子项
-            if (key == null)//如果该项不存在的话，则创建该子项
-            {
-                key = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\policies\\system");
-            }
-            try
-            {
-                key.SetValue("disableregistrytools", 0, RegistryValueKind.DWord);
-                key.Close();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        #endregion
-
-        #region  禁用注册表 
-        /// <summary>
-        /// 禁用注册表
-        /// </summary>
-        /// <returns>true：成功，false：失败</returns>
-
-        public static bool NotEnableRegedit()
-        {
-            RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\policies\\system", true);//打开注册表子项
-            if (key == null)//如果该项不存在的话，则创建该子项
-            {
-                key = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\policies\\system");
-            }
-            try
-            {
-                key.SetValue("disableregistrytools", 1, RegistryValueKind.DWord);
-                key.Close();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        #endregion
-
-        #region  注册控件 
         /// <summary>
         /// 注册控件
         /// </summary>
         /// <param name="dllIdValue">控件注册后对应的键值</param>
         /// <returns>true：成功，false：失败</returns>
-
         public static bool RegDll(string dllIdValue)
         {
             try
             {
                 RegistryKey key = Registry.ClassesRoot.OpenSubKey(@"CLSTD\" + dllIdValue, true);//打开注册表子项
-                if (key == null)//如果该项不存在的话，则创建该子项
-                {
-                    key = Registry.ClassesRoot.CreateSubKey(@"CLSTD\" + dllIdValue);
-                }
+                key ??= Registry.ClassesRoot.CreateSubKey(@"CLSTD\" + dllIdValue);
+                key.Close();
                 return true;
             }
             catch { return false; }
         }
-        #endregion
 
-        #region  解禁任务管理器 
+        /// <summary>
+        /// 解禁注册表
+        /// </summary>
+        /// <returns>true：成功，false：失败</returns>
+        public static bool EnableRegedit(bool isEnable)
+        {
+            RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\policies\\system", true);//打开注册表子项
+            key ??= Registry.LocalMachine.CreateSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\policies\\system");
+            try
+            {
+                key.SetValue("disableregistrytools", isEnable ? 0 : 1, RegistryValueKind.DWord);
+                key.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
         /// <summary>
         /// 解禁任务管理器
         /// </summary>
         /// <returns>true：成功，false：失败</returns>
 
-        public static bool EnableTaskmgr()
+        public static bool EnableTaskbar(bool isEnable)
         {
             RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\policies\\system", true);//打开注册表子项
-            if (key == null)//如果该项不存在的话，则创建该子项
-            {
-                key = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\policies\\system");
-            }
+            key ??= Registry.LocalMachine.CreateSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\policies\\system");
             try
             {
-                key.SetValue("disabletaskmgr", 0, RegistryValueKind.DWord);
+                key.SetValue("disabletaskmgr", isEnable ? 0 : 1, RegistryValueKind.DWord);
                 key.Close();
                 return true;
             }
@@ -418,88 +362,40 @@ namespace SuperFramework.SuperRegistry
                 return false;
             }
         }
-        #endregion
 
-        #region  禁用任务管理器 
-        /// <summary>
-        /// 禁用任务管理器
-        /// </summary>
-        /// <returns>true：成功，false：失败</returns>
-
-        public static bool NotEnableTaskmgr()
-        {
-            RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\policies\\system", true);//打开注册表子项
-            if (key == null)//如果该项不存在的话，则创建该子项
-            {
-                key = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\policies\\system");
-            }
-            try
-            {
-                key.SetValue("disabletaskmgr", 1, RegistryValueKind.DWord);
-                key.Close();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        #endregion
-
-        #region  通过注册表启用USB 
         /// <summary> 
         /// 通过注册表启用USB 
         /// </summary> 
         /// <returns>true：成功，false：失败</returns> 
-        public static bool RegToRunUSB()
+        public static bool EnableUSB(bool isOpen)
         {
             bool b;
             try
             {
-                RegistryKey regKey = Registry.LocalMachine; //读取注册列表HKEY_LOCAL_MACHINE 
-                string keyPath = @"SYSTEM\CurrentControlSet\Services\USBSTOR"; //USB 大容量存储驱动程序 
-                RegistryKey openKey = regKey.OpenSubKey(keyPath, true);
-                openKey.SetValue("Start", 3); //设置键值对（3）为开启USB（4）为关闭 
-                openKey.Close(); //关闭注册列表读写流 
+                using (RegistryKey regKey = Registry.LocalMachine) //读取注册列表HKEY_LOCAL_MACHINE 
+                {
+                    string keyPath = @"SYSTEM\CurrentControlSet\Services\USBSTOR"; //USB 大容量存储驱动程序 
+                    RegistryKey openKey = regKey.OpenSubKey(keyPath, true);
+                    openKey.SetValue("Start", isOpen ? 3 : 4); //设置键值对（3）为开启USB（4）为关闭 
+                    openKey.Close(); //关闭注册列表读写流 
+                }
+
                 b = true;
             }
             catch
             {
-                throw;
+                b = false;
             }
             return b;
         }
-        #endregion
 
-        #region  通过注册表禁用USB 
-        /// <summary> 
-        /// 通过注册表禁用USB 
-        /// </summary> 
-        /// <returns>true：成功，false：失败</returns> 
-        public static bool RegToStopUSB()
-        {
-            try
-            {
-                RegistryKey regKey = Registry.LocalMachine;
-                string keyPath = @"SYSTEM\CurrentControlSet\Services\USBSTOR";
-                RegistryKey openKey = regKey.OpenSubKey(keyPath, true);
-                openKey.SetValue("Start", 4);
-                openKey.Close();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
-        #endregion
 
         #region  获取注册表保存的最后一次窗口位置 
         /// <summary>
         /// 获取注册表保存的最后一次窗口位置，在第一次加载窗体的时候注册表里是读取不到值的，返回null
         /// </summary>
         /// <returns>返回窗口位置坐标</returns>
-        public static Point GetStartFormLocation()
+        public static Point GetStartLocation()
         {
             RegistryKey regisOne;
             RegistryKey regisTwo;//声明注册表对象
@@ -507,24 +403,21 @@ namespace SuperFramework.SuperRegistry
             try
             {
                 regisTwo = regisOne.CreateSubKey("Software\\MySoft");//在注册表中创建子项
-                return new Point(Convert.ToInt16(regisOne.GetValue("不良帥one")), Convert.ToInt16(regisTwo.GetValue("不良帥two")));//设置窗体的显示位置
+                return new Point(Convert.ToInt16(regisOne.GetValue("MySoftOneP")), Convert.ToInt16(regisTwo.GetValue("MySoftTwoP")));//设置窗体的显示位置
             }
             catch (Exception ex)
             {
 
-                new Exception(ex.Message);
             }
             return new Point(0, 0);
         }
-        #endregion 
 
-        #region  注册窗体关闭时的最后位置 
         /// <summary>
         /// 注册窗体关闭时的最后位置
         /// </summary>
         /// <param name="p">窗体坐标</param>
         /// <returns>true：成功，false：失败</returns>
-        public static bool SetEndFormLocation(Point p)
+        public static bool SetEndLocation(Point p)
         {
             bool status = false;
             RegistryKey regisOne, regisTwo;//声明注册表对象
@@ -532,13 +425,12 @@ namespace SuperFramework.SuperRegistry
             regisTwo = regisOne.CreateSubKey("Software\\MySoft");//在注册表中创建子项
             try
             {
-                regisOne.SetValue("不良帥one", p.X.ToString());//将窗体当前X坐标写入注册表
-                regisTwo.SetValue("不良帥two", p.Y.ToString());//将当前窗体的Y坐标写入注册表
+                regisOne.SetValue("MySoftOneP", p.X.ToString());//将窗体当前X坐标写入注册表
+                regisTwo.SetValue("MySoftTwoP", p.Y.ToString());//将当前窗体的Y坐标写入注册表
                 status = true;
             }
             catch (Exception ex)
             {
-                new Exception(ex.Message);
             }
             return status;
         }
@@ -600,7 +492,7 @@ namespace SuperFramework.SuperRegistry
             /// <summary>
             /// App 名称
             /// </summary>
-            public string Name {get;set;}
+            public string Name { get; set; }
             /// <summary>
             /// App 发布者名称
             /// </summary>
@@ -627,7 +519,7 @@ namespace SuperFramework.SuperRegistry
             public string ReleaseType { get; set; }
 
         }
-      
+
         private static string CheckedIsNull(object objectInput)
         {
             if (objectInput == null)
@@ -646,30 +538,27 @@ namespace SuperFramework.SuperRegistry
         /// </summary>
         /// <param name="rootKeyType">根节点类型</param>
         /// <returns>注册表项对象</returns>
-        public static RegistryKey GetRootRegisterKey(WRegisterRootKeyType rootKeyType)
+        public static RegistryKey GetRootRegisterKey(RootKeyType rootKeyType)
         {
-            switch (rootKeyType)
+            return rootKeyType switch
             {
-                case WRegisterRootKeyType.HKEY_CLASSES_ROOT:
-                    return Registry.ClassesRoot;
-                case WRegisterRootKeyType.HKEY_CURRENT_CONFIG:
-                    return Registry.CurrentConfig;
-                case WRegisterRootKeyType.HKEY_CURRENT_USER:
-                    return Registry.CurrentUser;
-                case WRegisterRootKeyType.HKEY_LOCAL_MACHINE:
-                    return Registry.LocalMachine;
-                default:
-                    throw new Exception("注册表类型未定义！");
-            }
+                RootKeyType.HKEY_CLASSES_ROOT => Registry.ClassesRoot,
+                RootKeyType.HKEY_CURRENT_CONFIG => Registry.CurrentConfig,
+                RootKeyType.HKEY_CURRENT_USER => Registry.CurrentUser,
+                RootKeyType.HKEY_LOCAL_MACHINE => Registry.LocalMachine,
+                RootKeyType.HKEY_USERS => Registry.Users,
+                _ => throw new Exception("注册表类型未定义！"),
+            };
         }
 
+        #region 在指定注册表项下创建注册表子项
         /// <summary> 
         /// 在指定注册表项下创建注册表子项
         /// </summary>
         /// <param name="fatherKey">父注册表项</param>
         /// <param name="keyPath">注册表路径</param>
         /// <returns>注册表项对象</returns>
-        public static RegistryKey CreateRegistryKey(RegistryKey fatherKey, string keyPath)
+        internal static RegistryKey CreateRegistryKey(RegistryKey fatherKey, string keyPath)
         {
             RegistryKey returnKey = fatherKey.CreateSubKey(keyPath);
             return returnKey;
@@ -696,7 +585,7 @@ namespace SuperFramework.SuperRegistry
         /// <param name="rootKeyType">注册表根节点项类型</param>
         /// <param name="keyPath">注册表路径</param>
         /// <returns>注册表项对象</returns>
-        public static RegistryKey CreateRegistryKey(WRegisterRootKeyType rootKeyType, string keyPath)
+        internal static RegistryKey CreateRegistryKey(RootKeyType rootKeyType, string keyPath)
         {
             RegistryKey rootKey = GetRootRegisterKey(rootKeyType);
             return CreateRegistryKey(rootKey, keyPath);
@@ -710,12 +599,13 @@ namespace SuperFramework.SuperRegistry
         /// <param name="keyValueName">要添加的注册表项值名称</param>
         /// <param name="keyValue">要添加的注册表项值</param>
         /// <returns>注册表项对象</returns>
-        public static RegistryKey CreateRegistryKey(WRegisterRootKeyType rootKeyType, string keyPath, string keyValueName, string keyValue)
+        public static RegistryKey CreateRegistryKey(RootKeyType rootKeyType, string keyPath, string keyValueName, string keyValue)
         {
             RegistryKey returnKey = CreateRegistryKey(rootKeyType, keyPath);
             returnKey.SetValue(keyValueName, keyValue);
             return returnKey;
         }
+        #endregion
 
         /// <summary> 
         /// 删除注册表子项
@@ -723,7 +613,7 @@ namespace SuperFramework.SuperRegistry
         /// <param name="rootKeyType">注册表根节点项类型</param>
         /// <param name="keyPath">注册表路径</param>
         /// <returns>true：成功，false：失败</returns>
-        public static bool DeleteRegistryKey(WRegisterRootKeyType rootKeyType, string keyPath, string keyName)
+        public static bool DeleteRegistryKey(RootKeyType rootKeyType, string keyPath, string keyName)
         {
             RegistryKey rootKey = GetRootRegisterKey(rootKeyType);
             RegistryKey deleteKey = rootKey.OpenSubKey(keyPath, true);
@@ -741,7 +631,7 @@ namespace SuperFramework.SuperRegistry
         /// <param name="rootKeyType">注册表根节点项类型</param>
         /// <param name="keyPath">注册表路径</param>
         /// <returns>注册表项对象</returns>
-        public static RegistryKey GetRegistryKey(WRegisterRootKeyType rootKeyType, string keyPath)
+        public static RegistryKey GetRegistryKey(RootKeyType rootKeyType, string keyPath)
         {
             RegistryKey rootKey = GetRootRegisterKey(rootKeyType);
             return rootKey.OpenSubKey(keyPath);
@@ -754,7 +644,7 @@ namespace SuperFramework.SuperRegistry
         /// <param name="keyPath">注册表路径</param>
         /// <param name="keyName">要获得值的注册表值名称</param>
         /// <returns>null：指定项不存在</returns>
-        public static string GetRegistryValue(WRegisterRootKeyType rootKeyType, string keyPath, string keyName)
+        public static string GetRegistryValue(RootKeyType rootKeyType, string keyPath, string keyName)
         {
             RegistryKey key = GetRegistryKey(rootKeyType, keyPath);
             if (IsKeyHaveValue(key, keyName))
@@ -762,18 +652,6 @@ namespace SuperFramework.SuperRegistry
                 return key.GetValue(keyName).ToString();
             }
             return null;
-        }
-
-        /// <summary> 设置注册表项值
-        /// </summary>
-        /// <param name="key">注册表项</param>
-        /// <param name="keyValueName">值名称</param>
-        /// <param name="keyValue">值</param>
-        /// <returns></returns>
-        public static bool SetRegistryValue(RegistryKey key, string keyValueName, string keyValue)
-        {
-            key.SetValue(keyValueName, keyValue);
-            return true;
         }
 
         /// <summary> 
@@ -784,7 +662,7 @@ namespace SuperFramework.SuperRegistry
         /// <param name="keyValueName">值名称</param>
         /// <param name="keyValue">值</param>
         /// <returns>true：成功，false：失败</returns>
-        public static bool SetRegistryValue(WRegisterRootKeyType rootKeyType, string keyPath, string keyValueName, string keyValue)
+        public static bool SetRegistryValue(RootKeyType rootKeyType, string keyPath, string keyValueName, string keyValue)
         {
             RegistryKey key = GetRegistryKey(rootKeyType, keyPath);
             key.SetValue(keyValueName, keyValue);
@@ -814,15 +692,10 @@ namespace SuperFramework.SuperRegistry
         /// <param name="keyPath">注册表路径</param>
         /// <param name="keyValueName">值名称</param>
         /// <returns>true：成功，false：失败</returns>
-        public static bool DeleteRegistryValue(WRegisterRootKeyType rootKeyType, string keyPath, string keyValueName)
+        public static bool DeleteRegistryValue(RootKeyType rootKeyType, string keyPath, string keyValueName)
         {
             RegistryKey key = GetRegistryKey(rootKeyType, keyPath);
-            if (IsKeyHaveValue(key, keyValueName))
-            {
-                key.DeleteValue(keyValueName);
-                return true;
-            }
-            return false;
+            return DeleteRegistryValue(key, keyValueName);
         }
 
         /// <summary> 
@@ -871,12 +744,12 @@ namespace SuperFramework.SuperRegistry
         public static string GetKeyNameByPath(string keyPath)
         {
             int keyIndex = keyPath.LastIndexOf("/");
-            return keyPath.Substring(keyIndex + 1);
+            return keyPath[(keyIndex + 1)..];
         }
         /// <summary> 
         /// 注册表根节点类型
         /// </summary>
-        public enum WRegisterRootKeyType
+        public enum RootKeyType
         {
             HKEY_CLASSES_ROOT = 0,
             HKEY_CURRENT_USER = 1,

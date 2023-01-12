@@ -191,7 +191,7 @@ namespace SuperFramework.SuperWindows
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(obj, i);
-                if (child is T t && (t.Name == elementName) || (string.IsNullOrEmpty(elementName)))
+                if (child is T t && (t.Name == elementName) || string.IsNullOrEmpty(elementName))
                     return (T)child;
                 else
                 {
@@ -213,7 +213,7 @@ namespace SuperFramework.SuperWindows
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(obj, i);
-                if (child is T t && (t.Name == elementName) || (string.IsNullOrEmpty(elementName)))
+                if (child is T t && (t.Name == elementName) || string.IsNullOrEmpty(elementName))
                     childList.Add((T)child);
                 else
                 {

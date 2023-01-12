@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Versioning;
 using System.ServiceProcess;
 using System.Text.RegularExpressions;
 namespace SuperFramework
@@ -10,149 +11,150 @@ namespace SuperFramework
     /// <summary>
     /// 服务操作方法集合
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public class ServiceHelper
     {
-//        #region  安装服务，非InstallUtil.exe方式。 
-//        /// <summary>
-//        /// 安装服务，非InstallUtil.exe方式。
-//        /// </summary>
-//        /// <param name="serviceName">服务名称</param>
-//        /// <returns>成功返回true，失败返回false</returns>
-//        public static bool InstallService(string serviceName)
-//        {
-//            string[] args = { "HP.Travel_Mail_Service.exe" };//要安装的服务文件（就是用 InstallUtil.exe 工具安装时的参数）
-//            ServiceController svcCtrl = new ServiceController(serviceName);
-//            if (!ServiceExist(serviceName))
-//            {
-//                try
-//                {
-//                    System.Configuration.Install.ManagedInstallerClass.InstallHelper(args);
-//                    return true;
-//                }
-//                catch
-//                {
-//                    throw;
-//                }
-//            }
-//            else
-//            {
-//                return false;
-//            }
-//        }
-//        #endregion
+        //        #region  安装服务，非InstallUtil.exe方式。 
+        //        /// <summary>
+        //        /// 安装服务，非InstallUtil.exe方式。
+        //        /// </summary>
+        //        /// <param name="serviceName">服务名称</param>
+        //        /// <returns>成功返回true，失败返回false</returns>
+        //        public static bool InstallService(string serviceName)
+        //        {
+        //            string[] args = { "HP.Travel_Mail_Service.exe" };//要安装的服务文件（就是用 InstallUtil.exe 工具安装时的参数）
+        //            ServiceController svcCtrl = new ServiceController(serviceName);
+        //            if (!ServiceExist(serviceName))
+        //            {
+        //                try
+        //                {
+        //                    System.Configuration.Install.ManagedInstallerClass.InstallHelper(args);
+        //                    return true;
+        //                }
+        //                catch
+        //                {
+        //                    throw;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                return false;
+        //            }
+        //        }
+        //        #endregion
 
-//        #region  卸载服务，非InstallUtil.exe方式。 
-//        /// <summary>
-//        /// 卸载服务，非InstallUtil.exe方式。
-//        /// </summary>
-//        /// <param name="serviceName">服务名称</param>
-//        /// <returns>成功返回true，失败返回false</returns>
-//        public static bool UnInstallService(string serviceName)
-//        {
-//            try
-//            {
-//                if (ServiceExist(serviceName))
-//                {
-//                    //UnInstall Service  
-//                    System.Configuration.Install.AssemblyInstaller myAssemblyInstaller = new System.Configuration.Install.AssemblyInstaller();
-//                    myAssemblyInstaller.UseNewContext = true;
-//                    myAssemblyInstaller.Path = "HP.Travel_Mail_Service.exe";
-//                    myAssemblyInstaller.Uninstall(null);
-//                    myAssemblyInstaller.Dispose();
-//                    return true;
-//                }
-//                else
-//                {
-//                    return false;
-//                }
-//            }
-//            catch
-//            {
-//                throw;
-//            }
+        //        #region  卸载服务，非InstallUtil.exe方式。 
+        //        /// <summary>
+        //        /// 卸载服务，非InstallUtil.exe方式。
+        //        /// </summary>
+        //        /// <param name="serviceName">服务名称</param>
+        //        /// <returns>成功返回true，失败返回false</returns>
+        //        public static bool UnInstallService(string serviceName)
+        //        {
+        //            try
+        //            {
+        //                if (ServiceExist(serviceName))
+        //                {
+        //                    //UnInstall Service  
+        //                    System.Configuration.Install.AssemblyInstaller myAssemblyInstaller = new System.Configuration.Install.AssemblyInstaller();
+        //                    myAssemblyInstaller.UseNewContext = true;
+        //                    myAssemblyInstaller.Path = "HP.Travel_Mail_Service.exe";
+        //                    myAssemblyInstaller.Uninstall(null);
+        //                    myAssemblyInstaller.Dispose();
+        //                    return true;
+        //                }
+        //                else
+        //                {
+        //                    return false;
+        //                }
+        //            }
+        //            catch
+        //            {
+        //                throw;
+        //            }
 
-//        }
-//        #endregion
+        //        }
+        //        #endregion
 
-//        #region  安装服务 
-//        /// <summary>
-//        /// 安装服务
-//        /// </summary>
-//        /// <param name="filepath">指定服务文件路径</param>
-//        /// <param name="serviceName">服务名</param>
-//        public static void InstallService(string filepath, string serviceName)
-//        {
-//            try
-//            {
-//                IDictionary stateSaver = new Hashtable();
-//                ServiceController service = new ServiceController(serviceName);
-//                if (!ServiceExist(serviceName))
-//                {
-//                    //Install Service
-//                    AssemblyInstaller myAssemblyInstaller = new AssemblyInstaller() { UseNewContext = true, Path = filepath };
-//                    myAssemblyInstaller.Install(stateSaver);
-//                    myAssemblyInstaller.Commit(stateSaver);
-//                    myAssemblyInstaller.Dispose();
-//                    //--Start Service
-//                    service.Start();
-//                }
+        //        #region  安装服务 
+        //        /// <summary>
+        //        /// 安装服务
+        //        /// </summary>
+        //        /// <param name="filepath">指定服务文件路径</param>
+        //        /// <param name="serviceName">服务名</param>
+        //        public static void InstallService(string filepath, string serviceName)
+        //        {
+        //            try
+        //            {
+        //                IDictionary stateSaver = new Hashtable();
+        //                ServiceController service = new ServiceController(serviceName);
+        //                if (!ServiceExist(serviceName))
+        //                {
+        //                    //Install Service
+        //                    AssemblyInstaller myAssemblyInstaller = new AssemblyInstaller() { UseNewContext = true, Path = filepath };
+        //                    myAssemblyInstaller.Install(stateSaver);
+        //                    myAssemblyInstaller.Commit(stateSaver);
+        //                    myAssemblyInstaller.Dispose();
+        //                    //--Start Service
+        //                    service.Start();
+        //                }
 
-//                else
-//                    if (service.Status != ServiceControllerStatus.Running && service.Status != ServiceControllerStatus.StartPending)
-//                    service.Start();
-//            }
-//            catch
-//            {
-//                throw;
-//            }
-//        }
-//#if NET40_OR_GREATER
-//        /// <summary>
-//        /// 安装服务
-//        /// </summary>
-//        /// <param name="path">指定服务文件路径</param>
-//        /// <param name="serviceName">返回安装完成后的服务名</param>
-//        /// <returns>安装成功返回true，失败返回false</returns>
-//        public static bool InsertService(string path, ref string serviceName)
-//        {
-//            if (!File.Exists(path)) return false;
-//            serviceName = "";
-//            FileInfo insertFile = new FileInfo(path);
-//            IDictionary savedState = new Hashtable();
-//            try
-//            {
-//                //加载一个程序集，并运行其中的所有安装程序。
-//                AssemblyInstaller assemblyInstaller = new AssemblyInstaller(path, new string[] { string.Format("/LogFile={0}//{1}.log", insertFile.DirectoryName, insertFile.Name.Substring(0, insertFile.Name.Length - insertFile.Extension.Length)) }) { UseNewContext = true };
-//                assemblyInstaller.Install(savedState);
-//                assemblyInstaller.Commit(savedState);
-//                Type[] typeList = assemblyInstaller.Assembly.GetTypes();//获取安装程序集类型集合
-//                for (int i = 0; i != typeList.Length; i++)
-//                {
-//                    if (typeList[i].BaseType.FullName == "System.Configuration.Install.Installer")
-//                    {
-//                        //找到System.Configuration.Install.Installer 类型
-//                        object _InsertObject = System.Activator.CreateInstance(typeList[i]);//创建类型实列
-//                        FieldInfo[] _FieldList = typeList[i].GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
-//                        for (int z = 0; z != _FieldList.Length; z++)
-//                        {
-//                            if (_FieldList[z].FieldType.FullName == "System.ServiceProcess.ServiceInstaller")
-//                            {
-//                                object _ServiceInsert = _FieldList[z].GetValue(_InsertObject);
-//                                if (_ServiceInsert != null)
-//                                    serviceName = ((ServiceInstaller)_ServiceInsert).ServiceName;
-//                            }
-//                        }
-//                    }
-//                }
-//                return true;
-//            }
-//            catch
-//            {
-//                return false;
-//            }
-//        }
-//#endif
-//        #endregion
+        //                else
+        //                    if (service.Status != ServiceControllerStatus.Running && service.Status != ServiceControllerStatus.StartPending)
+        //                    service.Start();
+        //            }
+        //            catch
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //#if NET40_OR_GREATER
+        //        /// <summary>
+        //        /// 安装服务
+        //        /// </summary>
+        //        /// <param name="path">指定服务文件路径</param>
+        //        /// <param name="serviceName">返回安装完成后的服务名</param>
+        //        /// <returns>安装成功返回true，失败返回false</returns>
+        //        public static bool InsertService(string path, ref string serviceName)
+        //        {
+        //            if (!File.Exists(path)) return false;
+        //            serviceName = "";
+        //            FileInfo insertFile = new FileInfo(path);
+        //            IDictionary savedState = new Hashtable();
+        //            try
+        //            {
+        //                //加载一个程序集，并运行其中的所有安装程序。
+        //                AssemblyInstaller assemblyInstaller = new AssemblyInstaller(path, new string[] { string.Format("/LogFile={0}//{1}.log", insertFile.DirectoryName, insertFile.Name.Substring(0, insertFile.Name.Length - insertFile.Extension.Length)) }) { UseNewContext = true };
+        //                assemblyInstaller.Install(savedState);
+        //                assemblyInstaller.Commit(savedState);
+        //                Type[] typeList = assemblyInstaller.Assembly.GetTypes();//获取安装程序集类型集合
+        //                for (int i = 0; i != typeList.Length; i++)
+        //                {
+        //                    if (typeList[i].BaseType.FullName == "System.Configuration.Install.Installer")
+        //                    {
+        //                        //找到System.Configuration.Install.Installer 类型
+        //                        object _InsertObject = System.Activator.CreateInstance(typeList[i]);//创建类型实列
+        //                        FieldInfo[] _FieldList = typeList[i].GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
+        //                        for (int z = 0; z != _FieldList.Length; z++)
+        //                        {
+        //                            if (_FieldList[z].FieldType.FullName == "System.ServiceProcess.ServiceInstaller")
+        //                            {
+        //                                object _ServiceInsert = _FieldList[z].GetValue(_InsertObject);
+        //                                if (_ServiceInsert != null)
+        //                                    serviceName = ((ServiceInstaller)_ServiceInsert).ServiceName;
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //                return true;
+        //            }
+        //            catch
+        //            {
+        //                return false;
+        //            }
+        //        }
+        //#endif
+        //        #endregion
 
         //#region  卸载服务 
         ///// <summary>
@@ -396,7 +398,7 @@ namespace SuperFramework
         /// 获取系统所有服务对象
         /// </summary>
         /// <returns></returns>
-        public ArrayList GetAllsystemServices()
+        public static ArrayList GetAllSystemServices()
         {
             ArrayList arryServices = new();
             ServiceController[] services = ServiceController.GetServices();
@@ -411,7 +413,7 @@ namespace SuperFramework
         /// 获取所有服务名
         /// </summary>
         /// <returns>返回服务名集合</returns>
-        public List<string> GetAllServiceNames()
+        public static List<string> GetAllServiceNames()
         {
             List<string> listNames = new();
             ServiceController[] services = ServiceController.GetServices();

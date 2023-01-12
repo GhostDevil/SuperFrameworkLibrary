@@ -133,17 +133,13 @@ namespace SuperFramework
         {
             dpix = 0;
             dpiy = 0;
-            using (System.Management.ManagementClass mc = new("Win32_DesktopMonitor"))
-            {
-                using (System.Management.ManagementObjectCollection moc = mc.GetInstances())
-                {
+            using System.Management.ManagementClass mc = new("Win32_DesktopMonitor");
+            using System.Management.ManagementObjectCollection moc = mc.GetInstances();
 
-                    foreach (System.Management.ManagementObject each in moc)
-                    {
-                        dpix = int.Parse(each.Properties["PixelsPerXLogicalInch"].Value.ToString());
-                        dpiy = int.Parse(each.Properties["PixelsPerYLogicalInch"].Value.ToString());
-                    }
-                }
+            foreach (System.Management.ManagementObject each in moc)
+            {
+                dpix = int.Parse(each.Properties["PixelsPerXLogicalInch"].Value.ToString());
+                dpiy = int.Parse(each.Properties["PixelsPerYLogicalInch"].Value.ToString());
             }
         }
 

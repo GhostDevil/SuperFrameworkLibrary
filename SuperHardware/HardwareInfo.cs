@@ -9,6 +9,7 @@ using SuperFramework.WindowsAPI;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.Win32;
+using System.Runtime.Versioning;
 
 namespace SuperFramework.SuperHardware
 {
@@ -17,6 +18,7 @@ namespace SuperFramework.SuperHardware
     /// 作者:不良帥
     /// 描述:硬件属性辅助类
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public static class HardwareInfo
     {
         /// <summary>
@@ -63,22 +65,22 @@ namespace SuperFramework.SuperHardware
             currentOs = GetCurrentPlatform();
             switch (currentOs)
             {
-                case (Platform.Windows95):
-                case (Platform.Windows98):
-                case (Platform.WindowsCE):
-                case (Platform.WindowsNT351):
-                case (Platform.WindowsNT40):
+                case Platform.Windows95:
+                case Platform.Windows98:
+                case Platform.WindowsCE:
+                case Platform.WindowsNT351:
+                case Platform.WindowsNT40:
                 default:
                     throw new PlatformNotSupportedException(string.Format(ResourcesApi.Win32_CurrentPlatformNotSupport, currentOs.ToString()));
-                case (Platform.UnKnown):
+                case Platform.UnKnown:
                     throw new PlatformNotSupportedException(ResourcesApi.Win32_CurrentPlatformUnknown);
-                case (Platform.Windows982ndEdition):
-                case (Platform.WindowsME):
+                case Platform.Windows982ndEdition:
+                case Platform.WindowsME:
                     return GetHddInfo9X(0);
-                case (Platform.Windows2000):
-                case (Platform.WindowsXP):
-                case (Platform.Windows2003):
-                case (Platform.WindowsVista):
+                case Platform.Windows2000:
+                case Platform.WindowsXP:
+                case Platform.Windows2003:
+                case Platform.WindowsVista:
                     return GetHddInfoNT(0);
             }
         }
@@ -151,7 +153,7 @@ namespace SuperFramework.SuperHardware
             string type = "";
             foreach (ManagementObject obj in mc.GetInstances())
             {
-                foreach (ChassisTypesValues i in (short[])(obj["ChassisTypes"]))
+                foreach (ChassisTypesValues i in (short[])obj["ChassisTypes"])
                 {
                     switch (i)
                     {
@@ -218,7 +220,7 @@ namespace SuperFramework.SuperHardware
                 {
                     if ((bool)mo["IPEnabled"] == true)
                     {
-                        Array ar = (Array)(mo.Properties["IpAddress"].Value);
+                        Array ar = (Array)mo.Properties["IpAddress"].Value;
                         ip = ar.GetValue(0).ToString();
                         break;
                     }
@@ -266,15 +268,7 @@ namespace SuperFramework.SuperHardware
         {
             try
             {
-                //ManagementClass mc = new ManagementClass("Win32_ComputerSystem");
-                //ManagementObjectCollection moc = mc.GetInstances();
-                //string memory = "";
-                //foreach (ManagementObject mo in moc)
-                //    memory = mo["TotalPhysicalMemory"].ToString();
-                //mc.Dispose();
-                //moc.Dispose();
-                //mc = null;
-                //moc = null;
+
                 Microsoft.VisualBasic.Devices.ComputerInfo p = new();
                 return double.Parse((p.TotalPhysicalMemory / 1024 / 1024).ToString("#0.00"));
             }
@@ -288,31 +282,9 @@ namespace SuperFramework.SuperHardware
         {
             try
             {
-                //ManagementClass mc = new ManagementClass("Win32_ComputerSystem");
-                //ManagementObjectCollection moc = mc.GetInstances();
-                //string memory = "";
-                //foreach (ManagementObject mo in moc)
-                //{
-                //    string str = "";
-                //    foreach (var item in mo.Properties)
-                //    {
-                //        str += item.Name + ":" + item.Value + Environment.NewLine;
-                //    }
-                //    memory = mo["TotalMemory"].ToString();
-                //}
-                //mc.Dispose();
-                //moc.Dispose();
-                //mc = null;
-                //moc = null;
+
                 Microsoft.VisualBasic.Devices.ComputerInfo p = new();
-             //   Console.WriteLine("全部物理内存：{0}",
-             //ByteChangeToM(p.TotalPhysicalMemory) + "M");
-             //   Console.WriteLine("全部虚拟内存：{0}",
-             //       ByteChangeToM(p.TotalVirtualMemory) + "M");
-                //Console.WriteLine("可用物理内存：{0}",
-                //    ByteChangeToM(p.AvailablePhysicalMemory) + "M");
-                //Console.WriteLine("可用虚拟内存：{0}",
-                //    ByteChangeToM(p.AvailableVirtualMemory) + "M");
+            
                 return double.Parse((p.TotalVirtualMemory / 1024 / 1024).ToString("#0.00"));
             }
             catch (Exception) { return 0; }
@@ -480,17 +452,15 @@ namespace SuperFramework.SuperHardware
             List<string> rt = new();
             using (ManagementClass mc = new("Win32_DesktopMonitor"))
             {
-                using (ManagementObjectCollection moc = mc.GetInstances())
+                using ManagementObjectCollection moc = mc.GetInstances();
+                foreach (var o in moc)
                 {
-                    foreach (var o in moc)
-                    {
-                        var each = (ManagementObject)o;
-                        object obj = each.Properties["PNPDeviceID"].Value;
-                        if (obj == null)
-                            continue;
+                    var each = (ManagementObject)o;
+                    object obj = each.Properties["PNPDeviceID"].Value;
+                    if (obj == null)
+                        continue;
 
-                        rt.Add(each.Properties["PNPDeviceID"].Value.ToString());
-                    }
+                    rt.Add(each.Properties["PNPDeviceID"].Value.ToString());
                 }
             }
 
@@ -570,8 +540,8 @@ namespace SuperFramework.SuperHardware
                 LogicalDrives = Environment.GetLogicalDrives(),
                 Is64BitOperatingSystem = Environment.Is64BitOperatingSystem,
                 ProcessorCount = Environment.ProcessorCount,
-                SysStartTime = ComputerInfo.GetComputerStartTime(),
-                SysRunTime = ComputerInfo.GetComputerRunTime(),
+                //SysStartTime = ComputerInfo.GetComputerStartTime(),
+                //SysRunTime = ComputerInfo.GetComputerRunTime(),
                 SystemPageSize = Environment.SystemPageSize,
                 WorkingSet = Environment.WorkingSet,
                 CurrentDirectory = Environment.CurrentDirectory,
@@ -707,6 +677,7 @@ namespace SuperFramework.SuperHardware
             return info;
         }
         #endregion
+
         #region 获取声卡属性
         /// <summary>
         /// 获得声卡属性的方法

@@ -32,7 +32,7 @@ namespace SuperFramework.SuperNLogger
         {
             try
             {
-               return SuperConfig.Xml.XmlHelper.GetNodeInfoByNodeName(filePath, cfgKey);
+               return SuperNetCore.SuperConfig.Xml.XmlHelper.GetNodeInfoByNodeName(filePath, cfgKey);
                 //return ConfigurationManager.AppSettings[cfgKey].ToString();//appconfig
             }
             catch 

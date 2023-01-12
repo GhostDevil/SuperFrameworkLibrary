@@ -91,8 +91,8 @@ namespace SuperFramework.SuperMouseHelper.MouseKeyboardActivityMonitor
         {
             KeyboardHookStruct keyboardHookStruct = (KeyboardHookStruct)Marshal.PtrToStructure(lParam, typeof(KeyboardHookStruct));
             Keys keyData = (Keys)keyboardHookStruct.VirtualKeyCode;
-            bool isKeyDown = (wParam == Messages.WM_KEYDOWN || wParam == Messages.WM_SYSKEYDOWN);
-            bool isKeyUp = (wParam == Messages.WM_KEYUP || wParam == Messages.WM_SYSKEYUP);
+            bool isKeyDown = wParam == Messages.WM_KEYDOWN || wParam == Messages.WM_SYSKEYDOWN;
+            bool isKeyUp = wParam == Messages.WM_KEYUP || wParam == Messages.WM_SYSKEYUP;
             
             return new KeyEventArgsExt(keyData, keyboardHookStruct.Time, isKeyDown, isKeyUp);
         }

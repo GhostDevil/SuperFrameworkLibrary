@@ -14,6 +14,7 @@
  * 
  ******************************************/
 using SuperFramework.SuperNLogger.Asynchronous;
+using SuperNetCore;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -610,7 +611,7 @@ namespace SuperFramework.SuperNLogger
             for (int i = 1; i <= 3; i++)
             {
                 sf = st.GetFrame(i);
-                string ns = ((MemberInfo)(sf.GetMethod())).DeclaringType.Namespace;
+                string ns = ((MemberInfo)sf.GetMethod()).DeclaringType.Namespace;
                 //if (ns != null && ns != "AHCT.Log")
                 if (ns != "SuperFramework.SuperNLogger")
                 {
@@ -645,7 +646,7 @@ namespace SuperFramework.SuperNLogger
             for (int i = 1; i <= 3; i++)
             {
                 StackFrame sf = st.GetFrame(i);
-                ns = ((MemberInfo)(sf.GetMethod())).DeclaringType.Namespace;
+                ns = ((MemberInfo)sf.GetMethod()).DeclaringType.Namespace;
                 //if (ns != null && !ns.StartsWith("AHCT.Log"))
                 if (ns != "SuperFramework.SuperNLogger")
                 {

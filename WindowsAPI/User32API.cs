@@ -404,6 +404,7 @@ namespace SuperFramework.WindowsAPI
         /// <returns>父窗口的句柄。如窗口没有父，或遇到错误，则返回零。</returns>
         [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
         public static extern IntPtr GetParent(IntPtr hWnd);
+
         /// <summary>
         /// 该函数将指定的消息发送到一个或多个窗口。此函数为指定的窗口调用窗口程序，直到窗口程序处理完消息再返回。　
         /// </summary>
@@ -413,37 +414,7 @@ namespace SuperFramework.WindowsAPI
         /// <param name="lParam">指定附加的消息指定信息</param>
         /// <returns>由具体的消息决定</returns>
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern int SendMessage(IntPtr hWnd, int msg, int wParam, int lParam);
-        /// <summary>
-        /// 该函数将指定的消息发送到一个或多个窗口。此函数为指定的窗口调用窗口程序，直到窗口程序处理完消息再返回。　
-        /// </summary>
-        /// <param name="hWnd">其窗口程序将接收消息的窗口的句柄</param>
-        /// <param name="msg">指定被发送的消息</param>
-        /// <param name="wParam">指定附加的消息指定信息</param>
-        /// <param name="lParam">指定附加的消息指定信息</param>
-        /// <returns>由具体的消息决定</returns>
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern int SendMessage(IntPtr hWnd, int msg, IntPtr wParam, int lParam);
-        /// <summary>
-        /// 该函数将指定的消息发送到一个或多个窗口。此函数为指定的窗口调用窗口程序，直到窗口程序处理完消息再返回。　
-        /// </summary>
-        /// <param name="hWnd">其窗口程序将接收消息的窗口的句柄</param>
-        /// <param name="msg">指定被发送的消息</param>
-        /// <param name="wParam">指定附加的消息指定信息</param>
-        /// <param name="lParam">指定附加的消息指定信息</param>
-        /// <returns>由具体的消息决定</returns>
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern int SendMessage(IntPtr hWnd, int msg, int wParam, StringBuilder lParam);
-        /// <summary>
-        /// 该函数将指定的消息发送到一个或多个窗口。此函数为指定的窗口调用窗口程序，直到窗口程序处理完消息再返回。　
-        /// </summary>
-        /// <param name="hWnd">其窗口程序将接收消息的窗口的句柄</param>
-        /// <param name="msg">指定被发送的消息</param>
-        /// <param name="wParam">指定附加的消息指定信息</param>
-        /// <param name="lParam">指定附加的消息指定信息</param>
-        /// <returns>由具体的消息决定</returns>
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern int SendMessage(IntPtr hWnd, int msg, int wParam, string lParam);
+        public static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, int lParam);
         /// <summary>
         /// 该函数将指定的消息发送到一个或多个窗口。此函数为指定的窗口调用窗口程序，直到窗口程序处理完消息再返回。　
         /// </summary>
@@ -453,11 +424,11 @@ namespace SuperFramework.WindowsAPI
         /// <param name="lParam">指定附加的消息指定信息</param>
         /// <returns>由具体的消息决定</returns>
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern bool SendMessage(IntPtr hwnd, int msg, int wParam, ref IntPtr lParam);
+        public static extern IntPtr SendMessage(IntPtr hwnd, int msg, IntPtr wParam, ref IntPtr lParam);
         [DllImport("User32.dll", EntryPoint = "SendMessage")]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, ref COPYDATASTRUCT lParam);
+        public static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, ref COPYDATASTRUCT lParam);
         [DllImport("User32.dll", EntryPoint = "SendMessage")]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, COPYDATASTRUCT lParam);
+        public static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, COPYDATASTRUCT lParam);
         /// <summary>
         /// 该函数将指定的消息发送到一个或多个窗口。此函数为指定的窗口调用窗口程序，直到窗口程序处理完消息再返回。　
         /// </summary>
@@ -467,39 +438,8 @@ namespace SuperFramework.WindowsAPI
         /// <param name="lParam">通常是一个指向内存中数据的指针</param>
         /// <returns>由具体的消息决定</returns>
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, IntPtr lParam);
-        [DllImport("user32.dll")]
-        private static extern int SendMessage(IntPtr hWnd, int Msg, uint wParam, uint lParam);
-        /// <summary>
-        /// 该函数将一个消息放入（寄送）到与指定窗口创建的线程相联系消息队列里
-        /// </summary>
-        /// <param name="hWnd">信息发往的窗口的句</param>
-        /// <param name="msg">消息ID</param>
-        /// <param name="wParam">参数1</param>
-        /// <param name="lParam">参数2</param>
-        /// <returns>由具体的消息决定</returns>
-        [DllImport("user32.dll", EntryPoint = "PostMessage", CharSet = CharSet.Auto)]
-        public static extern IntPtr PostMessage(IntPtr hWnd, int msg, int wParam, int lParam);
-        /// <summary>
-        /// 该函数将一个消息放入（寄送）到与指定窗口创建的线程相联系消息队列里
-        /// </summary>
-        /// <param name="hWnd">信息发往的窗口的句</param>
-        /// <param name="msg">消息ID</param>
-        /// <param name="wParam">参数1</param>
-        /// <param name="lParam">参数2</param>
-        /// <returns>由具体的消息决定</returns>
-        [DllImport("user32.dll", EntryPoint = "PostMessage", CharSet = CharSet.Auto)]
-        public static extern IntPtr PostMessage(IntPtr hWnd, int msg, IntPtr wParam, int lParam);
-        /// <summary>
-        /// 该函数将一个消息放入（寄送）到与指定窗口创建的线程相联系消息队列里
-        /// </summary>
-        /// <param name="hWnd">信息发往的窗口的句</param>
-        /// <param name="msg">消息ID</param>
-        /// <param name="wParam">参数1</param>
-        /// <param name="lParam">参数2</param>
-        /// <returns>由具体的消息决定</returns>
-        [DllImport("user32.dll", EntryPoint = "PostMessage", CharSet = CharSet.Auto)]
-        public static extern IntPtr PostMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+        public static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+
         /// <summary>
         /// 该函数将一个消息放入（寄送）到与指定窗口创建的线程相联系消息队列里
         /// </summary>
@@ -512,17 +452,6 @@ namespace SuperFramework.WindowsAPI
         public static extern IntPtr PostMessage(IntPtr hWnd, int msg, IntPtr wParam, ref IntPtr lParam);
 
 
-        [DllImport("user32.dll", EntryPoint = "PostMessage")]
-        public static extern bool PostMessage(IntPtr hWnd, int Msg, uint wParam, uint lParam);
-        //public static extern void SendMessage(IntPtr hWnd, int msg, int wParam, ref RECT lParam);
-        //public static extern int SendMessage(IntPtr hWnd, int msg, int wParam, ref POINT lParam);
-        //public static extern void SendMessage(IntPtr hWnd, int msg, int wParam, ref TBBUTTON lParam);
-        //public static extern void SendMessage(IntPtr hWnd, int msg, int wParam, ref TBBUTTONINFO lParam);
-        //public static extern int SendMessage(IntPtr hWnd, int msg, int wParam, ref REBARBANDINFO lParam);
-        //public static extern void SendMessage(IntPtr hWnd, int msg, int wParam, ref TVITEM lParam);
-        //public static extern void SendMessage(IntPtr hWnd, int msg, int wParam, ref LVITEM lParam);
-        //public static extern void SendMessage(IntPtr hWnd, int msg, int wParam, ref HDITEM lParam);
-        //public static extern void SendMessage(IntPtr hWnd, int msg, int wParam, ref HD_HITTESTINFO hti);
 
         /// <summary>
         /// 取得指定窗口的系统菜单的句柄。
@@ -884,7 +813,7 @@ namespace SuperFramework.WindowsAPI
                 cdata.dwData = (IntPtr)100;
                 cdata.lpData = strSent;
                 cdata.cData = len + 1;
-                SendMessage(WINDOW_HANDLE, NativeConst.WM_COPYDATA, 0, ref cdata);
+                SendMessage(WINDOW_HANDLE, NativeConst.WM_COPYDATA,    (IntPtr)0, ref cdata);
             }
         }
 

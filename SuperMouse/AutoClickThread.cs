@@ -29,8 +29,7 @@ namespace SuperFramework.SuperMouseHelper
         //停止
         public static void Stop()
         {
-            if (cts != null)
-                cts.Cancel();
+            cts?.Cancel();
         }
 
         //执行

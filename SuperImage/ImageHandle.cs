@@ -324,7 +324,7 @@ namespace SuperFramework.SuperImage
         /// <returns>灰度化颜色</returns>
         public static Color Gray(Color c)
         {
-            int rgb = Convert.ToInt32((double)(((0.3 * c.R) + (0.59 * c.G)) + (0.11 * c.B)));
+            int rgb = Convert.ToInt32((double)((0.3 * c.R) + (0.59 * c.G) + (0.11 * c.B)));
             return Color.FromArgb(rgb, rgb, rgb);
         }
         #endregion

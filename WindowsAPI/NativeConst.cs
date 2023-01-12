@@ -167,8 +167,8 @@ namespace SuperFramework.WindowsAPI
         public const long WS_EX_NOINHERITLAYOUT = 0x00100000;
         public const long WS_EX_NOPARENTNOTIFY = 0x00000004;
         public const long WS_EX_NOREDIRECTIONBITMAP = 0x00200000;
-        public const long WS_EX_OVERLAPPEDWINDOW = (WS_EX_WINDOWEDGE | WS_EX_CLIENTEDGE);
-        public const long WS_EX_PALETTEWINDOW = (WS_EX_WINDOWEDGE | WS_EX_TOOLWINDOW | WS_EX_TOPMOST);
+        public const long WS_EX_OVERLAPPEDWINDOW = WS_EX_WINDOWEDGE | WS_EX_CLIENTEDGE;
+        public const long WS_EX_PALETTEWINDOW = WS_EX_WINDOWEDGE | WS_EX_TOOLWINDOW | WS_EX_TOPMOST;
         public const long WS_EX_RIGHT = 0x00001000;
         public const long WS_EX_RIGHTSCROLLBAR = 0x00000000;
         public const long WS_EX_RTLREADING = 0x00002000;
@@ -194,15 +194,15 @@ namespace SuperFramework.WindowsAPI
         public const long WS_MINIMIZE = 0x20000000;
         public const long WS_MINIMIZEBOX = 0x00020000;
         public const long WS_OVERLAPPED = 0x00000000;
-        public const long WS_OVERLAPPEDWINDOW = (WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
+        public const long WS_OVERLAPPEDWINDOW = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
         public const long WS_POPUP = 0x80000000;
-        public const long WS_POPUPWINDOW = (WS_POPUP | WS_BORDER | WS_SYSMENU);
+        public const long WS_POPUPWINDOW = WS_POPUP | WS_BORDER | WS_SYSMENU;
         public const long WS_SIZEBOX = 0x00040000;
         public const long WS_SYSMENU = 0x00080000;
         public const long WS_TABSTOP = 0x00010000;
         public const long WS_THICKFRAME = 0x00040000;
         public const long WS_TILED = 0x00000000;
-        public const long WS_TILEDWINDOW = (WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
+        public const long WS_TILEDWINDOW = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
         public const long WS_VISIBLE = 0x10000000;
         public const long WS_VSCROLL = 0x00200000;
 

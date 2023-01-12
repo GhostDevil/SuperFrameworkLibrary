@@ -26,19 +26,19 @@ namespace SuperFramework.WindowsAPI
             Platform pt;
             switch(os.Platform)
             {
-                case (PlatformID.Win32Windows): // Win95, Win98 or Me
+                case PlatformID.Win32Windows: // Win95, Win98 or Me
                     switch(os.Version.Minor)
                     {
-                        case (0): // 95
+                        case 0: // 95
                             pt = Platform.Windows95;
                             break;
-                        case (10): // 98
+                        case 10: // 98
                             if(os.Version.Revision.ToString() == "2222A")
                                 pt = Platform.Windows982ndEdition;
                             else
                                 pt = Platform.Windows98;
                             break;
-                        case (90): // winme
+                        case 90: // winme
                             pt = Platform.WindowsME;
                             break;
                         default: // Unknown
@@ -46,16 +46,16 @@ namespace SuperFramework.WindowsAPI
                             break;
                     }
                     break;
-                case (PlatformID.Win32NT): //Win2k or Xp or 2003
+                case PlatformID.Win32NT: //Win2k or Xp or 2003
                     switch(os.Version.Major)
                     {
-                        case (3):
+                        case 3:
                             pt = Platform.WindowsNT351;
                             break;
-                        case (4):
+                        case 4:
                             pt = Platform.WindowsNT40;
                             break;
-                        case (5):
+                        case 5:
                             if(os.Version.Minor == 0)
                                 pt = Platform.Windows2000;
                             else if(os.Version.Minor == 1)
@@ -65,7 +65,7 @@ namespace SuperFramework.WindowsAPI
                             else
                                 pt = Platform.UnKnown;
                             break;
-                        case (6):
+                        case 6:
                             pt = Platform.WindowsVista;
                             break;
                         default:
@@ -73,11 +73,11 @@ namespace SuperFramework.WindowsAPI
                             break;
                     }
                     break;
-                case (PlatformID.WinCE): // WinCE
+                case PlatformID.WinCE: // WinCE
                     pt = Platform.WindowsCE;
                     break;
-                case (PlatformID.Win32S):
-                case (PlatformID.Unix):
+                case PlatformID.Win32S:
+                case PlatformID.Unix:
                 default:
                     pt = Platform.UnKnown;
                     break;

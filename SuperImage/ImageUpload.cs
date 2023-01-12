@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
-using static SuperFramework.SuperImage.ImageClasses;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Runtime.Versioning;
 using static SuperFramework.SuperImage.ImageEnum;
+using static SuperFramework.SuperImage.ImageUpload.ImageClasses;
 
 //调用
 //UploadImage ui = new UploadImage();
 ///***可选参数***/
-//ui.SetWordWater = "哈哈";//文字水印
+//ui.SetWordWater = "水印";//文字水印
 //// ui.SetPicWater = Server.MapPath("2.png");//图片水印(图片和文字都赋值图片有效)
 //ui.SetPositionWater = 4;//水印图片的位置 0居中、1左上角、2右上角、3左下角、4右下角
 //ui.SetSmallImgHeight = "110,40,20";//设置缩略图可以多个
@@ -37,6 +39,7 @@ namespace SuperFramework.SuperImage
     /// 作 者:不良帥
     /// 描 述:图片上传类、支持水印、缩略图
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public class ImageUpload
     {
         #region 属性
@@ -129,10 +132,10 @@ namespace SuperFramework.SuperImage
         /// <returns>剪裁区域尺寸</returns>
         public Size CutRegion(int nWidth, int nHeight, Image img)
         {
-            double nw = (double)nWidth;
-            double nh = (double)nHeight;
-            double pw = (double)img.Width;
-            double ph = (double)img.Height;
+            double nw = nWidth;
+            double nh = nHeight;
+            double pw = img.Width;
+            double ph = img.Height;
             double width;
             double height;
             if (nw / nh > pw / ph)
@@ -177,12 +180,12 @@ namespace SuperFramework.SuperImage
             else if ((sw / sh) > (mw / mh))
             {
                 w = nWidth;
-                h = (w * sh) / sw;
+                h = w * sh / sw;
             }
             else
             {
                 h = nHeight;
-                w = (h * sw) / sh;
+                w = h * sw / sh;
             }
             return new Size(Convert.ToInt32(w), Convert.ToInt32(h));
         }
@@ -358,7 +361,7 @@ namespace SuperFramework.SuperImage
                     towidth = img.Width * nHeight / img.Height;
                     break;
                 case CutMode.CutNo: //缩放不剪裁
-                    int maxSize = (nWidth >= nHeight ? nWidth : nHeight);
+                    int maxSize = nWidth >= nHeight ? nWidth : nHeight;
                     if (img.Width >= img.Height)
                     {
                         towidth = maxSize;
@@ -478,9 +481,9 @@ namespace SuperFramework.SuperImage
             //从图片底部算起预留了5%的空间
             int yPixlesFromBottom = (int)(nHeight * .08);
             //现在使用版权信息字符串的高度来确定要绘制的图像的字符串的y坐标
-            float yPosFromBottom = ((nHeight - yPixlesFromBottom) - (crSize.Height / 2));
+            float yPosFromBottom = nHeight - yPixlesFromBottom - (crSize.Height / 2);
             //计算x坐标
-            float xCenterOfImg = (nWidth / 2);
+            float xCenterOfImg = nWidth / 2;
             //把文本布局设置为居中
             StringFormat StrFormat = new()
             {
@@ -586,18 +589,18 @@ namespace SuperFramework.SuperImage
             }
             else if (SetPositionWater == 2)
             {
-                nx = (nWidth - pngSize.Width) - padding;
+                nx = nWidth - pngSize.Width - padding;
                 ny = padding;
             }
             else if (SetPositionWater == 3)
             {
                 nx = padding;
-                ny = (nHeight - pngSize.Height) - padding;
+                ny = nHeight - pngSize.Height - padding;
             }
             else
             {
-                nx = (nWidth - pngSize.Width) - padding;
-                ny = (nHeight - pngSize.Height) - padding;
+                nx = nWidth - pngSize.Width - padding;
+                ny = nHeight - pngSize.Height - padding;
             }
             g.DrawImage(img, new Rectangle(nx, ny, pngSize.Width, pngSize.Height),
                 0, 0, img.Width, img.Height, GraphicsUnit.Pixel);
@@ -739,5 +742,126 @@ namespace SuperFramework.SuperImage
             rm.Message = message;
         }
         #endregion
+
+        /// <summary>
+        /// 版 本:Release
+        /// 日 期:2014-09-23
+        /// 作 者:不良帥
+        /// 描 述:图片处理相关类
+        /// </summary>
+        public static class ImageClasses
+        {
+            #region 请求返回消息
+            /// <summary>
+            /// 请求返回消息
+            /// </summary>
+            public class ResponseMessage
+            {
+                /// <summary>
+                /// 是否遇到错误
+                /// </summary>
+                public bool IsError { get; set; }
+                /// <summary>
+                /// web路径
+                /// </summary>
+                public string WebPath { get; set; }
+                /// <summary>
+                /// 文件物理路径
+                /// </summary>
+                public string filePath { get; set; }
+                /// <summary>
+                /// 反回消息
+                /// </summary>
+                public string Message { get; set; }
+                /// <summary>
+                /// 文件大小
+                /// </summary>
+                public double Size { get; set; }
+                /// <summary>
+                /// 图片名
+                /// </summary>
+                public string FileName { get; set; }
+                /// <summary>
+                /// 图片目录
+                /// </summary>
+                public string Directory
+                {
+                    get
+                    {
+                        if (WebPath == null) return null;
+                        return WebPath.Replace(FileName, "");
+                    }
+                }
+                /// <summary>
+                /// 缩略图路径
+                /// </summary>
+                public string SmallPath(int index)
+                {
+                    return string.Format("{0}{1}_{2}{3}", Directory, Path.GetFileNameWithoutExtension(FileName), index, Path.GetExtension(FileName));
+                }
+            }
+            #endregion
+
+            #region 装载水印图片的相关信息
+            /// <summary>
+            /// 装载水印图片的相关信息
+            /// </summary>
+            public struct WaterInfo
+            {
+                private string m_sourcePicture;
+                /// <summary>
+                /// 源图片地址名字(带后缀)
+                /// </summary>
+                public string SourcePicture
+                {
+                    get { return m_sourcePicture; }
+                    set { m_sourcePicture = value; }
+                }
+
+
+
+                private string m_waterImager;
+                /// <summary>
+                /// 水印图片名字(带后缀)
+                /// </summary>
+                public string WaterPicture
+                {
+                    get { return m_waterImager; }
+                    set { m_waterImager = value; }
+                }
+
+                private float m_alpha;
+                /// <summary>
+                /// 水印图片文字的透明度
+                /// </summary>
+                public float Alpha
+                {
+                    get { return m_alpha; }
+                    set { m_alpha = value; }
+                }
+
+                private WaterPosition m_postition;
+                /// <summary>
+                /// 水印图片或文字在图片中的位置
+                /// </summary>
+                public WaterPosition Position
+                {
+                    get { return m_postition; }
+                    set { m_postition = value; }
+                }
+
+                private string m_words;
+                /// <summary>
+                /// 水印文字的内容
+                /// </summary>
+                public string Words
+                {
+                    get { return m_words; }
+                    set { m_words = value; }
+                }
+
+            }
+            #endregion
+        }
     }
 }

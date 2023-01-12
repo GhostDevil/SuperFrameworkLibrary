@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Threading;
 
 namespace SuperFramework.SuperRegistry
@@ -10,6 +11,7 @@ namespace SuperFramework.SuperRegistry
     /// <summary>
     /// 注册表监视器
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public class RegistryMonitor : IDisposable
     {
         #region P/Invoke

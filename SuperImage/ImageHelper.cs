@@ -6,6 +6,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Windows.Forms;
 using static SuperFramework.SuperImage.ImageEnum;
@@ -18,6 +19,7 @@ namespace SuperFramework.SuperImage
     /// <para>作 者:不良帥</para>
     /// <para>描 述:图片操作类</para>
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public static class ImageHelper
     {
 
@@ -135,7 +137,7 @@ namespace SuperFramework.SuperImage
                     towidth = originalImage.Width * height / originalImage.Height;
                     break;
                 case ThumbnailMod.Cut://指定高宽裁减（不变形）                
-                    if ((double)originalImage.Width / (double)originalImage.Height > (double)towidth / (double)toheight)
+                    if (originalImage.Width / (double)originalImage.Height > towidth / (double)toheight)
                     {
                         oh = originalImage.Height;
                         ow = originalImage.Height * towidth / toheight;
@@ -223,7 +225,7 @@ namespace SuperFramework.SuperImage
                     towidth = originalImage.Width * height / originalImage.Height;
                     break;
                 case "Cut": //指定高宽裁减（不变形）                
-                    if ((double)originalImage.Width / (double)originalImage.Height > (double)towidth / (double)toheight)
+                    if (originalImage.Width / (double)originalImage.Height > towidth / (double)toheight)
                     {
                         oh = originalImage.Height;
                         ow = originalImage.Height * towidth / toheight;
@@ -476,8 +478,8 @@ namespace SuperFramework.SuperImage
         /// <returns>返回屏幕像</returns>
         public static Image GetScreenImg(int x1, int y1, int x2, int y2)
         {
-            int w = (x2 - x1);
-            int h = (y2 - y1);
+            int w = x2 - x1;
+            int h = y2 - y1;
             Image myImage = new Bitmap(w, h);
             Graphics g = Graphics.FromImage(myImage);
             g.CopyFromScreen(new Point(x1, y1), new Point(0, 0), new Size(w, h));
@@ -528,15 +530,15 @@ namespace SuperFramework.SuperImage
         private static unsafe bool ScanColor(byte b1, byte g1, byte r1, byte b2, byte g2, byte r2, int similar)
         {
 
-            if ((Math.Abs(b1 - b2)) > similar)
+            if (Math.Abs(b1 - b2) > similar)
             {
                 return false;    //B
             }
-            if ((Math.Abs(g1 - g2)) > similar)
+            if (Math.Abs(g1 - g2) > similar)
             {
                 return false;    //G
             }
-            if ((Math.Abs(r1 - r2)) > similar)
+            if (Math.Abs(r1 - r2) > similar)
             {
                 return false;    //R
             }
@@ -581,7 +583,7 @@ namespace SuperFramework.SuperImage
             {
                 for (int w = left; w < _BreakW; w++)
                 {
-                    P_ptr = (byte*)(P_Iptr);
+                    P_ptr = (byte*)P_Iptr;
                     for (int y = 0; y < P_Data.Height; y++)
                     {
                         for (int x = 0; x < P_Data.Width; x++)
@@ -649,7 +651,7 @@ namespace SuperFramework.SuperImage
             {
                 for (int w = left; w < _BreakW; w++)
                 {
-                    P_ptr = (byte*)(P_Iptr);
+                    P_ptr = (byte*)P_Iptr;
                     for (int y = 0; y < P_Data.Height; y++)
                     {
                         for (int x = 0; x < P_Data.Width; x++)
@@ -737,7 +739,7 @@ namespace SuperFramework.SuperImage
             {
                 for (int w = rect.X; w < _BreakW; w++)
                 {
-                    P_ptr = (byte*)(P_Iptr);
+                    P_ptr = (byte*)P_Iptr;
                     for (int y = 0; y < P_Height; y++)
                     {
                         for (int x = 0; x < P_Width; x++)
@@ -834,7 +836,7 @@ namespace SuperFramework.SuperImage
             {
                 for (int w = rect.X; w < _BreakW; w++)
                 {
-                    P_ptr = (byte*)(P_Iptr);
+                    P_ptr = (byte*)P_Iptr;
                     for (int y = 0; y < P_Height; y++)
                     {
                         for (int x = 0; x < P_Width; x++)
@@ -1064,18 +1066,16 @@ namespace SuperFramework.SuperImage
         /// <returns></returns>
         public static System.Windows.Media.Imaging.BitmapImage BitmapToBitmapImage(Bitmap bitmap)
         {
-            using (MemoryStream stream = new())
-            {
-                bitmap.Save(stream, ImageFormat.Bmp);
-                stream.Position = 0;
-                System.Windows.Media.Imaging.BitmapImage result = new();
-                result.BeginInit();
-                result.CacheOption = System.Windows.Media.Imaging.BitmapCacheOption.OnLoad;
-                result.StreamSource = stream;
-                result.EndInit();
-                result.Freeze();
-                return result;
-            }
+            using MemoryStream stream = new();
+            bitmap.Save(stream, ImageFormat.Bmp);
+            stream.Position = 0;
+            System.Windows.Media.Imaging.BitmapImage result = new();
+            result.BeginInit();
+            result.CacheOption = System.Windows.Media.Imaging.BitmapCacheOption.OnLoad;
+            result.StreamSource = stream;
+            result.EndInit();
+            result.Freeze();
+            return result;
         }
         /// <summary>
         /// ImageSource转Bitmap
@@ -1109,12 +1109,10 @@ namespace SuperFramework.SuperImage
                 {
                     bitmap.BeginInit();
                     bitmap.CacheOption = System.Windows.Media.Imaging.BitmapCacheOption.OnLoad;
-                    using (Stream ms = new MemoryStream(File.ReadAllBytes(imagePath)))
-                    {
-                        bitmap.StreamSource = ms;
-                        bitmap.EndInit();
-                        bitmap.Freeze();
-                    }
+                    using Stream ms = new MemoryStream(File.ReadAllBytes(imagePath));
+                    bitmap.StreamSource = ms;
+                    bitmap.EndInit();
+                    bitmap.Freeze();
                 }
                 return bitmap;
             }

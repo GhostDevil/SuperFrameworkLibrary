@@ -649,7 +649,7 @@ namespace SuperFramework.SuperImage
             }
             else if (location == "T")
             {
-                x = img.Width / 2 - (width * height) / 2;
+                x = img.Width / 2 - width * height / 2;
                 loca.Add(x);
                 loca.Add(y);
             }
@@ -663,7 +663,7 @@ namespace SuperFramework.SuperImage
             }
             else if (location == "C")
             {
-                x = img.Width / 2 - (width * height) / 2;
+                x = img.Width / 2 - width * height / 2;
                 y = img.Height / 2;
             }
             else if (location == "RC")
@@ -677,7 +677,7 @@ namespace SuperFramework.SuperImage
             }
             else if (location == "B")
             {
-                x = img.Width / 2 - (width * height) / 2;
+                x = img.Width / 2 - width * height / 2;
                 y = img.Height - width - 5;
             }
             else

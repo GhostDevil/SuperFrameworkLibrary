@@ -14,7 +14,8 @@
 		<EnableNETAnalyzers>True</EnableNETAnalyzers>
 		<FileVersion>22.12.14.3</FileVersion>
 		<AssemblyVersion>22.12.14.3</AssemblyVersion>
-		<Platforms>AnyCPU</Platforms>
+		<Platforms>AnyCPU;x86</Platforms>
+		<PlatformTarget>AnyCPU</PlatformTarget>
 	</PropertyGroup>
 	<ItemGroup>
 		<COMReference Include="MSTSCLib.dll">
@@ -35,6 +36,7 @@
 		</COMReference>
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Remove="AppLogs\**" />
 		<Compile Remove="ImagePng\**" />
 		<Compile Remove="SuperDataViews\**" />
 		<Compile Remove="SuperForm\**" />
@@ -44,6 +46,7 @@
 		<Compile Remove="SuperObjectPersistence\**" />
 		<Compile Remove="SuperRegistry1\**" />
 		<Compile Remove="SuperWindows\WPFHelper\**" />
+		<EmbeddedResource Remove="AppLogs\**" />
 		<EmbeddedResource Remove="ImagePng\**" />
 		<EmbeddedResource Remove="SuperDataViews\**" />
 		<EmbeddedResource Remove="SuperForm\**" />
@@ -53,6 +56,7 @@
 		<EmbeddedResource Remove="SuperObjectPersistence\**" />
 		<EmbeddedResource Remove="SuperRegistry1\**" />
 		<EmbeddedResource Remove="SuperWindows\WPFHelper\**" />
+		<None Remove="AppLogs\**" />
 		<None Remove="ImagePng\**" />
 		<None Remove="SuperDataViews\**" />
 		<None Remove="SuperForm\**" />
@@ -62,29 +66,18 @@
 		<None Remove="SuperObjectPersistence\**" />
 		<None Remove="SuperRegistry1\**" />
 		<None Remove="SuperWindows\WPFHelper\**" />
+		<Page Remove="AppLogs\**" />
 		<Page Remove="SuperDataViews\**" />
 		<Page Remove="SuperMail\**" />
 		<Page Remove="SuperObjectPersistence\**" />
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Remove="AppLogs\AppLog4Net.cs" />
-		<Compile Remove="AppLogs\AppMsgHelper.cs" />
-		<Compile Remove="AppLogs\Log4Helper.cs" />
-		<Compile Remove="AppLogs\MyLayout.cs" />
-		<Compile Remove="AppLogs\MyPatternConverter.cs" />
 		<Compile Remove="EnumHelper.cs" />
 		<Compile Remove="IISHelper.cs" />
 		<Compile Remove="SerialPortEx.cs" />
 		<Compile Remove="SerialPortHelper.cs" />
-		<Compile Remove="SuperBarCode\QRCodeHelper.cs" />
-		<Compile Remove="SuperConfig\Config\WebConfig.cs" />
 		<Compile Remove="SuperGraphics\DrawHelper.cs" />
-		<Compile Remove="SuperHardware\HInfoStruct.cs" />
-		<Compile Remove="SuperHardware\USBHelper.cs" />
 		<Compile Remove="SuperHook\HookHelper2.cs" />
-		<Compile Remove="SuperLinq\LinqToSQLHelper.cs" />
-		<Compile Remove="SuperLinq\LinqToXML.cs" />
-		<Compile Remove="SuperLinq\LinqToXMLHelper.cs" />
 		<Compile Remove="WindowsAPI\APICounst.cs" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1' ">
@@ -93,23 +86,9 @@
 		<Compile Remove="SerialPortHelper.cs" />
 	</ItemGroup>
 	<ItemGroup>
+		<None Remove=".gitattributes" />
+		<None Remove=".gitignore" />
 		<None Remove="App.config" />
-		<None Remove="AppLogs\log4net.config" />
-		<None Remove="ConfigInfo\IdCardAreas.xml" />
-	</ItemGroup>
-	<ItemGroup>
-		<None Update="ConfigInfo\log4net.config">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="ConfigInfo\LogsConfig.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="SuperHardware\DLL\OpenHardwareMonitorLib.dll">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<Folder Include="SuperHardware\DLL\" />
 	</ItemGroup>
 	<!--<ItemGroup Condition="'$(TargetFramework)' != 'net6.0-windows'">
 		<PackageReference Include="OpenHardwareMonitor" Version="0.9.6" />
@@ -120,38 +99,17 @@
 		
 	</ItemGroup>-->
 	<ItemGroup>
-		<PackageReference Include="LibreHardwareMonitorLib" Version="0.9.1" />
-		<PackageReference Include="Masuit.Tools.Core" Version="2.5.8.1" />
-		<PackageReference Include="log4net" Version="2.0.15" />
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-		<PackageReference Include="InTheHand.Net.Bluetooth">
-			<Version>4.0.32</Version>
-		</PackageReference>		
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-		<PackageReference Include="System.Configuration.ConfigurationManager">
-			<Version>7.0.0</Version>
-		</PackageReference>
 		<PackageReference Include="System.DirectoryServices" Version="7.0.0" />
-		<PackageReference Include="System.Drawing.Common">
-			<Version>7.0.0</Version>
-		</PackageReference>
-		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.23" />
-		<PackageReference Include="System.Security.Cryptography.ProtectedData">
-			<Version>7.0.0</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
-		<PackageReference Include="System.Management">
-			<Version>7.0.0</Version>
-		</PackageReference>
 		<PackageReference Include="System.ServiceProcess.ServiceController">
 			<Version>7.0.0</Version>
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />
-		<PackageReference Include="Portable.BouncyCastle" Version="1.9.0" />
-		<PackageReference Include="System.Net.Http" Version="4.3.4" />
-		<PackageReference Include="Z.Expressions.Eval" Version="4.0.90" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\SuperNetCoreLibrary\SuperNetCoreLibrary\SuperNetCoreLibrary.csproj" />
 	</ItemGroup>
 </Project>
 

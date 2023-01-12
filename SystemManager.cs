@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -23,6 +24,7 @@ namespace SuperFramework
     /// 作者:不良帥
     /// 描述:系统控制辅助类
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public class SystemManager
     {
         #region  枚举类型,指定可以允许的操作。 
@@ -191,7 +193,7 @@ namespace SuperFramework
         {
             if (!CheckEntryPoint("powrprof.dll", "SetSuspendState"))
                 throw new PlatformNotSupportedException("The SetSuspendState method is not supported on this system!");
-            SetSuspendState((int)(hibernate ? 1 : 0), (int)(force ? 1 : 0), 0);
+            SetSuspendState(hibernate ? 1 : 0, force ? 1 : 0, 0);
         }
 
         /// <summary>
@@ -240,9 +242,9 @@ namespace SuperFramework
             if (hWnd != IntPtr.Zero)
                 HWND_BROADCAST = (int)hWnd;
             if (isOpen)
-                WindowsAPI.User32API.SendMessage((IntPtr)HWND_BROADCAST, WM_SYSCOMMAND, SC_MONITORPOWER, 1);  //打开显示器;
+                WindowsAPI.User32API.SendMessage((IntPtr)HWND_BROADCAST, WM_SYSCOMMAND, (IntPtr)SC_MONITORPOWER, 1);  //打开显示器;
             else
-                WindowsAPI.User32API.SendMessage((IntPtr)HWND_BROADCAST, WM_SYSCOMMAND, SC_MONITORPOWER, 2);  //关闭显示器;
+                WindowsAPI.User32API.SendMessage((IntPtr)HWND_BROADCAST, WM_SYSCOMMAND, (IntPtr)SC_MONITORPOWER, 2);  //关闭显示器;
         }
         #endregion
 
@@ -253,7 +255,7 @@ namespace SuperFramework
         /// <param name="isStart"></param>
         public static void StartSaver()
         {
-            WindowsAPI.User32API.SendMessage(HWND_BROADCAST, WM_SYSCOMMAND, SC_SCREENSAVE, 0);           // 启动屏保
+            WindowsAPI.User32API.SendMessage(HWND_BROADCAST, WM_SYSCOMMAND, (IntPtr)SC_SCREENSAVE, 0);           // 启动屏保
         }
         #endregion
 
@@ -395,11 +397,11 @@ namespace SuperFramework
         private static int KeyboardHookProc(int nCode, IntPtr wParam, IntPtr lParam)
         {
             KeyboardMSG m = (KeyboardMSG)Marshal.PtrToStructure(lParam, typeof(KeyboardMSG));
-            if ((int)m.vkCode == 91 || (int)m.vkCode == 92 || (int)m.vkCode == 10)
+            if (m.vkCode == 91 || m.vkCode == 92 || m.vkCode == 10)
             {
                 return 1;
             }
-            if (((int)m.vkCode == 46) && ((int)m.vkCode == 17) && ((int)m.vkCode == 18))
+            if ((m.vkCode == 46) && (m.vkCode == 17) && (m.vkCode == 18))
             {
                 return 2;
             }
@@ -468,7 +470,7 @@ namespace SuperFramework
                 retKeyboard = WindowsAPI.User32API.UnhookWindowsHookEx(hKeyboardHook);
                 hKeyboardHook = 0;
             }
-            if (!(retKeyboard))
+            if (!retKeyboard)
             {
                 throw new Exception("UnhookWindowsHookEx  failed.");
             }
@@ -485,7 +487,7 @@ namespace SuperFramework
         {
             byte[] bs = new byte[256];
             WindowsAPI.User32API.GetKeyboardState(bs);
-            return (bs[0x14] == 1);
+            return bs[0x14] == 1;
         }
         #endregion
 
@@ -588,11 +590,9 @@ namespace SuperFramework
         {
             try
             {
-                using (DirectoryEntry localMachine = new(string.Format("WinNT://{0},computer", Environment.MachineName)))
-                {
-                    var user = localMachine.Children.Find(username, "user");
-                    return user != null;
-                }
+                using DirectoryEntry localMachine = new(string.Format("WinNT://{0},computer", Environment.MachineName));
+                var user = localMachine.Children.Find(username, "user");
+                return user != null;
             }
             catch
             {
@@ -1148,62 +1148,58 @@ namespace SuperFramework
 
             foreach (var item222 in tags)
             {
-                using (RegistryKey pregkey = item222.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"))//Registry.LocalMachine.OpenSubKey(item222);//获取指定路径下的键 
+                using RegistryKey pregkey = item222.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall");//Registry.LocalMachine.OpenSubKey(item222);//获取指定路径下的键 
+                if (pregkey == null)
+                    continue;
+                foreach (string item in pregkey?.GetSubKeyNames())               //循环所有子键
                 {
-                    if (pregkey == null)
-                        continue;
-                    foreach (string item in pregkey?.GetSubKeyNames())               //循环所有子键
+                    ProgramInfo programInfo = new();
+                    using RegistryKey currentKey = pregkey.OpenSubKey(item, false);
+                    try
                     {
-                        ProgramInfo programInfo = new();
-                        using (RegistryKey currentKey = pregkey.OpenSubKey(item, false))
-                        {
-                            try
-                            {
-                                string[] vs = currentKey.GetValueNames();
-                                if (vs.Length == 0)
-                                    continue;
-                                programInfo.DisplayName = currentKey.GetValue("DisplayName", "Nothing");           //获取显示名称
-                                programInfo.InstallLocation = currentKey.GetValue("InstallLocation", "Nothing");   //获取安装路径
-                                programInfo.UninstallString = currentKey.GetValue("UninstallString", "Nothing");   //获取卸载字符串路径
-                                programInfo.ReleaseType = currentKey.GetValue("ReleaseType", "Nothing");           //发行类型,值是Security Update为安全更新,Update为更新
-                                programInfo.DisplayIco = currentKey.GetValue("DisplayIco", "Nothing");
-                                programInfo.DisplayVersion = currentKey.GetValue("DisplayVersion", "Nothing");
-                                programInfo.InstallDate = currentKey.GetValue("InstallDate", "Nothing");
-                                programInfo.NoModify = currentKey.GetValue("NoModify", "Nothing");
-                                programInfo.NoRepair = currentKey.GetValue("NoRepair", "Nothing");
-                                programInfo.Publisher = currentKey.GetValue("Publisher", "Nothing");
-                                programInfo.Version = currentKey.GetValue("Version", "Nothing");
-                                programInfo.VersionMajor = currentKey.GetValue("VersionMajor", "Nothing");
-                                programInfo.VersionMinor = currentKey.GetValue("VersionMinor", "Nothing");
-                                programInfo.Language = currentKey.GetValue("Language", "Nothing");
-                                programInfo.ModifyPath = currentKey.GetValue("ModifyPath", "Nothing");
-                                programInfo.Size = currentKey.GetValue("Size", "Nothing");
-                                bool isSecurityUpdate = false;
+                        string[] vs = currentKey.GetValueNames();
+                        if (vs.Length == 0)
+                            continue;
+                        programInfo.DisplayName = currentKey.GetValue("DisplayName", "Nothing");           //获取显示名称
+                        programInfo.InstallLocation = currentKey.GetValue("InstallLocation", "Nothing");   //获取安装路径
+                        programInfo.UninstallString = currentKey.GetValue("UninstallString", "Nothing");   //获取卸载字符串路径
+                        programInfo.ReleaseType = currentKey.GetValue("ReleaseType", "Nothing");           //发行类型,值是Security Update为安全更新,Update为更新
+                        programInfo.DisplayIco = currentKey.GetValue("DisplayIco", "Nothing");
+                        programInfo.DisplayVersion = currentKey.GetValue("DisplayVersion", "Nothing");
+                        programInfo.InstallDate = currentKey.GetValue("InstallDate", "Nothing");
+                        programInfo.NoModify = currentKey.GetValue("NoModify", "Nothing");
+                        programInfo.NoRepair = currentKey.GetValue("NoRepair", "Nothing");
+                        programInfo.Publisher = currentKey.GetValue("Publisher", "Nothing");
+                        programInfo.Version = currentKey.GetValue("Version", "Nothing");
+                        programInfo.VersionMajor = currentKey.GetValue("VersionMajor", "Nothing");
+                        programInfo.VersionMinor = currentKey.GetValue("VersionMinor", "Nothing");
+                        programInfo.Language = currentKey.GetValue("Language", "Nothing");
+                        programInfo.ModifyPath = currentKey.GetValue("ModifyPath", "Nothing");
+                        programInfo.Size = currentKey.GetValue("Size", "Nothing");
+                        bool isSecurityUpdate = false;
 
-                                if (programInfo.ReleaseType.ToString() != "Nothing")
-                                {
-                                    tempType = programInfo.ReleaseType.ToString();
-                                    if (tempType == "Security Update" || tempType == "Update")
-                                    {
-                                        isSecurityUpdate = true;
-                                    }
-                                }
-                                if (!isSecurityUpdate && programInfo.DisplayName.ToString() != "Nothing" && programInfo.UninstallString.ToString() != "Nothing")
-                                {
-                                    softNum++;
-                                    //if (programInfo.InstallLocation == null)
-                                    //{
-                                    ls.Add(programInfo);
-                                    //}
-                                    //else
-                                    //{
-                                    //    ls.Add(programInfo);
-                                    //}
-                                }
+                        if (programInfo.ReleaseType.ToString() != "Nothing")
+                        {
+                            tempType = programInfo.ReleaseType.ToString();
+                            if (tempType == "Security Update" || tempType == "Update")
+                            {
+                                isSecurityUpdate = true;
                             }
-                            catch { }
+                        }
+                        if (!isSecurityUpdate && programInfo.DisplayName.ToString() != "Nothing" && programInfo.UninstallString.ToString() != "Nothing")
+                        {
+                            softNum++;
+                            //if (programInfo.InstallLocation == null)
+                            //{
+                            ls.Add(programInfo);
+                            //}
+                            //else
+                            //{
+                            //    ls.Add(programInfo);
+                            //}
                         }
                     }
+                    catch { }
                 }
             }
             count = softNum;
@@ -1401,7 +1397,7 @@ namespace SuperFramework
             {
                 volumeSize = 100;
             }
-            uint Value = (uint)((double)0xffff * (double)volumeSize / (double)(volumeMaxScope - volumeMinScope));//先把trackbar的value值映射到0x0000～0xFFFF范围
+            uint Value = (uint)(0xffff * (double)volumeSize / (volumeMaxScope - volumeMinScope));//先把trackbar的value值映射到0x0000～0xFFFF范围
 
 
             //限制value的取值范围
@@ -1415,8 +1411,8 @@ namespace SuperFramework
                 Value = 0xffff;
             }
 
-            uint left = (uint)Value;//左声道音量
-            uint right = (uint)Value;//右
+            uint left = Value;//左声道音量
+            uint right = Value;//右
             waveOutSetVolume(0, left << 16 | right); //"<<"左移，“|”逻辑或运算
         }
         #endregion
@@ -1451,7 +1447,7 @@ namespace SuperFramework
             SuperFramework.WindowsAPI.User32API.GetClientRect(windowHandle, out rect);
             for (var x = 0; x < rect.right; x += 5)
                 for (var y = 0; y < rect.bottom; y += 5)
-                    SuperFramework.WindowsAPI.User32API.SendMessage(windowHandle, (int)wmMousemove, 0, (y << 16) + x);
+                    SuperFramework.WindowsAPI.User32API.SendMessage(windowHandle, (int)wmMousemove, (IntPtr)0, (y << 16) + x);
         }
     }
 
